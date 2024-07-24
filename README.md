@@ -1,2 +1,2 @@
-# Ebox-Vendor
- Ebox-Vendor
+# EBoxVendor
+ event box vendor app

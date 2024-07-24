@@ -1,0 +1,6 @@
+1. Add a keywords property,
+2. Add a description in list wise,
+3. change category dropdown in add product component
+4. Snackbar react native paper, chip
+
+android/app/build/outputs/apk/debug/app-debug.apk
