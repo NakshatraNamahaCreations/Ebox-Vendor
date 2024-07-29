@@ -20,11 +20,10 @@ export default function Header() {
       <View style={{flex: 0.7}}>
         <Text
           style={{
-            fontSize: 25,
+            fontSize: 18,
             color: 'black',
             // marginBottom: 10,
-            fontFamily: 'Poppins-Bold',
-            letterSpacing: 2,
+            fontFamily: 'Montserrat-Bold',
             textShadowColor: 'gray',
             textShadowOffset: {width: 2, height: 0},
             textShadowRadius: 2,
@@ -33,10 +32,9 @@ export default function Header() {
         </Text>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 13,
             color: THEMECOLOR.mainColor,
-            fontFamily: 'Poppins-SemiBold',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-SemiBold',
           }}>
           Jimmy Morgan
         </Text>
@@ -53,10 +51,10 @@ export default function Header() {
             size={20}
             style={{
               backgroundColor: '#f9f9f9',
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               textAlign: 'center',
-              paddingTop: 15,
+              paddingTop: 10,
               borderRadius: 50,
               flexDirection: 'row',
               justifyContent: 'center',
@@ -71,10 +69,10 @@ export default function Header() {
             size={20}
             style={{
               backgroundColor: '#f9f9f9',
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               textAlign: 'center',
-              paddingTop: 15,
+              paddingTop: 10,
               borderRadius: 50,
               flexDirection: 'row',
               justifyContent: 'center',

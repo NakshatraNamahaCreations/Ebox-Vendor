@@ -20,21 +20,21 @@ export default function Login({navigation}) {
       }}>
       <Text
         style={{
-          fontSize: 30,
+          fontSize: 18,
           color: THEMECOLOR.mainColor,
           marginBottom: 10,
-          letterSpacing: 1,
-          fontFamily: 'Poppins-Medium',
+          // letterSpacing: 1,
+          fontFamily: 'Montserrat-SemiBold',
         }}>
         Login
       </Text>
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 16,
           color: 'black',
           marginBottom: 10,
-          fontFamily: 'Poppins-Regular',
-          letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
           //   fontWeight: '400',
         }}>
         Welcome back! Please login
@@ -42,10 +42,10 @@ export default function Login({navigation}) {
       <Text
         style={{
           color: 'black',
-          fontFamily: 'Poppins-Regular',
-          fontSize: 16,
+          fontFamily: 'Montserrat-Regular',
+          fontSize: 14,
           marginBottom: 5,
-          letterSpacing: 1,
+          // letterSpacing: 1,
         }}>
         Phone number
       </Text>
@@ -58,23 +58,23 @@ export default function Login({navigation}) {
           borderWidth: 1,
           borderColor: '#d5d5d5',
           color: 'black',
-          fontSize: 16,
+          fontSize: 14,
           borderRadius: 10,
-          fontFamily: 'Poppins-Regular',
+          fontFamily: 'Montserrat-Regular',
           paddingLeft: 15,
           backgroundColor: 'white',
-          marginBottom: 15,
-          letterSpacing: 1,
+          // marginBottom: 15,
+          // letterSpacing: 1,
         }}
       />
       <TouchableOpacity>
         <Text
           style={{
             color: 'black',
-            fontSize: 18,
-            marginBottom: 5,
+            fontSize: 14,
+            // marginBottom: 5,
             textAlign: 'right',
-            letterSpacing: 1,
+            // letterSpacing: 1,
           }}>
           {/* Forgot Password? */}
         </Text>
@@ -82,36 +82,41 @@ export default function Login({navigation}) {
       <TouchableOpacity
         style={{
           backgroundColor: THEMECOLOR.mainColor,
-          width: '100%',
-          // height: 60,
-          padding: 15,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
+          paddingVertical: 10,
           borderRadius: 10,
           elevation: 3,
-          marginTop: 40,
+          marginHorizontal: 100,
+          // marginTop: 40,
         }}
         onPress={handleLogin}>
         <Text
           style={{
             color: THEMECOLOR.textColor,
-            fontSize: 20,
+            fontSize: 15,
             textAlign: 'center',
-            fontFamily: 'Poppins-Medium',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
+            // letterSpacing: 1,
           }}>
           Login
         </Text>
       </TouchableOpacity>
-      <View style={{position: 'absolute', bottom: 20, width: '100%'}}>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+      <View
+        style={{
+          // justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 15,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+          }}>
+          {/* <View style={{flexDirection: 'row', justifyContent: 'center'}}> */}
           <Text
             style={{
               color: 'black',
-              fontSize: 18,
-              fontFamily: 'Poppins-Regular',
-              letterSpacing: 1,
+              fontSize: 13,
+              fontFamily: 'Montserrat-Regular',
+              // letterSpacing: 1,
             }}>
             Don't have an account?{' '}
           </Text>
@@ -122,13 +127,14 @@ export default function Login({navigation}) {
             <Text
               style={{
                 color: THEMECOLOR.mainColor,
-                fontSize: 18,
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Regular',
+                fontSize: 13,
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Regular',
               }}>
               Sign up
             </Text>
           </TouchableOpacity>
+          {/* </View> */}
         </View>
       </View>
     </View>

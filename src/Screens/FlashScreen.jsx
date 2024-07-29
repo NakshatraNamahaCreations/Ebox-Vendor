@@ -1,6 +1,7 @@
 import {Image, Animated, Text, View} from 'react-native';
 import React, {useEffect, useRef} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import THEMECOLOR from '../utilities/color';
 
 export default function FlashScreen({navigation}) {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -46,7 +47,7 @@ export default function FlashScreen({navigation}) {
           <MaterialCommunityIcons
             name="drawing-box"
             size={50}
-            color="#ea5362"
+            color={THEMECOLOR.mainColor}
           />
           EVENT BOX
         </Text>

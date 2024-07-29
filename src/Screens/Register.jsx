@@ -39,11 +39,11 @@ export default function Register({navigation}) {
       }}>
       <Text
         style={{
-          fontSize: 30,
+          fontSize: 18,
           color: THEMECOLOR.mainColor,
           marginBottom: 10,
-          letterSpacing: 1,
-          fontFamily: 'Poppins-Medium',
+          // letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
         }}>
         Sign up
       </Text>
@@ -51,10 +51,10 @@ export default function Register({navigation}) {
       <Text
         style={{
           color: 'black',
-          fontSize: 16,
+          fontSize: 14,
           marginBottom: 5,
-          fontFamily: 'Poppins-Regular',
-          letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
         }}>
         Name
       </Text>
@@ -67,13 +67,13 @@ export default function Register({navigation}) {
           borderWidth: 1,
           borderColor: '#d5d5d5',
           color: 'black',
-          fontSize: 16,
+          fontSize: 14,
           borderRadius: 10,
           paddingLeft: 15,
           backgroundColor: 'white',
           marginBottom: 20,
-          fontFamily: 'Poppins-Regular',
-          letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
         }}
       />
 
@@ -81,7 +81,7 @@ export default function Register({navigation}) {
         style={{
           color: 'black',
           fontSize: 16,
-          fontFamily: 'Poppins-Regular',
+          fontFamily: 'Montserrat-Regular',
           letterSpacing: 1,
           marginBottom: 5,
         }}>
@@ -107,7 +107,7 @@ export default function Register({navigation}) {
             style={{
               color: '#757575',
               fontSize: 16,
-              fontFamily: 'Poppins-Regular',
+              fontFamily: 'Montserrat-Regular',
               letterSpacing: 1,
             }}
           />
@@ -119,7 +119,7 @@ export default function Register({navigation}) {
               style={{
                 color: 'black',
                 fontSize: 16,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Regular',
                 letterSpacing: 1,
               }}
             />
@@ -129,9 +129,9 @@ export default function Register({navigation}) {
       <Text
         style={{
           color: 'black',
-          fontSize: 16,
-          fontFamily: 'Poppins-Regular',
-          letterSpacing: 1,
+          fontSize: 14,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
           marginBottom: 5,
         }}>
         Phone number
@@ -147,14 +147,13 @@ export default function Register({navigation}) {
           borderWidth: 1,
           borderColor: '#d5d5d5',
           color: 'black',
-          fontSize: 16,
+          fontSize: 14,
           borderRadius: 10,
           paddingLeft: 15,
           backgroundColor: 'white',
           marginBottom: 15,
-          fontSize: 16,
-          fontFamily: 'Poppins-Regular',
-          letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
         }}
       />
       {/* <Text
@@ -169,29 +168,23 @@ export default function Register({navigation}) {
       <TouchableOpacity
         style={{
           backgroundColor: THEMECOLOR.mainColor,
-          width: '100%',
-          // height: 60,
-          padding: 15,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
+          paddingVertical: 10,
           borderRadius: 10,
           elevation: 3,
-          marginTop: 20,
+          marginHorizontal: 100,
         }}
         onPress={handleOTP}>
         <Text
           style={{
             color: THEMECOLOR.textColor,
-            fontSize: 20,
+            fontSize: 13,
             textAlign: 'center',
-            fontFamily: 'Poppins-Medium',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
           }}>
           Get OTP
         </Text>
       </TouchableOpacity>
-      <View
+      {/* <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
@@ -208,40 +201,37 @@ export default function Register({navigation}) {
         <Text
           style={{
             color: 'black',
-            fontSize: 16,
-            fontFamily: 'Poppins-Regular',
-            letterSpacing: 1,
+            fontSize: 12,
+            fontFamily: 'Montserrat-Regular',
             marginLeft: 10,
           }}>
           By sign up, you are agree out terms of condition{' '}
         </Text>
-      </View>
-      <View style={{position: 'absolute', bottom: 20, width: '100%'}}>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+      </View> */}
+
+      <View
+        style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 13,
+            fontFamily: 'Montserrat-Medium',
+          }}>
+          Already have an account?{' '}
+        </Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Login');
+          }}>
           <Text
             style={{
-              color: 'black',
-              fontSize: 18,
-              fontFamily: 'Poppins-Regular',
-              letterSpacing: 1,
+              color: THEMECOLOR.mainColor,
+              fontSize: 13,
+              fontFamily: 'Montserrat-Medium',
             }}>
-            Already have an account?{' '}
+            Sign in
           </Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Login');
-            }}>
-            <Text
-              style={{
-                color: THEMECOLOR.mainColor,
-                fontSize: 18,
-                fontFamily: 'Poppins-Regular',
-                letterSpacing: 1,
-              }}>
-              Sign in
-            </Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

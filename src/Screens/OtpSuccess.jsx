@@ -7,34 +7,32 @@ export default function OtpSuccess({navigation}) {
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Image
         source={require('../../assets/verified.png')}
-        style={{width: 150, height: 150}}
+        style={{width: 100, height: 100}}
       />
       <Text
         style={{
           color: THEMECOLOR.mainColor,
-          fontSize: 30,
+          fontSize: 18,
           marginTop: 12,
           marginBottom: 12,
           textAlign: 'left',
-          letterSpacing: 1,
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Montserrat-Medium',
         }}>
         Successfully
       </Text>
       <Text
         style={{
           color: 'black',
-          fontSize: 16,
-          letterSpacing: 1,
-          fontFamily: 'Poppins-Medium',
+          fontSize: 14,
+          fontFamily: 'Montserrat-Medium',
         }}>
         Your Account has been Created.
       </Text>
-      <View style={{position: 'absolute', bottom: 40, width: '90%'}}>
+      <View style={{position: 'absolute', bottom: 40, width: '50%'}}>
         <TouchableOpacity
           style={{
             backgroundColor: THEMECOLOR.mainColor,
-            padding: 15,
+            padding: 10,
             borderRadius: 10,
             elevation: 3,
           }}
@@ -44,10 +42,9 @@ export default function OtpSuccess({navigation}) {
           <Text
             style={{
               color: THEMECOLOR.textColor,
-              fontSize: 20,
+              fontSize: 16,
               textAlign: 'center',
-              letterSpacing: 1,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Montserrat-Medium',
             }}>
             Continue
           </Text>

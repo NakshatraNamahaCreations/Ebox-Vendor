@@ -37,9 +37,9 @@ function OtpScreen({navigation, route}) {
         <Text
           style={{
             color: THEMECOLOR.helperTextGray,
-            fontSize: 16,
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Regular',
+            fontSize: 12,
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
             textAlign: 'center',
             marginBottom: 20,
             // padding: 25,
@@ -49,9 +49,9 @@ function OtpScreen({navigation, route}) {
         <Text
           style={{
             color: THEMECOLOR.mainColor,
-            fontSize: 16,
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Regular',
+            fontSize: 12,
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
             textAlign: 'center',
             marginBottom: 20,
             // padding: 25,
@@ -67,29 +67,31 @@ function OtpScreen({navigation, route}) {
           borderRadius: 5,
           marginTop: 10,
         }}
-        tintColor="#ea5362"
+        tintColor={THEMECOLOR.mainColor}
       />
       <TouchableOpacity
         style={{
           backgroundColor: THEMECOLOR.mainColor,
-          width: '90%',
+          // width: '90%',
           // height: 60,
-          padding: 15,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
+          paddingVertical: 7,
+          paddingHorizontal: 15,
+          // flexDirection: 'row',
+          // justifyContent: 'center',
+          // alignItems: 'center',
           borderRadius: 10,
           elevation: 3,
-          marginTop: 40,
+          marginTop: 10,
+          // marginHorizontal: 50,
         }}
         onPress={verifyOTP}>
         <Text
           style={{
             color: THEMECOLOR.textColor,
-            fontSize: 20,
+            fontSize: 15,
             textAlign: 'center',
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Medium',
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
           }}>
           Verify OTP
         </Text>
@@ -97,15 +99,15 @@ function OtpScreen({navigation, route}) {
       <View
         style={{
           flexDirection: 'row',
-          justifyContent: 'center',
+          // justifyContent: 'center',
           marginTop: 20,
         }}>
         <Text
           style={{
             color: '#393939',
-            fontSize: 16,
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Regular',
+            fontSize: 13,
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
           }}>
           Didn't receive the OTP?{' '}
         </Text>
@@ -113,9 +115,9 @@ function OtpScreen({navigation, route}) {
           <Text
             style={{
               color: THEMECOLOR.mainColor,
-              fontSize: 16,
-              letterSpacing: 1,
-              fontFamily: 'Poppins-Regular',
+              fontSize: 13,
+              // letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
             }}>
             Resend now!
           </Text>
@@ -127,8 +129,8 @@ function OtpScreen({navigation, route}) {
 }
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'flex-start',
+    // flex: 1,
+    // justifyContent: 'flex-start',
     alignItems: 'center',
   },
   logo: {
@@ -140,12 +142,12 @@ const styles = StyleSheet.create({
   },
   helperText: {
     color: THEMECOLOR.mainColor,
-    fontSize: 30,
+    fontSize: 18,
     marginTop: 12,
     marginBottom: 12,
     textAlign: 'left',
-    letterSpacing: 1,
-    fontFamily: 'Poppins-Regular',
+    // letterSpacing: 1,
+    fontFamily: 'Montserrat-Medium',
   },
 });
 export default OtpScreen;

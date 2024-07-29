@@ -103,13 +103,13 @@ export default function Home() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: 10,
+                marginHorizontal: 8,
               }}>
               <Text
                 style={{
-                  fontSize: 17,
+                  fontSize: 15,
                   color: 'black',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 New products for sale
               </Text>
@@ -121,10 +121,9 @@ export default function Home() {
                 }>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 13,
                     color: THEMECOLOR.mainColor,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   View all
                 </Text>
@@ -140,23 +139,22 @@ export default function Home() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: 10,
+                marginHorizontal: 8,
               }}>
               <Text
                 style={{
-                  fontSize: 17,
+                  fontSize: 15,
                   color: 'black',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 Explore Shop
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('All Shop')}>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 13,
                     color: THEMECOLOR.mainColor,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   View all
                 </Text>
@@ -171,13 +169,13 @@ export default function Home() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: 10,
+                marginHorizontal: 8,
               }}>
               <Text
                 style={{
-                  fontSize: 17,
+                  fontSize: 15,
                   color: 'black',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 Recommended for you
               </Text>
@@ -189,10 +187,9 @@ export default function Home() {
                 }>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 13,
                     color: THEMECOLOR.mainColor,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   View all
                 </Text>
@@ -220,16 +217,15 @@ export default function Home() {
                 <Text
                   style={{
                     color: 'black',
-                    fontSize: 17,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontSize: 13,
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   Start selling and achieve your business goals.
                 </Text>
                 <TouchableOpacity
                   style={{
                     backgroundColor: THEMECOLOR.mainColor,
-                    width: '70%',
+                    width: '60%',
                     // height: '30%',
                     paddingTop: 13,
                     paddingBottom: 13,
@@ -244,10 +240,9 @@ export default function Home() {
                   <Text
                     style={{
                       color: THEMECOLOR.textColor,
-                      fontSize: 16,
+                      fontSize: 13,
                       textAlign: 'center',
-                      fontFamily: 'Poppins-Medium',
-                      letterSpacing: 1,
+                      fontFamily: 'Montserrat-Medium',
                     }}>
                     {' '}
                     Become a seller{' '}
@@ -274,13 +269,13 @@ export default function Home() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: 10,
+                marginHorizontal: 8,
               }}>
               <Text
                 style={{
-                  fontSize: 17,
+                  fontSize: 15,
                   color: 'black',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 Top Rated items
               </Text>
@@ -292,10 +287,9 @@ export default function Home() {
                 }>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 13,
                     color: THEMECOLOR.mainColor,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   View all
                 </Text>
@@ -311,13 +305,13 @@ export default function Home() {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: 10,
+                marginHorizontal: 8,
               }}>
               <Text
                 style={{
-                  fontSize: 17,
+                  fontSize: 15,
                   color: 'black',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 Discounted items
               </Text>
@@ -332,10 +326,9 @@ export default function Home() {
               }>
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: 13,
                   color: THEMECOLOR.mainColor,
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-Medium',
                 }}>
                 View all
               </Text>

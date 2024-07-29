@@ -1,5 +1,5 @@
 const THEMECOLOR = {
-  mainColor: '#ea5362',
+  mainColor: '#76ad46',
   textColor: 'white',
   helperTextGray: '#757575',
   linkText: '#336aea',

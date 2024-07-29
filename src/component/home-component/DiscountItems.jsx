@@ -54,32 +54,31 @@ export default function DiscountItems() {
                       style={{
                         marginTop: -2,
                         backgroundColor: '#cc0c39',
-                        paddingTop: 4,
-                        paddingBottom: 4,
-                        paddingLeft: 6,
-                        paddingRight: 6,
+                        paddingHorizontal: 1,
+                        paddingVertical: 3,
+                        // paddingTop: 5,
+                        // paddingBottom: 4,
+                        // paddingLeft: 6,
+                        // paddingRight: 6,
                         borderRadius: 6,
                       }}>
                       <Text
                         style={{
                           color: 'white',
-                          fontSize: 12,
-                          fontFamily: 'Poppins-Medium',
-                          letterSpacing: 1,
+                          fontSize: 8,
+                          fontFamily: 'Montserrat-Medium',
                         }}>
                         50% off
                       </Text>
                     </View>
                     <Text
                       style={{
-                        width: 200,
-                        overflow: 'hidden',
-                        fontSize: 12,
-                        fontFamily: 'Poppins-Medium',
-                        letterSpacing: 1,
+                        width: 150,
+                        fontSize: 10,
+                        fontFamily: 'Montserrat-Medium',
                         color: 'black',
                         marginTop: 2,
-                        marginLeft: 4,
+                        marginLeft: 1,
                       }}>
                       Limited time deal
                     </Text>
