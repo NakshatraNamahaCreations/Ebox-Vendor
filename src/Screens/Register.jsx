@@ -1,7 +1,9 @@
 import {View, Text, TextInput, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {Checkbox} from 'react-native-paper';
+// import {Checkbox} from 'react-native-paper';
 import THEMECOLOR from '../utilities/color';
+import {Picker} from '@react-native-picker/picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export default function Register({navigation}) {
   const [name, setName] = useState('');
@@ -25,9 +27,13 @@ export default function Register({navigation}) {
       type: 'Host',
     },
   ];
+  const handleSubmit = () => {
+    // alert('Registration successful! Please login');
+    navigation.navigate('AddShopDetails');
+  };
   const handleOTP = () => {
     // alert('Registration successful! Please login');
-    navigation.navigate('OTP', {number: mobileNumber});
+    navigation.navigate('AddShopDetails', {number: mobileNumber});
   };
   return (
     <View
@@ -71,19 +77,18 @@ export default function Register({navigation}) {
           borderRadius: 10,
           paddingLeft: 15,
           backgroundColor: 'white',
-          marginBottom: 20,
+          marginBottom: 10,
           fontFamily: 'Montserrat-Medium',
           // letterSpacing: 1,
         }}
       />
 
-      {/* <Text
+      <Text
         style={{
           color: 'black',
-          fontSize: 16,
-          fontFamily: 'Montserrat-Regular',
-          letterSpacing: 1,
+          fontSize: 14,
           marginBottom: 5,
+          fontFamily: 'Montserrat-Medium',
         }}>
         Profession
       </Text>
@@ -93,7 +98,7 @@ export default function Register({navigation}) {
           borderColor: '#d5d5d5',
           height: 55,
           borderRadius: 10,
-          marginBottom: 20,
+          marginBottom: 10,
         }}>
         <Picker
           // Use board.category
@@ -106,9 +111,9 @@ export default function Register({navigation}) {
             value=""
             style={{
               color: '#757575',
-              fontSize: 16,
+              fontSize: 14,
               fontFamily: 'Montserrat-Regular',
-              letterSpacing: 1,
+              // letterSpacing: 1,
             }}
           />
           {professionType.map((item, index) => (
@@ -118,14 +123,14 @@ export default function Register({navigation}) {
               value={item.type}
               style={{
                 color: 'black',
-                fontSize: 16,
+                fontSize: 14,
                 fontFamily: 'Montserrat-Regular',
-                letterSpacing: 1,
+                // letterSpacing: 1,
               }}
             />
           ))}
         </Picker>
-      </View> */}
+      </View>
       <Text
         style={{
           color: 'black',
@@ -156,6 +161,36 @@ export default function Register({navigation}) {
           // letterSpacing: 1,
         }}
       />
+      <Text
+        style={{
+          color: 'black',
+          fontSize: 14,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
+          marginBottom: 5,
+        }}>
+        Email id
+      </Text>
+      <TextInput
+        placeholderTextColor="#757575"
+        placeholder="Enter email id"
+        value={mobileNumber}
+        maxLength={10}
+        onChangeText={val => setMobileNumber(val)}
+        // keyboardType="number-pad"
+        style={{
+          borderWidth: 1,
+          borderColor: '#d5d5d5',
+          color: 'black',
+          fontSize: 14,
+          borderRadius: 10,
+          paddingLeft: 15,
+          backgroundColor: 'white',
+          marginBottom: 15,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
+        }}
+      />
       {/* <Text
         style={{
           color: THEMECOLOR.helperTextGray,
@@ -171,17 +206,18 @@ export default function Register({navigation}) {
           paddingVertical: 10,
           borderRadius: 10,
           elevation: 3,
-          marginHorizontal: 100,
+          marginHorizontal: 50,
         }}
-        onPress={handleOTP}>
+        onPress={handleSubmit}>
         <Text
           style={{
             color: THEMECOLOR.textColor,
-            fontSize: 13,
+            fontSize: 14,
             textAlign: 'center',
             fontFamily: 'Montserrat-Medium',
           }}>
-          Get OTP
+          Add Shop Details{' '}
+          <AntDesign name="arrowright" size={14} color="black" />
         </Text>
       </TouchableOpacity>
       {/* <View

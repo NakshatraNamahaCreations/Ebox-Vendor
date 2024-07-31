@@ -3,12 +3,12 @@ import React, {useState} from 'react';
 import {ScrollView} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {productList} from '../../data/global-data';
-import ProductDetails from '../product/ProductDetails';
+import {useNavigation} from '@react-navigation/native';
 
 export default function Recommended() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const navigation = useNavigation();
   const enablePopup = items => {
     console.log('modal opening>>>>');
     setSelectedItem(items);
@@ -21,7 +21,12 @@ export default function Recommended() {
         {productList.map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => enablePopup(item)}
+            onPress={() =>
+              navigation.navigate('ProductDetails', {
+                item: item,
+              })
+            }
+            // onPress={() => enablePopup(item)}
             style={{
               margin: 5,
               borderWidth: 1,
@@ -34,8 +39,8 @@ export default function Recommended() {
             }}>
             <Image
               style={{
-                width: 155,
-                height: 150,
+                width: '100%',
+                height: 100,
                 resizeMode: 'center',
                 borderRadius: 10,
               }}
@@ -46,38 +51,44 @@ export default function Recommended() {
             <View style={{marginTop: 5, padding: 5}}>
               <Text
                 style={{
-                  fontSize: 15,
-                  width: 200,
-                  overflow: 'hidden',
-                  fontFamily: 'Poppins-Regular',
-                  letterSpacing: 1,
+                  fontSize: 13,
+                  // width: 200,
+                  // overflow: 'hidden',
+                  fontFamily: 'Montserrat-Medium',
+                  // letterSpacing: 1,
                   color: 'black',
                   marginBottom: 5,
                 }}>
-                {item.productName.length < 15
+                {item.productName.length < 17
                   ? item.productName
-                  : item.productName.substring(0, 15) + '...'}
+                  : item.productName.substring(0, 17) + '...'}
               </Text>
-
               <View style={{flexDirection: 'row', marginBottom: 2}}>
                 {Array.from({length: 5}).map((_, index) => (
                   <AntDesign
                     key={index}
                     name="star"
-                    size={14}
+                    size={12}
                     color="#fdd663"
                   />
                 ))}
                 <View style={{marginLeft: 9, marginTop: -2}}>
-                  <Text style={{color: 'black', fontSize: 14}}>45</Text>
+                  <Text
+                    style={{
+                      color: 'black',
+                      fontSize: 11,
+                      fontFamily: 'Montserrat-Medium',
+                    }}>
+                    45001
+                  </Text>
                 </View>
               </View>
               <Text
                 style={{
                   fontSize: 13,
-                  color: '#414242',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                  // letterSpacing: 1,
                 }}>
                 ₹ {item.productPrice}
               </Text>
@@ -85,12 +96,6 @@ export default function Recommended() {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      {isModalOpen === true && (
-        <ProductDetails
-          selectedProduct={selectedItem}
-          closeModal={enablePopup}
-        />
-      )}
     </View>
   );
 }

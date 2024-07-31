@@ -1,6 +1,8 @@
-import {View, Text, TextInput, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import React, {useState} from 'react';
 import THEMECOLOR from '../utilities/color';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {bookingHistory} from '../data/global-data';
 
 export default function Login({navigation}) {
   const [mobileNumber, setMobileNumber] = useState('');
@@ -16,8 +18,16 @@ export default function Login({navigation}) {
         padding: 15,
         backgroundColor: 'white',
         height: '100%',
-        paddingTop: 20,
+        paddingTop: '10%',
       }}>
+      <Image
+        source={require('../../assets/secure-login-concept-illustration.png')}
+        style={{
+          width: 210,
+          height: 200,
+          alignSelf: 'center',
+        }}
+      />
       <Text
         style={{
           fontSize: 18,
@@ -137,6 +147,55 @@ export default function Login({navigation}) {
           {/* </View> */}
         </View>
       </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginTop: 30,
+          alignItems: 'center',
+        }}>
+        <View
+          style={{
+            flex: 0.3,
+            borderTopColor: '#58e4a738',
+            borderTopWidth: 1,
+            marginTop: 3,
+          }}></View>
+        <View
+          style={{
+            flex: 0.4,
+          }}>
+          <Text
+            style={{
+              fontSize: 12,
+              color: '#414242',
+              // color: 'black',
+              fontFamily: 'Montserrat-Regular',
+              textAlign: 'center',
+              // letterSpacing: 1,
+            }}>
+            Or Signup With
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 0.3,
+            borderTopColor: '#58e4a738',
+            borderTopWidth: 1,
+            marginTop: 3,
+          }}></View>
+      </View>
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginTop: 20,
+          // alignItems: 'center',
+        }}>
+        <Image
+          source={require('../../assets/search.png')}
+          style={{width: 60, height: 60, borderRadius: 50}}
+        />
+      </TouchableOpacity>
     </View>
   );
 }

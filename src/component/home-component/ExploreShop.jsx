@@ -53,10 +53,9 @@ export default function ExploreShop() {
             <View style={{paddingLeft: 5, paddingRight: 5, marginTop: 15}}>
               <Text
                 style={{
-                  fontSize: 14,
+                  fontSize: 13,
                   color: 'black',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-Medium',
                   marginBottom: 5,
                   textAlign: 'center',
                 }}>
@@ -73,6 +72,7 @@ export default function ExploreShop() {
                   marginBottom: 5,
                   paddingTop: 9,
                   paddingBottom: 9,
+                  backgroundColor: THEMECOLOR.mainColor,
                 }}
                 onPress={() =>
                   navigation.navigate('Shop Details', {
@@ -81,10 +81,9 @@ export default function ExploreShop() {
                 }>
                 <Text
                   style={{
-                    color: THEMECOLOR.mainColor,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                    fontSize: 14,
+                    color: 'black',
+                    fontFamily: 'Montserrat-SemiBold',
+                    fontSize: 12,
                     textAlign: 'center',
                   }}>
                   View Profile

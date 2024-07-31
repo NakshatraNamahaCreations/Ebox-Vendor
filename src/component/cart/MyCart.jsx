@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {bookingHistory} from '../../data/global-data';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
+import THEMECOLOR from '../../utilities/color';
 export default function MyCart() {
   const navigation = useNavigation();
   return (
@@ -19,8 +20,8 @@ export default function MyCart() {
         }}>
         <Text
           style={{
-            fontFamily: 'Poppins-Medium',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
+            // letterSpacing: 1,
             color: 'black',
             fontSize: 20,
             textAlign: 'left',
@@ -71,11 +72,11 @@ export default function MyCart() {
                   }}>
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: 13,
                       width: 200,
                       overflow: 'hidden',
-                      fontFamily: 'Poppins-SemiBold',
-                      letterSpacing: 1,
+                      fontFamily: 'Montserrat-SemiBold',
+                      // letterSpacing: 1,
                       color: 'black',
                       marginBottom: 5,
                     }}>
@@ -102,11 +103,11 @@ export default function MyCart() {
                   }}>
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: 11,
                       //   color: '#414242',
-                      color: 'green',
-                      fontFamily: 'Poppins-Regular',
-                      letterSpacing: 1,
+                      color: THEMECOLOR.textColor,
+                      fontFamily: 'Montserrat-Medium',
+                      // letterSpacing: 1,
                     }}>
                     ₹{item.productPrice}
                   </Text>
@@ -122,13 +123,13 @@ export default function MyCart() {
                       // marginTop: 6,
                     }}>
                     <TouchableOpacity style={{padding: 5}}>
-                      <AntDesign name="minus" size={20} color="#313131" />
+                      <AntDesign name="minus" size={13} color="#313131" />
                     </TouchableOpacity>
-                    <Text style={{color: 'black', fontSize: 16, padding: 5}}>
+                    <Text style={{color: 'black', fontSize: 11, padding: 5}}>
                       {item.quantity}
                     </Text>
                     <TouchableOpacity style={{padding: 5}}>
-                      <AntDesign name="plus" size={20} color="#313131" />
+                      <AntDesign name="plus" size={13} color="#313131" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -146,13 +147,13 @@ export default function MyCart() {
           }}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-SemiBold',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 17,
+              fontSize: 15,
               // textAlign: 'left',
-              borderBottomColor: '#e5e5e5',
-              borderBottomWidth: 1,
+              // borderBottomColor: '#e5e5e5',
+              // borderBottomWidth: 1,
             }}>
             Payment summary
           </Text>
@@ -169,8 +170,9 @@ export default function MyCart() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Regular',
+                    fontSize: 14,
+                    // letterSpacing: 1,
                   }}>
                   Subtotal
                 </Text>
@@ -179,12 +181,13 @@ export default function MyCart() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Regular',
+                    fontSize: 14,
+                    // letterSpacing: 1,
                   }}>
                   <MaterialIcons
                     name="currency-rupee"
-                    size={14}
+                    size={12}
                     color="black"
                   />
                   1025000{' '}
@@ -201,8 +204,9 @@ export default function MyCart() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Regular',
+                    fontSize: 14,
+                    // letterSpacing: 1,
                   }}>
                   GST 18%
                 </Text>
@@ -211,12 +215,13 @@ export default function MyCart() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Regular',
+                    fontSize: 14,
+                    // letterSpacing: 1,
                   }}>
                   <MaterialIcons
                     name="currency-rupee"
-                    size={14}
+                    size={12}
                     color="black"
                   />
                   10000{' '}
@@ -233,8 +238,8 @@ export default function MyCart() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-SemiBold',
-                    fontSize: 16,
+                    fontFamily: 'Montserrat-SemiBold',
+                    fontSize: 14,
                     letterSpacing: 1,
                   }}>
                   Total
@@ -244,17 +249,16 @@ export default function MyCart() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-SemiBold',
-                    fontSize: 16,
+                    fontFamily: 'Montserrat-SemiBold',
+                    fontSize: 14,
                     letterSpacing: 1,
                   }}>
-                  {' '}
                   <MaterialIcons
                     name="currency-rupee"
-                    size={14}
+                    size={12}
                     color="black"
                   />
-                  1045000{' '}
+                  1045000
                 </Text>
               </View>
             </View>
@@ -276,20 +280,20 @@ export default function MyCart() {
             <View style={{flex: 0.4}}>
               <Text
                 style={{
-                  fontSize: 20,
+                  fontSize: 15,
                   color: 'black',
-                  fontFamily: 'Poppins-SemiBold',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
+                  // letterSpacing: 1,
                 }}>
-                <MaterialIcons name="currency-rupee" size={17} color="black" />
+                <MaterialIcons name="currency-rupee" size={13} color="black" />
                 1045000
               </Text>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 12,
                   color: '#555',
-                  fontFamily: 'Poppins-Medium',
-                  letterSpacing: 1,
+                  fontFamily: 'Montserrat-Medium',
+                  // letterSpacing: 1,
                   // marginTop: 5,
                 }}>
                 Grand Total
@@ -298,7 +302,7 @@ export default function MyCart() {
             <View style={{flex: 0.6}}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#ea5362',
+                  backgroundColor: THEMECOLOR.mainColor,
                   padding: 15,
                   borderRadius: 7,
                   flexDirection: 'row',
@@ -316,9 +320,9 @@ export default function MyCart() {
                 }}>
                 <Text
                   style={{
-                    color: 'white',
-                    fontSize: 18,
-                    fontFamily: 'Poppins-Medium',
+                    color: THEMECOLOR.textColor,
+                    fontSize: 15,
+                    fontFamily: 'Montserrat-Medium',
                     letterSpacing: 1,
                   }}>
                   Add Address
@@ -327,7 +331,7 @@ export default function MyCart() {
                   style={{marginTop: 4}}
                   name="arrowright"
                   size={20}
-                  color="white"
+                  color={THEMECOLOR.textColor}
                 />
               </TouchableOpacity>
             </View>

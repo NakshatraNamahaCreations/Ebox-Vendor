@@ -2,9 +2,10 @@ import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
 import React, {useRef, useState} from 'react';
 // import MapView, {Marker} from 'react-native-maps';
 // import MapViewDirections from 'react-native-maps-directions';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {ScrollView} from 'react-native';
+import THEMECOLOR from '../../utilities/color';
 
 export default function AddAddress({navigation}) {
   return (
@@ -23,16 +24,16 @@ export default function AddAddress({navigation}) {
         <TouchableOpacity
           style={{flex: 0.2, paddingLeft: 20}}
           onPress={() => navigation.goBack()}>
-          <Entypo
-            name="chevron-thin-left"
+          <Ionicons
+            name="arrow-back"
             color="black"
-            size={20}
+            size={19}
             style={{
               backgroundColor: '#f5f5f5',
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               textAlign: 'center',
-              paddingTop: 15,
+              paddingTop: 10,
               borderRadius: 50,
               flexDirection: 'row',
               justifyContent: 'center',
@@ -43,10 +44,10 @@ export default function AddAddress({navigation}) {
         <View style={{flex: 0.8}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 20,
+              fontSize: 18,
             }}>
             Add address
           </Text>
@@ -99,7 +100,7 @@ export default function AddAddress({navigation}) {
         {/* <Text
           style={{
             fontSize: 20,
-            fontFamily: 'Poppins-SemiBold',
+            fontFamily: 'Montserrat-SemiBold',
             color: 'black',
             letterSpacing: 1,
           }}>
@@ -110,7 +111,7 @@ export default function AddAddress({navigation}) {
           style={{
             fontSize: 14,
             color: 'black',
-            fontFamily: 'Poppins-Regular',
+            fontFamily: 'Montserrat-Regular',
             marginTop: 4,
             letterSpacing: 1,
           }}>
@@ -128,7 +129,7 @@ export default function AddAddress({navigation}) {
           <Text
             style={{
               color: '#b63d42',
-              fontFamily: 'Poppins-Regular',
+              fontFamily: 'Montserrat-Regular',
               fontSize: 11,
               letterSpacing: 1,
             }}>
@@ -145,7 +146,7 @@ export default function AddAddress({navigation}) {
           <View style={{flex: 0.6, margin: 10}}>
             <TextInput
               placeholder="HOUSE/FLAT/BLOCK"
-              placeholderTextColor="gray"
+              placeholderTextColor="#a1a1a1"
               style={{
                 height: 40,
                 // padding: 5,
@@ -155,7 +156,7 @@ export default function AddAddress({navigation}) {
                 borderColor: '#e3e3e3',
                 borderBottomWidth: 1,
                 // borderBottomColor: '#e3e3e3',
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Medium',
                 letterSpacing: 1,
               }}
             />
@@ -163,7 +164,7 @@ export default function AddAddress({navigation}) {
           <View style={{margin: 10, flex: 0.6}}>
             <TextInput
               placeholder="ROAD/AREA(OPTIONAL)"
-              placeholderTextColor="gray"
+              placeholderTextColor="#a1a1a1"
               style={{
                 height: 40,
                 // padding: 5,
@@ -175,7 +176,7 @@ export default function AddAddress({navigation}) {
                 // borderWidth: 1,
                 // borderBottomColor: '#c9c9c9',
                 letterSpacing: 1,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Medium',
               }}
             />
           </View>
@@ -184,7 +185,7 @@ export default function AddAddress({navigation}) {
           <View style={{margin: 10, flex: 0.6}}>
             <TextInput
               placeholder="CITY/DOWN/VILLAGE"
-              placeholderTextColor="gray"
+              placeholderTextColor="#a1a1a1"
               style={{
                 height: 40,
                 // padding: 5,
@@ -196,14 +197,14 @@ export default function AddAddress({navigation}) {
                 // borderWidth: 1,
                 // borderBottomColor: '#c9c9c9',
                 letterSpacing: 1,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Medium',
               }}
             />
           </View>
           <View style={{margin: 10, flex: 0.6}}>
             <TextInput
               placeholder="STATE"
-              placeholderTextColor="gray"
+              placeholderTextColor="#a1a1a1"
               style={{
                 height: 40,
                 // padding: 5,
@@ -215,7 +216,7 @@ export default function AddAddress({navigation}) {
                 // borderWidth: 1,
                 // borderBottomColor: '#c9c9c9',
                 letterSpacing: 1,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Medium',
               }}
             />
           </View>
@@ -224,7 +225,7 @@ export default function AddAddress({navigation}) {
           <View style={{margin: 10, flex: 0.6}}>
             <TextInput
               placeholder="DISTRIC"
-              placeholderTextColor="gray"
+              placeholderTextColor="#a1a1a1"
               style={{
                 height: 40,
                 // padding: 5,
@@ -236,14 +237,14 @@ export default function AddAddress({navigation}) {
                 // borderWidth: 1,
                 // borderBottomColor: '#c9c9c9',
                 letterSpacing: 1,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Medium',
               }}
             />
           </View>
           <View style={{margin: 10, flex: 0.6}}>
             <TextInput
               placeholder="PINCODE"
-              placeholderTextColor="gray"
+              placeholderTextColor="#a1a1a1"
               keyboardType="numeric"
               style={{
                 height: 40,
@@ -256,7 +257,7 @@ export default function AddAddress({navigation}) {
                 // borderWidth: 1,
                 // borderBottomColor: '#c9c9c9',
                 letterSpacing: 1,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Montserrat-Medium',
               }}
             />
           </View>
@@ -269,14 +270,14 @@ export default function AddAddress({navigation}) {
               fontWeight: '500',
               marginBottom: 20,
               letterSpacing: 1,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Montserrat-Medium',
             }}>
             {/* DIRECTIONS TO REACH (OPTIONAL) */}
             Directions to reach (Optional)
           </Text>
           <TextInput
             placeholder="Road / Area"
-            placeholderTextColor="gray"
+            placeholderTextColor="#a1a1a1"
             multiline
             numberOfLines={4}
             maxLength={200}
@@ -292,7 +293,7 @@ export default function AddAddress({navigation}) {
               textAlignVertical: 'top',
               borderRadius: 5,
               letterSpacing: 1,
-              fontFamily: 'Poppins-Regular',
+              fontFamily: 'Montserrat-Medium',
             }}
           />
         </View>
@@ -300,20 +301,21 @@ export default function AddAddress({navigation}) {
           <TouchableOpacity
             style={{
               // marginTop: 15,
-              backgroundColor: '#ea5362',
-              padding: 15,
+              backgroundColor: THEMECOLOR.mainColor,
+              padding: 10,
               borderRadius: 5,
+              marginHorizontal: 80,
             }}
             onPress={() => {
               navigation.navigate('Order Confirmation');
             }}>
             <Text
               style={{
-                color: 'white',
+                color: THEMECOLOR.textColor,
                 textAlign: 'center',
-                fontSize: 18,
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Medium',
+                fontSize: 14,
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-SemiBold',
               }}>
               Continue
             </Text>

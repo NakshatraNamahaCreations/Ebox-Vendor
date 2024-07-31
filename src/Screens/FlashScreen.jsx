@@ -40,7 +40,7 @@ export default function FlashScreen({navigation}) {
         <Text
           style={{
             fontSize: 30,
-            fontFamily: 'Poppins-SemiBold',
+            fontFamily: 'Montserrat-SemiBold',
             letterSpacing: 2,
             color: 'black',
           }}>

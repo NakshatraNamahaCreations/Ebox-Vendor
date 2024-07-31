@@ -41,8 +41,9 @@ com.eboxvendor.app-packaged_res-39 D:\Kiruthika\Event Host\Ebox-Vendor\node_modu
 com.eboxvendor.app-packaged_res-40 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-picker\picker\android\build\intermediates\packaged_res\debug
 com.eboxvendor.app-packaged_res-41 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
 com.eboxvendor.app-packaged_res-42 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-43 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-pager-view\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-44 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-permissions\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-45 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-46 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-47 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-43 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-resizer\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-44 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-pager-view\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-45 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-permissions\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-46 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-47 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-48 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\packaged_res\debug

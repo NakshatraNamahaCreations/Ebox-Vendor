@@ -19,8 +19,8 @@ export default function OrderHistory() {
         }}>
         <Text
           style={{
-            fontFamily: 'Poppins-Medium',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
+            // letterSpacing: 1,
             color: 'black',
             fontSize: 20,
             textAlign: 'left',
@@ -64,11 +64,11 @@ export default function OrderHistory() {
                 <View style={{padding: 5}}>
                   <Text
                     style={{
-                      fontSize: 15,
+                      fontSize: 13,
                       width: 200,
                       overflow: 'hidden',
-                      fontFamily: 'Poppins-SemiBold',
-                      letterSpacing: 1,
+                      fontFamily: 'Montserrat-Medium',
+                      // letterSpacing: 1,
                       color: 'black',
                       marginBottom: 5,
                     }}>
@@ -76,11 +76,11 @@ export default function OrderHistory() {
                   </Text>
                   <Text
                     style={{
-                      fontSize: 13,
+                      fontSize: 11,
                       //   color: '#414242',
                       color: 'green',
-                      fontFamily: 'Poppins-Regular',
-                      letterSpacing: 1,
+                      fontFamily: 'Montserrat-Medium',
+                      // letterSpacing: 1,
                     }}>
                     {item.orderStatus}
                   </Text>

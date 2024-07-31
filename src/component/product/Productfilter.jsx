@@ -11,6 +11,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {allProducts, productList} from '../../data/global-data';
 import {useNavigation} from '@react-navigation/native';
+import THEMECOLOR from '../../utilities/color';
 
 const Productfilter = ({route}) => {
   const filterType = route.params.filterType;
@@ -46,13 +47,13 @@ const Productfilter = ({route}) => {
           <Entypo
             name="chevron-thin-left"
             color="black"
-            size={20}
+            size={13}
             style={{
               backgroundColor: '#f5f5f5',
-              width: 50,
-              height: 50,
+              width: 30,
+              height: 30,
               textAlign: 'center',
-              paddingTop: 15,
+              paddingTop: 10,
               borderRadius: 50,
               flexDirection: 'row',
               justifyContent: 'center',
@@ -63,68 +64,79 @@ const Productfilter = ({route}) => {
         <View style={{flex: 0.8}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 20,
+              fontSize: 16,
             }}>
             {filterType}
           </Text>
         </View>
       </View>
-
-      {/* <View
+      <ScrollView style={{backgroundColor: '#f7f6fd', paddingHorizontal: 10}}>
+        <View
           style={{
             flexDirection: 'row',
             flexWrap: 'wrap',
-            marginTop: 20,
+            justifyContent: 'space-between',
+            // marginTop: 20,
           }}>
-          {productList.map((item, index) => (
+          {allProducts.map((ele, index) => (
             <TouchableOpacity
               key={index}
+              onPress={() =>
+                navigation.navigate('ProductDetails', {
+                  item: ele,
+                })
+              }
+              // onPress={() => toggleModal(ele)}
               style={{
-                margin: 5,
+                marginVertical: 5,
+                // marginHorizontal: 2,
                 borderWidth: 1,
                 borderColor: '#f3f3f3',
                 backgroundColor: 'white',
-                width: 120,
+                width: '49%',
                 padding: 5,
                 borderRadius: 10,
                 elevation: 2,
               }}>
               <Image
                 style={{
-                  //   width: 155,
+                  width: '100%',
                   height: 150,
-                  resizeMode: 'center',
+                  resizeMode: 'cover',
                   borderRadius: 10,
                 }}
+                // source={{
+                //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
+                // }}
                 source={{
-                  uri: item.productImage,
+                  uri: ele.imageUrl,
                 }}
               />
               <View style={{marginTop: 5, padding: 5}}>
                 <Text
                   style={{
-                    fontSize: 15,
-                    width: 200,
-                    overflow: 'hidden',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontSize: 14,
+                    // width: '100%',
+                    // overflow: 'hidden',
+                    fontFamily: 'Montserrat-Medium',
+                    // letterSpacing: 1,
                     color: 'black',
                     marginBottom: 5,
                   }}>
-                  {item.productName.length < 15
-                    ? item.productName
-                    : item.productName.substring(0, 15) + '...'}
+                  {/* {`Aputure LS 300X BI - Color LED Moonlight`} */}
+                  {ele.productName.length < 15
+                    ? ele.productName
+                    : ele.productName.substring(0, 15) + '...'}
                 </Text>
-
                 <View style={{flexDirection: 'row', marginBottom: 2}}>
                   {Array.from({length: 5}).map((_, index) => (
                     <AntDesign
                       key={index}
                       name="star"
-                      size={14}
+                      size={12}
                       color="#fdd663"
                     />
                   ))}
@@ -132,36 +144,59 @@ const Productfilter = ({route}) => {
                     <Text
                       style={{
                         color: 'black',
-                        fontSize: 14,
-                        fontFamily: 'Poppins-Regular',
-                        letterSpacing: 1,
+                        fontSize: 12,
+                        fontFamily: 'Montserrat-Medium',
+                        // letterSpacing: 1,
                       }}>
                       28
                     </Text>
                   </View>
                 </View>
-                <Text
+                <View
                   style={{
-                    fontSize: 13,
-                    color: '#414242',
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 5,
                   }}>
-                  ₹ {item.productPrice}
-                </Text>
+                  <Text
+                    style={{
+                      flex: 0.6,
+                      fontSize: 13,
+                      color: 'black',
+                      fontFamily: 'Montserrat-SemiBold',
+                      // letterSpacing: 1,
+                    }}>
+                    ₹ {ele.productPrice}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      flex: 0.6,
+                      backgroundColor: THEMECOLOR.mainColor,
+                      borderRadius: 5,
+                      height: 30,
+                      paddingTop: 5,
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        color: 'black',
+                        fontFamily: 'Montserrat-Medium',
+                        textAlign: 'center',
+                      }}>
+                      + Add
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </TouchableOpacity>
           ))}
-        </View> */}
-      <View style={{flexDirection: 'row', height: '100%'}}>
+        </View>
+      </ScrollView>
+      {/* <View style={{flexDirection: 'row', height: '100%'}}>
         <View
           style={{
             flexDirection: 'column',
             flex: 0.3,
-            // backgroundColor: 'white',
-            // borderRightWidth: 1,
-            // borderRightColor: '#e5e5e5',
-            // elevation: 1,
             paddingBottom: 70,
           }}>
           <ScrollView>
@@ -175,9 +210,8 @@ const Productfilter = ({route}) => {
                   padding: 10,
                   borderRightWidth: selectedObject === index ? 5 : 5,
                   borderRightColor:
-                    selectedObject === index ? '#ea5362' : 'transparent',
+                    selectedObject === index ? '#94a784' : 'transparent',
                   borderTopRightRadius: selectedObject === index ? 10 : 0,
-                  // borderBottomRightRadius: 10,
                 }}
                 onPress={() => selectedProduct(items, index)}>
                 <Image
@@ -194,14 +228,14 @@ const Productfilter = ({route}) => {
                 />
                 <Text
                   style={{
-                    fontSize: 12,
+                    fontSize: 11,
                     color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
+                    // letterSpacing: 1,
+                    fontFamily: 'Montserrat-Regular',
                   }}>
-                  {items.productName.length < 15
+                  {items.productName.length < 17
                     ? items.productName
-                    : items.productName.substring(0, 15) + '...'}
+                    : items.productName.substring(0, 17) + '...'}
                 </Text>
               </TouchableOpacity>
             ))}
@@ -230,9 +264,6 @@ const Productfilter = ({route}) => {
                     ? allProducts[0].imageUrl
                     : productObject.imageUrl,
               }}
-              // source={{
-              //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
-              // }}
             />
             <View
               style={{
@@ -244,22 +275,19 @@ const Productfilter = ({route}) => {
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 10,
                   color: '#5374ea',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Regular',
                 }}>
                 {productObject === null
                   ? allProducts[0].shopName
                   : productObject.shopName}
-                {/* Martin Garrix Music Academy */}
               </Text>
               <Text
                 style={{
-                  fontSize: 18,
+                  fontSize: 16,
                   color: 'black',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Regular',
+                  fontFamily: 'Montserrat-Regular',
                 }}>
                 {productObject === null
                   ? allProducts[0].productName
@@ -277,10 +305,9 @@ const Productfilter = ({route}) => {
                 <View>
                   <Text
                     style={{
-                      fontSize: 17,
+                      fontSize: 14,
                       color: 'black',
-                      letterSpacing: 1,
-                      fontFamily: 'Poppins-Regular',
+                      fontFamily: 'Montserrat-Regular',
                     }}>
                     ₹
                     {productObject === null
@@ -288,65 +315,22 @@ const Productfilter = ({route}) => {
                       : productObject.productPrice}
                   </Text>
                 </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    borderColor: '#ea5362',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    padding: 10,
-                    justifyContent: 'center',
-                  }}>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                    }}>
-                    <AntDesign name="minus" size={17} color="#ea5362" />
-                  </TouchableOpacity>
-                  <View
-                    style={{
-                      marginLeft: 5,
-                      marginRight: 5,
-                      // padding: 9,
-                    }}>
-                    <Text
-                      style={{
-                        color: 'black',
-                        letterSpacing: 1,
-                        fontFamily: 'Poppins-Regular',
-                      }}>
-                      {' '}
-                      0{' '}
-                    </Text>
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignContent: 'flex-end',
-                      alignItems: 'center',
-                    }}>
-                    <AntDesign name="plus" size={17} color="#ea5362" />
-                  </TouchableOpacity>
-                </View>
               </View>
               <View style={{marginBottom: 50}}>
                 <Text
                   style={{
                     color: '#2c2c2c',
-                    fontSize: 15,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontSize: 14,
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   Descriptions
                 </Text>
                 <Text
                   style={{
-                    fontSize: 13,
+                    fontSize: 12,
                     color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
+                    marginTop: 3,
+                    fontFamily: 'Montserrat-Light',
                   }}>
                   ‎
                   {productObject === null
@@ -354,118 +338,6 @@ const Productfilter = ({route}) => {
                     : productObject.productDescription}
                 </Text>
               </View>
-              {/*  */}
-              {/* <View style={{marginBottom: 30}}>
-                <Text
-                  style={{
-                    color: '#2c2c2c',
-                    fontSize: 15,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                  }}>
-                  Descriptions
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
-                  }}>
-                  ‎Dynamic Light show with Strobe Lights;Pair with other
-                  speaker;Aux in & Bluetooth;Customize configurations via
-                  PartyBox App;Multi Source Playback via USB drive
-                </Text>
-              </View>
-              <View style={{marginBottom: 30}}>
-                <Text
-                  style={{
-                    color: '#2c2c2c',
-                    fontSize: 15,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                  }}>
-                  Descriptions
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
-                  }}>
-                  ‎Dynamic Light show with Strobe Lights;Pair with other
-                  speaker;Aux in & Bluetooth;Customize configurations via
-                  PartyBox App;Multi Source Playback via USB drive
-                </Text>
-              </View>
-              <View style={{marginBottom: 30}}>
-                <Text
-                  style={{
-                    color: '#2c2c2c',
-                    fontSize: 15,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                  }}>
-                  Descriptions
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
-                  }}>
-                  ‎Dynamic Light show with Strobe Lights;Pair with other
-                  speaker;Aux in & Bluetooth;Customize configurations via
-                  PartyBox App;Multi Source Playback via USB drive
-                </Text>
-              </View>
-              <View style={{marginBottom: 30}}>
-                <Text
-                  style={{
-                    color: '#2c2c2c',
-                    fontSize: 15,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                  }}>
-                  Descriptions
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
-                  }}>
-                  ‎Dynamic Light show with Strobe Lights;Pair with other
-                  speaker;Aux in & Bluetooth;Customize configurations via
-                  PartyBox App;Multi Source Playback via USB drive
-                </Text>
-              </View>
-              <View style={{marginBottom: 50}}>
-                <Text
-                  style={{
-                    color: '#2c2c2c',
-                    fontSize: 15,
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
-                  }}>
-                  Descriptions
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Light',
-                  }}>
-                  ‎Dynamic Light show with Strobe Lights;Pair with other
-                  speaker;Aux in & Bluetooth;Customize configurations via
-                  PartyBox App;Multi Source Playback via USB drive
-                </Text>
-              </View> */}
-              {/*  */}
             </View>
           </ScrollView>
           <View
@@ -473,7 +345,6 @@ const Productfilter = ({route}) => {
               flexDirection: 'row',
               padding: 10,
               backgroundColor: '#f7f6fd',
-              // position: 'absolute',
               width: '100%',
               bottom: '20%',
               marginBottom: 15,
@@ -482,12 +353,10 @@ const Productfilter = ({route}) => {
             <View style={{flex: 0.6}}>
               <Text
                 style={{
-                  fontSize: 13,
+                  fontSize: 14,
                   color: 'black',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Montserrat-Medium',
                 }}>
-                {/* <MaterialIcons name="currency-rupee" size={13} color="black" /> */}
                 ₹
                 {productObject === null
                   ? allProducts[0].productPrice
@@ -497,17 +366,16 @@ const Productfilter = ({route}) => {
             <View style={{flex: 0.6}}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#ea5362',
+                  backgroundColor: '#ceffa4',
                   padding: 7,
                   borderRadius: 7,
                   // padding: 10,
                 }}>
                 <Text
                   style={{
-                    color: 'white',
+                    color: 'black',
                     fontSize: 13,
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Montserrat-Medium',
                     textAlign: 'center',
                   }}>
                   Add to cart
@@ -516,7 +384,7 @@ const Productfilter = ({route}) => {
             </View>
           </View>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

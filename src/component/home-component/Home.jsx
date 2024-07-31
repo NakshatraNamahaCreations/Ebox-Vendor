@@ -121,9 +121,9 @@ export default function Home() {
                 }>
                 <Text
                   style={{
-                    fontSize: 13,
-                    color: THEMECOLOR.mainColor,
-                    fontFamily: 'Montserrat-Medium',
+                    fontSize: 12,
+                    color: THEMECOLOR.viewColor,
+                    fontFamily: 'Montserrat-Bold',
                   }}>
                   View all
                 </Text>
@@ -152,9 +152,9 @@ export default function Home() {
               <TouchableOpacity onPress={() => navigation.navigate('All Shop')}>
                 <Text
                   style={{
-                    fontSize: 13,
-                    color: THEMECOLOR.mainColor,
-                    fontFamily: 'Montserrat-Medium',
+                    fontSize: 12,
+                    color: THEMECOLOR.viewColor,
+                    fontFamily: 'Montserrat-Bold',
                   }}>
                   View all
                 </Text>
@@ -187,9 +187,9 @@ export default function Home() {
                 }>
                 <Text
                   style={{
-                    fontSize: 13,
-                    color: THEMECOLOR.mainColor,
-                    fontFamily: 'Montserrat-Medium',
+                    fontSize: 12,
+                    color: THEMECOLOR.viewColor,
+                    fontFamily: 'Montserrat-Bold',
                   }}>
                   View all
                 </Text>
@@ -217,16 +217,15 @@ export default function Home() {
                 <Text
                   style={{
                     color: 'black',
-                    fontSize: 13,
+                    fontSize: 15,
                     fontFamily: 'Montserrat-Medium',
                   }}>
                   Start selling and achieve your business goals.
                 </Text>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: THEMECOLOR.mainColor,
-                    width: '60%',
-                    // height: '30%',
+                    backgroundColor: '#1b8d5b',
+                    width: '60%', // height: '30%',
                     paddingTop: 13,
                     paddingBottom: 13,
                     borderRadius: 10,
@@ -240,7 +239,7 @@ export default function Home() {
                   <Text
                     style={{
                       color: THEMECOLOR.textColor,
-                      fontSize: 13,
+                      fontSize: 14,
                       textAlign: 'center',
                       fontFamily: 'Montserrat-Medium',
                     }}>
@@ -287,9 +286,9 @@ export default function Home() {
                 }>
                 <Text
                   style={{
-                    fontSize: 13,
-                    color: THEMECOLOR.mainColor,
-                    fontFamily: 'Montserrat-Medium',
+                    fontSize: 12,
+                    color: THEMECOLOR.viewColor,
+                    fontFamily: 'Montserrat-Bold',
                   }}>
                   View all
                 </Text>
@@ -326,9 +325,9 @@ export default function Home() {
               }>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: THEMECOLOR.mainColor,
-                  fontFamily: 'Montserrat-Medium',
+                  fontSize: 12,
+                  color: THEMECOLOR.viewColor,
+                  fontFamily: 'Montserrat-Bold',
                 }}>
                 View all
               </Text>

@@ -9,16 +9,36 @@ import MyCart from '../component/cart/MyCart';
 import OrderHistory from '../component/order/OrderHistory';
 import AddProduct from '../component/product/AddProduct';
 import Profile from '../component/profile-component/Profile';
+import {TouchableOpacity} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
+  const CustomTabBarButton = ({children, onPress, accessibilityState}) => {
+    const isSelected = accessibilityState.selected;
+
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: isSelected ? '#ceffa4' : 'transparent',
+          borderRadius: 0, // Adjust the border radius as needed
+        }}>
+        {children}
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: THEMECOLOR.mainColor,
-        headerTintColor: THEMECOLOR.mainColor,
+        tabBarActiveTintColor: THEMECOLOR.textColor,
+        headerTintColor: THEMECOLOR.textColor,
+        tabBarActiveBackgroundColor: THEMECOLOR.mainColor,
       }}>
       <Tab.Screen
         name="Home"
@@ -46,17 +66,17 @@ export default function BottomTab() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Add"
         component={AddProduct}
         options={{
           tabBarLabel: 'Add Product',
           headerShown: false,
           tabBarIcon: ({color, size}) => (
-            <AntDesign name="pluscircle" color="#ea5362" size={size} />
+            <AntDesign name="pluscircle" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Cart"
         component={MyCart}

@@ -2423,7 +2423,11 @@ drawable assets_codifyformatter
 drawable assets_kiru3_3
 drawable assets_kiru3_4
 drawable assets_kiru3_5
+drawable assets_notification
 drawable assets_onetimepassword
+drawable assets_search
+drawable assets_secureloginconceptillustration
+drawable assets_truck
 drawable assets_verified
 drawable autofill_inline_suggestion_chip_background
 drawable avd_hide_password

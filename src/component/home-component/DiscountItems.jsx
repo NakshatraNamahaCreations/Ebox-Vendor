@@ -1,12 +1,12 @@
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import {productList} from '../../data/global-data';
-import ProductDetails from '../product/ProductDetails';
+import {useNavigation} from '@react-navigation/native';
 
 export default function DiscountItems() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const navigation = useNavigation();
   const enablePopup = items => {
     console.log('modal opening>>>>');
     setSelectedItem(items);
@@ -20,9 +20,17 @@ export default function DiscountItems() {
             style={{
               width: '50%',
               padding: 5,
+              // borderColor: 'black',
+              // borderWidth: 2,
             }}
             key={index}
-            onPress={() => enablePopup(item)}>
+            onPress={() =>
+              navigation.navigate('ProductDetails', {
+                item: item,
+              })
+            }
+            // onPress={() => enablePopup(item)}
+          >
             <View
               style={{
                 borderWidth: 1,
@@ -35,6 +43,33 @@ export default function DiscountItems() {
                   uri: 'https://m.media-amazon.com/images/I/81FzSswwCVL.jpg',
                 }}
               /> */}
+              <View
+                style={{
+                  marginTop: -2,
+                  flexDirection: 'row',
+                  backgroundColor: '#cc0c39',
+                  paddingHorizontal: 5,
+                  paddingVertical: 3,
+                  position: 'absolute',
+                  zIndex: 1,
+                  top: 3,
+                  left: 3,
+                  // marginRight: 105,
+                  // paddingBottom: 4,
+                  // paddingLeft: 6,
+                  // paddingRight: 6,
+                  borderRadius: 6,
+                }}>
+                <Text
+                  style={{
+                    color: 'white',
+                    fontSize: 8,
+                    textAlign: 'center',
+                    fontFamily: 'Montserrat-Medium',
+                  }}>
+                  50% off
+                </Text>
+              </View>
               <Image
                 style={{
                   width: '100%',
@@ -49,34 +84,13 @@ export default function DiscountItems() {
               />
               <View style={{padding: 5}}>
                 <View style={{marginTop: 5}}>
-                  <View style={{flexDirection: 'row', marginBottom: 2}}>
-                    <View
-                      style={{
-                        marginTop: -2,
-                        backgroundColor: '#cc0c39',
-                        paddingHorizontal: 1,
-                        paddingVertical: 3,
-                        // paddingTop: 5,
-                        // paddingBottom: 4,
-                        // paddingLeft: 6,
-                        // paddingRight: 6,
-                        borderRadius: 6,
-                      }}>
-                      <Text
-                        style={{
-                          color: 'white',
-                          fontSize: 8,
-                          fontFamily: 'Montserrat-Medium',
-                        }}>
-                        50% off
-                      </Text>
-                    </View>
+                  <View style={{marginBottom: 2}}>
                     <Text
                       style={{
-                        width: 150,
+                        // width: 150,
                         fontSize: 10,
-                        fontFamily: 'Montserrat-Medium',
-                        color: 'black',
+                        fontFamily: 'Montserrat-SemiBold',
+                        color: '#cc0c39',
                         marginTop: 2,
                         marginLeft: 1,
                       }}>
@@ -89,12 +103,6 @@ export default function DiscountItems() {
           </TouchableOpacity>
         ))}
       </View>
-      {isModalOpen === true && (
-        <ProductDetails
-          selectedProduct={selectedItem}
-          closeModal={enablePopup}
-        />
-      )}
     </View>
   );
 }

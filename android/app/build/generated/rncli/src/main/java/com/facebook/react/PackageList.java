@@ -19,6 +19,8 @@ import com.reactnativecommunity.picker.RNCPickerPackage;
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
+// react-native-image-resizer
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 // react-native-pager-view
 import com.reactnativepagerview.PagerViewPackage;
 // react-native-permissions
@@ -78,6 +80,7 @@ public class PackageList {
       new RNCPickerPackage(),
       new RNGestureHandlerPackage(),
       new ImagePickerPackage(),
+      new ImageResizerPackage(),
       new PagerViewPackage(),
       new RNPermissionsPackage(),
       new SafeAreaContextPackage(),

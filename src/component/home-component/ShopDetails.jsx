@@ -15,6 +15,7 @@ import {allProducts} from '../../data/global-data';
 import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import THEMECOLOR from '../../utilities/color';
 function ShopDetails({route}) {
   const navigation = useNavigation();
   const shop = route.params.shop || '';
@@ -43,16 +44,16 @@ function ShopDetails({route}) {
         <TouchableOpacity
           style={{flex: 0.2, paddingLeft: 20}}
           onPress={() => navigation.goBack()}>
-          <Entypo
-            name="chevron-thin-left"
+          <Ionicons
+            name="arrow-back"
             color="black"
-            size={20}
+            size={19}
             style={{
               backgroundColor: '#f5f5f5',
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               textAlign: 'center',
-              paddingTop: 15,
+              paddingTop: 10,
               borderRadius: 50,
               flexDirection: 'row',
               justifyContent: 'center',
@@ -63,10 +64,10 @@ function ShopDetails({route}) {
         <View style={{flex: 0.8}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 20,
+              fontSize: 18,
             }}>
             {shop.shopName}
           </Text>
@@ -84,7 +85,12 @@ function ShopDetails({route}) {
           {allProducts.map((ele, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => toggleModal(ele)}
+              onPress={() =>
+                navigation.navigate('ProductDetails', {
+                  item: ele,
+                })
+              }
+              // onPress={() => toggleModal(ele)}
               style={{
                 marginVertical: 5,
                 // marginHorizontal: 2,
@@ -113,25 +119,25 @@ function ShopDetails({route}) {
               <View style={{marginTop: 5, padding: 5}}>
                 <Text
                   style={{
-                    fontSize: 15,
-                    width: '100%',
-                    overflow: 'hidden',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontSize: 14,
+                    // width: '100%',
+                    // overflow: 'hidden',
+                    fontFamily: 'Montserrat-Medium',
+                    // letterSpacing: 1,
                     color: 'black',
                     marginBottom: 5,
                   }}>
                   {/* {`Aputure LS 300X BI - Color LED Moonlight`} */}
-                  {ele.productName.length < 18
+                  {ele.productName.length < 15
                     ? ele.productName
-                    : ele.productName.substring(0, 17) + '...'}
+                    : ele.productName.substring(0, 15) + '...'}
                 </Text>
                 <View style={{flexDirection: 'row', marginBottom: 2}}>
                   {Array.from({length: 5}).map((_, index) => (
                     <AntDesign
                       key={index}
                       name="star"
-                      size={13}
+                      size={12}
                       color="#fdd663"
                     />
                   ))}
@@ -139,29 +145,34 @@ function ShopDetails({route}) {
                     <Text
                       style={{
                         color: 'black',
-                        fontSize: 13,
-                        fontFamily: 'Poppins-Regular',
-                        letterSpacing: 1,
+                        fontSize: 12,
+                        fontFamily: 'Montserrat-Medium',
+                        // letterSpacing: 1,
                       }}>
                       28
                     </Text>
                   </View>
                 </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingTop: 5,
+                  }}>
                   <Text
                     style={{
                       flex: 0.6,
                       fontSize: 13,
-                      color: '#414242',
-                      fontFamily: 'Poppins-Medium',
-                      letterSpacing: 1,
+                      color: 'black',
+                      fontFamily: 'Montserrat-SemiBold',
+                      // letterSpacing: 1,
                     }}>
-                    ₹{ele.productPrice}
+                    ₹ {ele.productPrice}
                   </Text>
                   <TouchableOpacity
                     style={{
                       flex: 0.6,
-                      backgroundColor: '#ffd7db',
+                      backgroundColor: THEMECOLOR.mainColor,
                       borderRadius: 5,
                       height: 30,
                       paddingTop: 5,
@@ -170,7 +181,7 @@ function ShopDetails({route}) {
                       style={{
                         fontSize: 13,
                         color: 'black',
-                        fontFamily: 'Poppins-Regular',
+                        fontFamily: 'Montserrat-Medium',
                         textAlign: 'center',
                       }}>
                       + Add
@@ -184,8 +195,8 @@ function ShopDetails({route}) {
       </ScrollView>
       <Text
         style={{
-          fontFamily: 'Poppins-Medium',
-          letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
           color: '#a9a9a9',
           fontSize: 20,
         }}>
@@ -253,8 +264,8 @@ function ShopDetails({route}) {
                     fontSize: 18,
                     marginBottom: 1,
                     marginTop: 10,
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-SemiBold',
+                    // letterSpacing: 1,
+                    fontFamily: 'Montserrat-SemiBold',
                   }}>
                   {showItems.productName}
                 </Text>
@@ -289,9 +300,9 @@ function ShopDetails({route}) {
                       style={{
                         fontSize: 12,
                         color: 'black',
-                        fontFamily: 'Poppins-Medium',
+                        fontFamily: 'Montserrat-Medium',
                         marginTop: 0,
-                        letterSpacing: 1,
+                        // letterSpacing: 1,
                         marginTop: 2,
                       }}>
                       {' '}
@@ -303,9 +314,9 @@ function ShopDetails({route}) {
                   style={{
                     fontSize: 14,
                     marginTop: 6,
-                    letterSpacing: 1,
+                    // letterSpacing: 1,
                     color: '#696969',
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   {showItems.productDescription}
                 </Text>
@@ -347,8 +358,8 @@ function ShopDetails({route}) {
                   style={{
                     color: 'black',
                     padding: 9,
-                    fontFamily: 'Poppins-SemiBold',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-SemiBold',
+                    // letterSpacing: 1,
                     fontSize: 15,
                   }}>
                   1
@@ -373,9 +384,9 @@ function ShopDetails({route}) {
                     style={{
                       color: 'white',
                       fontSize: 16,
-                      fontFamily: 'Poppins-Medium',
+                      fontFamily: 'Montserrat-Medium',
                       textAlign: 'center',
-                      letterSpacing: 1,
+                      // letterSpacing: 1,
                     }}>
                     Add item ₹ {showItems.productPrice}
                   </Text>

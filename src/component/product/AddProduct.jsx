@@ -9,7 +9,7 @@ export default function AddProduct() {
   const [onFocus, setOnFocus] = useState('Sell', 'Rental');
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'white', height: '100%'}}>
       <View
         style={{
           padding: 20,
@@ -19,8 +19,8 @@ export default function AddProduct() {
         }}>
         <Text
           style={{
-            fontFamily: 'Poppins-Medium',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
+            // letterSpacing: 1,
             color: 'black',
             fontSize: 20,
             textAlign: 'left',
@@ -32,15 +32,15 @@ export default function AddProduct() {
         <TouchableOpacity
           style={{
             flex: 0.6,
-            borderColor: onFocus === 'Sell' ? '#ea5362' : 'transaprent',
+            borderColor: onFocus === 'Sell' ? '#76ad46' : 'transaprent',
             borderBottomWidth: onFocus === 'Sell' ? 3 : 0,
           }}
           onPress={() => setOnFocus('Sell')}>
           <Text
             style={{
-              fontSize: 16,
-              letterSpacing: 1,
-              fontFamily: 'Poppins-SemiBold',
+              fontSize: 14,
+              // letterSpacing: 1,
+              fontFamily: 'Montserrat-SemiBold',
               color: onFocus === 'Sell' ? 'black' : '#696969',
               textAlign: 'center',
             }}>
@@ -50,15 +50,15 @@ export default function AddProduct() {
         <TouchableOpacity
           style={{
             flex: 0.6,
-            borderColor: onFocus === 'Rental' ? '#ea5362' : 'transaprent',
+            borderColor: onFocus === 'Rental' ? '#76ad46' : 'transaprent',
             borderBottomWidth: onFocus === 'Rental' ? 3 : 0,
           }}
           onPress={() => setOnFocus('Rental')}>
           <Text
             style={{
-              fontSize: 16,
-              letterSpacing: 1,
-              fontFamily: 'Poppins-SemiBold',
+              fontSize: 14,
+              // letterSpacing: 1,
+              fontFamily: 'Montserrat-SemiBold',
               color: onFocus === 'Rental' ? 'black' : '#696969',
               textAlign: 'center',
             }}>

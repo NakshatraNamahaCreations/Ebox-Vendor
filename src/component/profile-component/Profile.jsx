@@ -22,18 +22,18 @@ export default function Profile() {
             style={{
               fontSize: 18,
               color: 'black',
-              letterSpacing: 1,
-              fontFamily: 'Poppins-Medium',
+              // letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
             }}>
             JIMMY MORGAN
           </Text>
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', marginTop: 5}}>
             <Text
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Regular',
               }}>
               +91-8918300293
             </Text>
@@ -42,8 +42,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Regular',
               }}>
               jimmy@gmail.com
             </Text>
@@ -53,8 +53,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: '#f44336',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Medium',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Medium',
               }}>
               Edit Profile{' '}
               <Entypo name="chevron-thin-right" size={12} color="#f44336" />
@@ -77,8 +77,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               Edit & Add new addresses
             </Text>
@@ -102,8 +102,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               View & Edit product listings
             </Text>
@@ -132,8 +132,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               Change password
             </Text>
@@ -162,8 +162,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               View & Remove wishlist
             </Text>
@@ -192,8 +192,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               Add & Edit documents
             </Text>
@@ -222,8 +222,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               Read privacy policy
             </Text>
@@ -249,8 +249,8 @@ export default function Profile() {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                // letterSpacing: 1,
+                fontFamily: 'Montserrat-Light',
               }}>
               About us, Feedback, Terms & Conditions
             </Text>
@@ -274,10 +274,10 @@ export default function Profile() {
         <View style={{marginTop: 20}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Montserrat-Medium',
               color: '#bfbfbf',
               fontSize: 13,
-              letterSpacing: 3,
+              letterSpacing: 1,
               textAlign: 'center',
             }}>
             &copy;2023 All rights reserved.
@@ -293,8 +293,8 @@ export default function Profile() {
           <Text
             style={{
               fontSize: 18,
-              fontFamily: 'Poppins-SemiBold',
-              letterSpacing: 2,
+              fontFamily: 'Montserrat-SemiBold',
+              letterSpacing: 1,
               color: '#bfbfbf',
             }}>
             <MaterialCommunityIcons
@@ -314,7 +314,8 @@ const styles = StyleSheet.create({
   profileLable: {
     fontSize: 15,
     color: 'black',
-    letterSpacing: 1,
-    fontFamily: 'Poppins-Medium',
+    // letterSpacing: 1,
+    fontFamily: 'Montserrat-Medium',
+    marginBottom: 3,
   },
 });

@@ -10,29 +10,42 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import THEMECOLOR from '../../utilities/color';
 
 export default function OrderSummary({navigation, route}) {
   const product = route.params.product;
   console.log('product>>>>>>>>>>', product);
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
-      <TouchableOpacity style={{paddingTop: 20, padding: 10}}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{marginTop: 20, marginLeft: 10}}>
         <Ionicons
-          name="chevron-back-sharp"
-          size={30}
+          name="arrow-back"
           color="black"
-          onPress={() => navigation.goBack()}
+          size={19}
+          style={{
+            backgroundColor: '#f5f5f5',
+            width: 40,
+            height: 40,
+            textAlign: 'center',
+            paddingTop: 10,
+            borderRadius: 50,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         />
       </TouchableOpacity>
+
       <ScrollView>
         <View style={{padding: 10}}>
           <Text
             style={{
               fontSize: 18,
               color: 'black',
-              letterSpacing: 1,
-              fontFamily: 'Poppins-SemiBold',
-              // marginBottom: 20,
+              fontFamily: 'Montserrat-SemiBold',
+              marginBottom: 5,
             }}>
             Booking Summary
           </Text>
@@ -40,9 +53,8 @@ export default function OrderSummary({navigation, route}) {
             style={{
               fontSize: 12,
               color: '#636363',
-              letterSpacing: 1,
-              fontFamily: 'Poppins-Light',
-              // marginBottom: 20,
+              fontFamily: 'Montserrat-Medium',
+              marginBottom: 5,
             }}>
             {product.orderDate}
           </Text>
@@ -51,7 +63,7 @@ export default function OrderSummary({navigation, route}) {
             style={{
               fontSize: 13,
               color: 'green',
-              fontFamily: 'Poppins-Light',
+              fontFamily: 'Montserrat-Light',
               // marginBottom: 20,
             }}>
             Download Invoice{' '}
@@ -67,8 +79,7 @@ export default function OrderSummary({navigation, route}) {
             style={{
               fontSize: 12,
               color: 'green',
-              letterSpacing: 1,
-              fontFamily: 'Poppins-Light',
+              fontFamily: 'Montserrat-Medium',
               // marginBottom: 20,
             }}>
             {product.orderStatus}
@@ -78,8 +89,8 @@ export default function OrderSummary({navigation, route}) {
               style={{
                 fontSize: 14,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-SemiBold',
+              
+                fontFamily: 'Montserrat-SemiBold',
               }}>
               {product.products.length} items in this order
             </Text>
@@ -95,11 +106,10 @@ export default function OrderSummary({navigation, route}) {
               <View style={{flex: 0.2}}>
                 <View
                   style={{
-                    borderRadius: 50,
                     width: 50,
                     height: 50,
-                    borderWidth: 1,
-                    borderColor: '#e3e1e1',
+                    // borderWidth: 1,
+                    // borderColor: '#e3e1e1',
                     borderRadius: 10,
                   }}>
                   <Image
@@ -109,7 +119,7 @@ export default function OrderSummary({navigation, route}) {
                     style={{
                       width: '100%',
                       height: '100%',
-                      borderRadius: 50,
+                      resizeMode: 'contain',
                     }}
                   />
                 </View>
@@ -119,8 +129,7 @@ export default function OrderSummary({navigation, route}) {
                   style={{
                     fontSize: 13,
                     color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   {product.productName}
                 </Text>
@@ -129,8 +138,7 @@ export default function OrderSummary({navigation, route}) {
                     fontSize: 11,
                     // color: '#454444',
                     color: '#ea5362',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   Qty: {product.quantity}
                 </Text>
@@ -140,16 +148,14 @@ export default function OrderSummary({navigation, route}) {
                   style={{
                     fontSize: 13,
                     color: 'black',
-                    letterSpacing: 1,
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Montserrat-SemiBold',
                   }}>
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     // size={13}
                     color="#3c4145"
-                  />
-                  {/* {item.totalPrice} */}
-                  {product.productPrice}
+                  /> */}
+                  {/* {item.totalPrice} */}₹ {product.productPrice}
                 </Text>
               </View>
             </View>
@@ -169,9 +175,8 @@ export default function OrderSummary({navigation, route}) {
             style={{
               fontSize: 14,
               color: 'black',
-              fontFamily: 'Poppins-SemiBold',
+              fontFamily: 'Montserrat-SemiBold',
               padding: 10,
-              letterSpacing: 1,
             }}>
             Bill details
           </Text>
@@ -193,7 +198,7 @@ export default function OrderSummary({navigation, route}) {
                     color: 'black',
                     fontSize: 13,
                     letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   Total Item
                 </Text>
@@ -204,14 +209,14 @@ export default function OrderSummary({navigation, route}) {
                     color: 'black',
                     fontSize: 13,
                     letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  1025000{' '}
+                  /> */}
+                  ₹1025000
                 </Text>
               </View>
             </View>
@@ -227,7 +232,7 @@ export default function OrderSummary({navigation, route}) {
                     color: 'black',
                     fontSize: 13,
                     letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   Event Box Fee
                 </Text>
@@ -238,14 +243,14 @@ export default function OrderSummary({navigation, route}) {
                     color: 'black',
                     fontSize: 13,
                     letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  20000{' '}
+                  /> */}
+                  ₹20000
                 </Text>
               </View>
             </View>
@@ -260,8 +265,8 @@ export default function OrderSummary({navigation, route}) {
                   style={{
                     color: 'black',
                     fontSize: 13,
+                    fontFamily: 'Montserrat-Medium',
                     letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
                   }}>
                   GST 18%
                 </Text>
@@ -272,14 +277,14 @@ export default function OrderSummary({navigation, route}) {
                     color: 'black',
                     fontSize: 13,
                     letterSpacing: 1,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  10000{' '}
+                  /> */}
+                  ₹10000
                 </Text>
               </View>
             </View>
@@ -293,7 +298,7 @@ export default function OrderSummary({navigation, route}) {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Montserrat-Bold',
                     fontSize: 13,
                     letterSpacing: 1,
                   }}>
@@ -304,17 +309,16 @@ export default function OrderSummary({navigation, route}) {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Montserrat-Bold',
                     fontSize: 13,
-                    letterSpacing: 1,
                   }}>
                   {' '}
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  1045000{' '}
+                  /> */}
+                  ₹1045000{' '}
                 </Text>
               </View>
             </View>
@@ -334,9 +338,8 @@ export default function OrderSummary({navigation, route}) {
             style={{
               fontSize: 14,
               color: 'black',
-              fontFamily: 'Poppins-SemiBold',
+              fontFamily: 'Montserrat-SemiBold',
               padding: 10,
-              letterSpacing: 1,
             }}>
             Order details
           </Text>
@@ -351,8 +354,7 @@ export default function OrderSummary({navigation, route}) {
               style={{
                 fontSize: 12,
                 color: '#636363',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                fontFamily: 'Montserrat-Medium',
               }}>
               Order id
             </Text>
@@ -360,8 +362,7 @@ export default function OrderSummary({navigation, route}) {
               style={{
                 fontSize: 13,
                 color: 'black',
-                letterSpacing: 1,
-                fontFamily: 'Poppins-Light',
+                fontFamily: 'Montserrat-Regular',
               }}>
               {`J372Y9YE`}
             </Text>
@@ -370,8 +371,7 @@ export default function OrderSummary({navigation, route}) {
                 style={{
                   fontSize: 12,
                   color: '#636363',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Medium',
                 }}>
                 Payment
               </Text>
@@ -379,8 +379,7 @@ export default function OrderSummary({navigation, route}) {
                 style={{
                   fontSize: 13,
                   color: 'black',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Regular',
                 }}>
                 Online
               </Text>
@@ -390,8 +389,7 @@ export default function OrderSummary({navigation, route}) {
                 style={{
                   fontSize: 12,
                   color: '#636363',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Medium',
                 }}>
                 Address
               </Text>
@@ -399,8 +397,7 @@ export default function OrderSummary({navigation, route}) {
                 style={{
                   fontSize: 13,
                   color: 'black',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Regular',
                 }}>
                 Ibis Party Hall, No.26, 1, Hosur Rd, Zuzuvadi, Madiwala, 1st
                 Stage, Bommanahalli, Bengaluru, Karnataka 560068
@@ -411,8 +408,7 @@ export default function OrderSummary({navigation, route}) {
                 style={{
                   fontSize: 12,
                   color: '#636363',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Medium',
                 }}>
                 Event on
               </Text>
@@ -420,8 +416,7 @@ export default function OrderSummary({navigation, route}) {
                 style={{
                   fontSize: 13,
                   color: 'black',
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Light',
+                  fontFamily: 'Montserrat-Regular',
                 }}>
                 June 28, 2024, 10:00 AM - June 28, 2024, 6:00 PM
               </Text>
@@ -439,7 +434,7 @@ export default function OrderSummary({navigation, route}) {
         }}>
         <TouchableOpacity
           style={{
-            backgroundColor: '#ea5362',
+            backgroundColor: THEMECOLOR.mainColor,
             padding: 10,
             borderRadius: 7,
           }}
@@ -451,17 +446,16 @@ export default function OrderSummary({navigation, route}) {
         >
           <Text
             style={{
-              color: 'white',
+              color: 'black',
               fontSize: 14,
-              fontFamily: 'Poppins-Medium',
+              fontFamily: 'Montserrat-Medium',
               textAlign: 'center',
-              letterSpacing: 1,
             }}>
             Download invoice{' '}
             <AntDesign
               name="download"
               size={14}
-              color="white"
+              color="black"
               //   onPress={() => navigation.goBack()}
             />
           </Text>

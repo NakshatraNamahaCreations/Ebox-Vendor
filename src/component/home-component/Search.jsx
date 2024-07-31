@@ -48,12 +48,12 @@ export default function Search() {
           onPress={() => navigation.goBack()}
           style={{
             position: 'absolute',
-            top: 8,
+            top: 12,
             //   bottom: 100,
             left: 10,
             zIndex: 111,
           }}>
-          <Feather name="chevron-left" size={30} color="#ea5362" />
+          <Feather name="chevron-left" size={23} color="black" />
         </TouchableOpacity>
         <TextInput
           placeholderTextColor="#757575"
@@ -61,11 +61,11 @@ export default function Search() {
           onChangeText={handleSearch}
           style={{
             color: 'black',
-            fontSize: 17,
+            fontSize: 15,
             borderRadius: 10,
             paddingLeft: 50,
-            fontFamily: 'Poppins-Regular',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Regular',
+            // letterSpacing: 1,
           }}
         />
       </View>
@@ -103,11 +103,11 @@ export default function Search() {
                   <View style={{padding: 5}}>
                     <Text
                       style={{
-                        fontSize: 15,
-                        width: 200,
+                        fontSize: 13,
+                        // width: 200,
                         overflow: 'hidden',
-                        fontFamily: 'Poppins-Regular',
-                        letterSpacing: 1,
+                        fontFamily: 'Montserrat-Medium',
+                        // letterSpacing: 1,
                         color: 'black',
                         marginBottom: 5,
                       }}>
@@ -134,8 +134,8 @@ export default function Search() {
                       style={{
                         fontSize: 13,
                         color: '#414242',
-                        fontFamily: 'Poppins-Medium',
-                        letterSpacing: 1,
+                        fontFamily: 'Montserrat-Regular',
+                        // letterSpacing: 1,
                       }}>
                       ₹ {item.productPrice}
                     </Text>
@@ -150,7 +150,7 @@ export default function Search() {
                     textAlign: 'center',
                     color: 'gray',
                     fontSize: 16,
-                    fontFamily: 'Poppins-Medium',
+                    fontFamily: 'Montserrat-Medium',
                   }}>
                   Oops! No products found.
                 </Text>
@@ -159,7 +159,7 @@ export default function Search() {
                     textAlign: 'center',
                     color: 'gray',
                     fontSize: 14,
-                    fontFamily: 'Poppins-Regular',
+                    fontFamily: 'Montserrat-Regular',
                   }}>
                   Please try something else
                   {/* Try searching with different keywords. */}

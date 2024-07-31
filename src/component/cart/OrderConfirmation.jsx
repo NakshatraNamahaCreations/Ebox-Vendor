@@ -1,9 +1,10 @@
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
 import React from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {bookingHistory} from '../../data/global-data';
+import THEMECOLOR from '../../utilities/color';
 
 export default function OrderConfirmation() {
   const navigation = useNavigation();
@@ -23,16 +24,16 @@ export default function OrderConfirmation() {
         <TouchableOpacity
           style={{flex: 0.2, paddingLeft: 20}}
           onPress={() => navigation.goBack()}>
-          <Entypo
-            name="chevron-thin-left"
+          <Ionicons
+            name="arrow-back"
             color="black"
-            size={20}
+            size={19}
             style={{
               backgroundColor: '#f5f5f5',
-              width: 50,
-              height: 50,
+              width: 40,
+              height: 40,
               textAlign: 'center',
-              paddingTop: 15,
+              paddingTop: 10,
               borderRadius: 50,
               flexDirection: 'row',
               justifyContent: 'center',
@@ -43,10 +44,10 @@ export default function OrderConfirmation() {
         <View style={{flex: 0.8}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 20,
+              fontSize: 18,
             }}>
             Order confirmation
           </Text>
@@ -56,10 +57,10 @@ export default function OrderConfirmation() {
         <View style={{paddingHorizontal: 15, paddingVertical: 20}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-SemiBold',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 17,
+              fontSize: 15,
               marginBottom: 10,
             }}>
             Delivery address
@@ -75,34 +76,34 @@ export default function OrderConfirmation() {
             <Text
               style={{
                 color: 'black',
-                fontFamily: 'Poppins-Regular',
-                letterSpacing: 1,
+                fontFamily: 'Montserrat-Regular',
+                // letterSpacing: 1,
               }}>
               2/182b, 5th street, sengunthapuram(po)
             </Text>
             <Text
               style={{
                 color: 'black',
-                fontFamily: 'Poppins-Regular',
-                letterSpacing: 1,
+                fontFamily: 'Montserrat-Regular',
+                // letterSpacing: 1,
               }}>
               Jayankondam, Ariyalur(Dk)
             </Text>
             <Text
               style={{
                 color: 'black',
-                fontFamily: 'Poppins-Regular',
-                letterSpacing: 1,
+                fontFamily: 'Montserrat-Regular',
+                // letterSpacing: 1,
               }}>
               Tamilnadu - 621802
             </Text>
           </View>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-SemiBold',
+              // letterSpacing: 1,
               color: 'black',
-              fontSize: 17,
+              fontSize: 15,
               marginBottom: 10,
             }}>
             Order summary
@@ -143,9 +144,9 @@ export default function OrderConfirmation() {
                 <View style={{flex: 0.8, marginLeft: 15}}>
                   <Text
                     style={{
-                      fontSize: 14,
-                      fontFamily: 'Poppins-Regular',
-                      letterSpacing: 1,
+                      fontSize: 13,
+                      fontFamily: 'Montserrat-SemiBold',
+                      // letterSpacing: 1,
                       color: 'black',
                       marginBottom: 5,
                     }}>
@@ -153,20 +154,26 @@ export default function OrderConfirmation() {
                   </Text>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 13,
                       color: '#414242',
                       // color: 'black',
-                      fontFamily: 'Poppins-Regular',
-                      letterSpacing: 1,
+                      fontFamily: 'Montserrat-Medium',
+                      // letterSpacing: 1,
                     }}>
-                    <MaterialIcons
+                    {/* <MaterialIcons
                       name="currency-rupee"
                       size={14}
                       color="black"
-                    />
-                    {item.productPrice}
+                    /> */}
+                    ₹ {item.productPrice}
                   </Text>
-                  <Text style={{color: 'green', fontSize: 13, padding: 5}}>
+                  <Text
+                    style={{
+                      color: '#ea5362',
+                      fontFamily: 'Montserrat-Medium',
+                      fontSize: 13,
+                      padding: 5,
+                    }}>
                     X{item.quantity}
                   </Text>
                 </View>
@@ -183,8 +190,8 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
+                    // letterSpacing: 1,
                   }}>
                   Subtotal
                 </Text>
@@ -193,15 +200,15 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
+                    // letterSpacing: 1,
                   }}>
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  1025000{' '}
+                  /> */}
+                  ₹ 1025000{' '}
                 </Text>
               </View>
             </View>
@@ -215,8 +222,8 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
+                    // letterSpacing: 1,
                   }}>
                   GST 18%
                 </Text>
@@ -225,15 +232,15 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-Regular',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
+                    // letterSpacing: 1,
                   }}>
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  10000{' '}
+                  /> */}
+                  ₹ 10000{' '}
                 </Text>
               </View>
             </View>
@@ -255,7 +262,7 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Montserrat-SemiBold',
                     fontSize: 16,
                     letterSpacing: 1,
                   }}>
@@ -266,17 +273,17 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Montserrat-SemiBold',
                     fontSize: 16,
                     letterSpacing: 1,
                   }}>
                   {' '}
-                  <MaterialIcons
+                  {/* <MaterialIcons
                     name="currency-rupee"
                     size={14}
                     color="black"
-                  />
-                  1045000{' '}
+                  /> */}
+                  ₹ 1045000{' '}
                 </Text>
               </View>
             </View>
@@ -285,8 +292,8 @@ export default function OrderConfirmation() {
             <TouchableOpacity
               style={{
                 marginTop: 15,
-                backgroundColor: '#ea5362',
-                padding: 15,
+                backgroundColor: THEMECOLOR.mainColor,
+                padding: 10,
                 borderRadius: 5,
               }}
               onPress={() => {
@@ -294,11 +301,11 @@ export default function OrderConfirmation() {
               }}>
               <Text
                 style={{
-                  color: 'white',
+                  color: THEMECOLOR.textColor,
                   textAlign: 'center',
-                  fontSize: 18,
-                  letterSpacing: 1,
-                  fontFamily: 'Poppins-Medium',
+                  fontSize: 15,
+                  // letterSpacing: 1,
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 Proceed to Pay
               </Text>

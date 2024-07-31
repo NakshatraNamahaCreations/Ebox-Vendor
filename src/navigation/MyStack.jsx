@@ -14,6 +14,10 @@ import OrderSummary from '../component/order/OrderSummary';
 import AddAddress from '../component/cart/AddAddress';
 import OrderConfirmation from '../component/cart/OrderConfirmation';
 import OrderSuccessPage from '../component/cart/OrderSuccessPage';
+import ProductDetails from '../component/product/ProductDetails';
+import AddShopDetails from '../Screens/AddShopDetails';
+import WaitingScreen from '../Screens/WaitingScreen';
+import ProductReview from '../component/product/ProductReview';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +38,16 @@ function MyStack() {
         name="Register"
         component={Register}
         options={{title: 'Register', headerShown: false}}
+      />
+      <Stack.Screen
+        name="AddShopDetails"
+        component={AddShopDetails}
+        options={{title: 'ShopDetails', headerShown: false}}
+      />
+      <Stack.Screen
+        name="Waiting"
+        component={WaitingScreen}
+        options={{title: 'WaitingScreen', headerShown: false}}
       />
       <Stack.Screen
         name="OTP"
@@ -63,6 +77,20 @@ function MyStack() {
       <Stack.Screen
         name="Product Filter"
         component={Productfilter}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="ProductReview"
+        component={ProductReview}
         options={{
           headerShown: false,
         }}

@@ -113,6 +113,44 @@ const productList = [
   },
 ];
 
+const addsOnProducts = [
+  {
+    productImage:
+      'https://playeventrentals.com/wp-content/uploads/2021/03/play-rental-item-xlr-cable-247x247.jpg',
+    id: '652745',
+    productName: 'XLR Cable',
+    productPrice: 150,
+  },
+  {
+    productImage:
+      'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-power-extension-cord-247x247.jpg',
+    id: '652745',
+    productName: 'Power Extension Cord',
+    productPrice: 130,
+  },
+  {
+    productImage:
+      'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-ultimate-support-ts90b-speaker-stand-247x247.jpg',
+    id: '652745',
+    productName: 'Ultimate Support Speaker Stand',
+    productPrice: 120,
+  },
+  {
+    productImage:
+      'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-35-mm-male-to-male-stereo-audio-cable-247x247.jpg',
+    id: '652745',
+    productName: '3.5mm Male to Male Stereo Audio Cable',
+    productPrice: 550,
+  },
+  {
+    productImage:
+      'https://playeventrentals.com/wp-content/uploads/2021/04/play-rental-item-355mm-xlr-adapter-cable-247x247.jpg',
+    id: '652745',
+    productName: '3.5mm to XLR Adapter Cable',
+    productPrice: 200,
+  },
+];
+
 const vendor = [
   {
     shopName: 'Mani Enterprises',
@@ -226,7 +264,7 @@ const allProducts = [
     _id: 1,
     productName: 'Camera Multi Setup',
     productDescription: 'Camera Multi Setup',
-    shopName: 'CP PLUS ',
+    shopName: 'CP PLUS',
     productPrice: 25000,
     imageUrl:
       'https://rentit4me.com/assets/frontend/images/listings/post-3196/64be6227f3d98.jpeg',
@@ -519,4 +557,5 @@ export {
   sliderImage,
   allProducts,
   bookingHistory,
+  addsOnProducts,
 };

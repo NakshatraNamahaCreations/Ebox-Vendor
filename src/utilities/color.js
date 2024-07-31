@@ -1,6 +1,7 @@
 const THEMECOLOR = {
-  mainColor: '#76ad46',
-  textColor: 'white',
+  mainColor: '#58E4A7',
+  viewColor: '#535353',
+  textColor: 'black',
   helperTextGray: '#757575',
   linkText: '#336aea',
 };

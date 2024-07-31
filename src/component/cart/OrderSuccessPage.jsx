@@ -1,5 +1,6 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import React from 'react';
+import THEMECOLOR from '../../utilities/color';
 
 export default function OrderSuccessPage({navigation}) {
   return (
@@ -16,29 +17,30 @@ export default function OrderSuccessPage({navigation}) {
       />
       <Text
         style={{
-          fontFamily: 'Poppins-Medium',
+          fontFamily: 'Montserrat-SemiBold',
           letterSpacing: 1,
           color: 'black',
-          fontSize: 20,
+          fontSize: 18,
           textAlign: 'center',
         }}>
         Order confirmed
       </Text>
       <Text
         style={{
-          fontFamily: 'Poppins-Regular',
-          letterSpacing: 1,
+          fontFamily: 'Montserrat-Medium',
+          // letterSpacing: 1,
           color: 'black',
-          fontSize: 16,
+          fontSize: 15,
           textAlign: 'center',
+          marginTop: 5,
         }}>
         Your order is placed successfully!
       </Text>
       <TouchableOpacity
         style={{
           marginTop: 15,
-          backgroundColor: '#ea5362',
-          padding: 15,
+          backgroundColor: THEMECOLOR.mainColor,
+          padding: 10,
           borderRadius: 5,
           margin: 60,
         }}
@@ -47,11 +49,11 @@ export default function OrderSuccessPage({navigation}) {
         }}>
         <Text
           style={{
-            color: 'white',
+            color: THEMECOLOR.textColor,
             textAlign: 'center',
-            fontSize: 18,
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Medium',
+            fontSize: 15,
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-SemiBold',
           }}>
           Go to Home page
         </Text>
