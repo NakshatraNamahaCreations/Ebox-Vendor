@@ -514,7 +514,8 @@ function ProductDetails({route}) {
                     </View>
                     <View style={{flex: 0.6}}>
                       <Text style={styles.productsDetailsAns}>
-                        {product.brand}
+                        JBL Store
+                        {/* {product.brand} */}
                       </Text>
                     </View>
                   </View>

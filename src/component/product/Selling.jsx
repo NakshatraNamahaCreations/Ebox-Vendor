@@ -89,8 +89,8 @@ export default function Selling({deviceTheme}) {
             fontSize: 16,
             marginBottom: 4,
             color: 'black',
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Medium',
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
           }}>
           Upload product image
         </Text>
@@ -99,8 +99,8 @@ export default function Selling({deviceTheme}) {
             fontSize: 16,
             marginBottom: 4,
             color: '#f44336',
-            letterSpacing: 1,
-            fontFamily: 'Poppins-Medium',
+            // letterSpacing: 1,
+            fontFamily: 'Montserrat-Medium',
           }}>
           (max 3 image)
         </Text>
@@ -275,8 +275,8 @@ export default function Selling({deviceTheme}) {
               color: 'white',
               textAlign: 'center',
               fontSize: 18,
-              letterSpacing: 1,
-              fontFamily: 'Poppins-Medium',
+              // letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
             }}>
             Add Product
           </Text>
@@ -290,8 +290,8 @@ const styles = StyleSheet.create({
   productLable: {
     fontSize: 16,
     color: 'black',
-    letterSpacing: 1,
-    fontFamily: 'Poppins-Medium',
+    // letterSpacing: 1,
+    fontFamily: 'Montserrat-Medium',
     // marginTop: 10,
   },
   productInput: {
@@ -302,8 +302,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     paddingLeft: 15,
     marginBottom: 10,
-    fontFamily: 'Poppins-Regular',
-    letterSpacing: 1,
+    fontFamily: 'Montserrat-Regular',
+    // letterSpacing: 1,
     paddingVertical: 15,
   },
   pickerWrapper: {
@@ -320,13 +320,13 @@ const styles = StyleSheet.create({
   pickerItemPlaceholder: {
     // color: '#757575',
     fontSize: 16,
-    fontFamily: 'Poppins-Regular',
-    letterSpacing: 1,
+    fontFamily: 'Montserrat-Regular',
+    // letterSpacing: 1,
   },
   pickerItem: {
     // color: 'black',
     fontSize: 16,
-    fontFamily: 'Poppins-Regular',
-    letterSpacing: 1,
+    fontFamily: 'Montserrat-Regular',
+    // letterSpacing: 1,
   },
 });

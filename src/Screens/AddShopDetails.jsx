@@ -545,7 +545,7 @@ export default function AddShopDetails({navigation}) {
             </TouchableOpacity>
           </View>
         </View>
-        <Text
+        {/* <Text
           style={{
             color: 'black',
             fontSize: 14,
@@ -554,7 +554,7 @@ export default function AddShopDetails({navigation}) {
             marginBottom: 5,
           }}>
           Aadhaar Number
-        </Text>
+        </Text> */}
         <TextInput
           placeholderTextColor="#757575"
           placeholder="Enter aadhaar number"

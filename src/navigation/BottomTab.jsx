@@ -7,9 +7,10 @@ import THEMECOLOR from '../utilities/color';
 import Home from '../component/home-component/Home';
 import MyCart from '../component/cart/MyCart';
 import OrderHistory from '../component/order/OrderHistory';
-import AddProduct from '../component/product/AddProduct';
+import AddProduct from '../component/product/ProductType';
 import Profile from '../component/profile-component/Profile';
 import {TouchableOpacity} from 'react-native';
+import ProductType from '../component/product/ProductType';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,9 +67,9 @@ export default function BottomTab() {
           ),
         }}
       />
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Add"
-        component={AddProduct}
+        component={ProductType}
         options={{
           tabBarLabel: 'Add Product',
           headerShown: false,
@@ -76,7 +77,7 @@ export default function BottomTab() {
             <AntDesign name="pluscircle" color={color} size={size} />
           ),
         }}
-      /> */}
+      />
       <Tab.Screen
         name="Cart"
         component={MyCart}

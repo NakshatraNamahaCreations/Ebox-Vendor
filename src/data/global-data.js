@@ -550,6 +550,74 @@ const bookingHistory = [
   },
 ];
 
+const categorySound = [
+  {label: 'Speaker Maximum Output Power', value: '1'},
+  {label: 'Connectivity Technology', value: '2'},
+  {label: 'Mounting Type', value: '3'},
+  {label: 'Speaker Type', value: '4'},
+  {label: 'Special Feature', value: '5'},
+  {label: 'Recommended Uses For Product', value: '6'},
+  {label: 'Compatible Devices', value: '7'},
+  {label: 'Colour', value: '8'},
+  {label: 'Included Components', value: '9'},
+  {label: 'Power Source', value: '10'},
+  {label: 'Wattage', value: '11'},
+  {label: 'Batteries Included', value: '12'},
+  {label: 'Battery Life', value: '13'},
+  {label: 'Charging Type', value: '14'},
+];
+
+const categoryLightings = [
+  {label: 'Colour', value: '1'},
+  {label: 'Indoor/Outdoor Usage', value: '2'},
+  {label: 'Special Feature', value: '3'},
+  {label: 'Light Source Type', value: '4'},
+  {label: 'Power Source', value: '5'},
+  {label: 'Light Colour', value: '6'},
+  {label: 'Number of Light Sources', value: '7'},
+  {label: 'Voltage', value: '8'},
+  {label: 'Bulb Shape Size', value: '9'},
+  {label: 'Wattage', value: '10'},
+  {label: 'Included Components', value: '11'},
+  {label: 'Controller Type', value: '12'},
+  {label: 'Shade Colour', value: '13'},
+  {label: 'Occasion', value: '14'},
+  {label: 'Recommended Uses For Product', value: '15'},
+];
+
+const categoryVideo = [
+  {label: 'Equipment Type', value: '1'},
+  {label: 'Resolution', value: '2'},
+  {label: 'Connectivity', value: '3'},
+  {label: 'Display Type', value: '4'},
+  {label: 'Power Source', value: '5'},
+  {label: 'Recommended Uses For Product', value: '6'},
+  {label: 'Voltage', value: '7'},
+  {label: 'Wattage', value: '8'},
+  {label: 'Included Components', value: '9'},
+  {label: 'Controller Type', value: '10'},
+  {label: 'Special Feature', value: '11'},
+];
+
+const categoryGenSet = [
+  {label: 'Wattage', value: '1'},
+  {label: 'Fuel Type', value: '2'},
+  {label: 'Power Source', value: '3'},
+  {label: 'Recommended Uses For Product', value: '4'},
+  {label: 'Power Source', value: '5'},
+  {label: 'Voltage', value: '6'},
+  {label: 'Output Wattage', value: '7'},
+  {label: 'Special Feature', value: '8'},
+  {label: 'Engine Type', value: '9'},
+  {label: 'Tank Volume', value: '10'},
+  {label: 'Total Power Outlets', value: '11'},
+  {label: 'Frequency', value: '12'},
+  {label: 'Engine Power Maximum', value: '13'},
+  {label: 'Starting Wattage', value: '14'},
+  {label: 'Running Wattage', value: '15'},
+  {label: 'Colour', value: '16'},
+];
+
 export {
   productList,
   vendor,
@@ -558,4 +626,8 @@ export {
   allProducts,
   bookingHistory,
   addsOnProducts,
+  categorySound,
+  categoryLightings,
+  categoryVideo,
+  categoryGenSet,
 };
