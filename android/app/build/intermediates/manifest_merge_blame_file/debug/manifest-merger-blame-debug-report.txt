@@ -20,191 +20,194 @@
 14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 14-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:6:1-76
 14-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:6:18-73
-15    <!--
-16    This manifest file is used only by Gradle to configure debug-only capabilities
-17    for React Native Apps.
-18    -->
-19    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-19-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:16:5-78
-19-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:16:22-75
-20    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-20-->[com.facebook.flipper:flipper:0.201.0] C:\Users\DELL\.gradle\caches\transforms-3\9b2c28bd5719adb7e465469e2ca76c12\transformed\jetified-flipper-0.201.0\AndroidManifest.xml:14:5-76
-20-->[com.facebook.flipper:flipper:0.201.0] C:\Users\DELL\.gradle\caches\transforms-3\9b2c28bd5719adb7e465469e2ca76c12\transformed\jetified-flipper-0.201.0\AndroidManifest.xml:14:22-73
-21    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-21-->[androidx.media3:media3-common:1.3.1] C:\Users\DELL\.gradle\caches\transforms-3\d63bfbe99b7473276dbc5844d7fa1152\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:22:5-79
-21-->[androidx.media3:media3-common:1.3.1] C:\Users\DELL\.gradle\caches\transforms-3\d63bfbe99b7473276dbc5844d7fa1152\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:22:22-76
-22
-23    <permission
-23-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
-24        android:name="com.eboxvendor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-24-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
-25        android:protectionLevel="signature" />
-25-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
-26
-27    <uses-permission android:name="com.eboxvendor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-27-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
-27-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
-28
-29    <application
-29-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:8:5-27:19
-30        android:name="com.eboxvendor.MainApplication"
-30-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:9:7-38
-31        android:allowBackup="false"
-31-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:13:7-34
-32        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-32-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
-33        android:debuggable="true"
-34        android:extractNativeLibs="true"
-35        android:icon="@mipmap/ic_launcher"
-35-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:11:7-41
-36        android:label="@string/app_name"
-36-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:10:7-39
-37        android:roundIcon="@mipmap/ic_launcher_round"
-37-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:12:7-52
-38        android:theme="@style/AppTheme"
-38-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:14:7-38
-39        android:usesCleartextTraffic="true" >
-39-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\debug\AndroidManifest.xml:6:9-44
-40        <activity
-40-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:15:7-26:18
-41            android:name="com.eboxvendor.MainActivity"
-41-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:16:9-37
-42            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-42-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:18:9-118
-43            android:exported="true"
-43-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:21:9-32
-44            android:label="@string/app_name"
-44-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:17:9-41
-45            android:launchMode="singleTask"
-45-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:19:9-40
-46            android:windowSoftInputMode="adjustResize" >
-46-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:20:9-51
-47            <intent-filter>
-47-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:22:9-25:25
-48                <action android:name="android.intent.action.MAIN" />
-48-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:23:13-65
-48-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:23:21-62
-49
-50                <category android:name="android.intent.category.LAUNCHER" />
-50-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:24:13-73
-50-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:24:23-70
-51            </intent-filter>
-52        </activity>
-53
-54        <provider
-54-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
-55            android:name="com.imagepicker.ImagePickerProvider"
-55-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
-56            android:authorities="com.eboxvendor.imagepickerprovider"
-56-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-71
-57            android:exported="false"
-57-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
-58            android:grantUriPermissions="true" >
-58-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
-59            <meta-data
-59-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-15:70
-60                android:name="android.support.FILE_PROVIDER_PATHS"
-60-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:17-67
-61                android:resource="@xml/imagepicker_provider_paths" />
-61-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-67
-62        </provider>
-63        <provider
-63-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
-64            android:name="com.reactnativecommunity.webview.RNCWebViewFileProvider"
-64-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-83
-65            android:authorities="com.eboxvendor.fileprovider"
-65-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-64
-66            android:exported="false"
-66-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
-67            android:grantUriPermissions="true" >
-67-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
-68            <meta-data
-68-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-15:70
-69                android:name="android.support.FILE_PROVIDER_PATHS"
-69-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:17-67
-70                android:resource="@xml/file_provider_paths" />
-70-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-67
-71        </provider>
-72
-73        <activity
-73-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:19:9-21:40
-74            android:name="com.facebook.react.devsupport.DevSettingsActivity"
-74-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:20:13-77
-75            android:exported="false" />
-75-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:21:13-37
-76
-77        <provider
-77-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-78            android:name="androidx.startup.InitializationProvider"
-78-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
-79            android:authorities="com.eboxvendor.androidx-startup"
-79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
-80            android:exported="false" >
-80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
-81            <meta-data
-81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-82                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
-83                android:value="androidx.startup" />
-83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
-84            <meta-data
-84-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\DELL\.gradle\caches\transforms-3\4445fe79bf905819a8215a4f222f1322\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
-85                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-85-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\DELL\.gradle\caches\transforms-3\4445fe79bf905819a8215a4f222f1322\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
-86                android:value="androidx.startup" />
-86-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\DELL\.gradle\caches\transforms-3\4445fe79bf905819a8215a4f222f1322\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
-87            <meta-data
-87-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
-88                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
-89                android:value="androidx.startup" />
-89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
-90        </provider>
-91
-92        <receiver
-92-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
-93            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-93-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
-94            android:directBootAware="false"
-94-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
-95            android:enabled="true"
-95-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
-96            android:exported="true"
-96-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
-97            android:permission="android.permission.DUMP" >
-97-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
-98            <intent-filter>
-98-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
-99                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-99-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
-99-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
-100            </intent-filter>
-101            <intent-filter>
-101-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
-102                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-102-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
-102-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
-103            </intent-filter>
-104            <intent-filter>
-104-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
-105                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-105-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
-105-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
-106            </intent-filter>
-107            <intent-filter>
-107-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
-108                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-108-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
-108-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
-109            </intent-filter>
-110        </receiver>
-111
-112        <meta-data
-112-->[com.facebook.soloader:soloader:0.10.5] C:\Users\DELL\.gradle\caches\transforms-3\03d018e18e7118763cc731de8f689ba0\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
-113            android:name="com.facebook.soloader.enabled"
-113-->[com.facebook.soloader:soloader:0.10.5] C:\Users\DELL\.gradle\caches\transforms-3\03d018e18e7118763cc731de8f689ba0\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
-114            android:value="false" />
-114-->[com.facebook.soloader:soloader:0.10.5] C:\Users\DELL\.gradle\caches\transforms-3\03d018e18e7118763cc731de8f689ba0\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
-115    </application>
-116
-117</manifest>
+15    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+15-->[:react-native-community_voice] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-community\voice\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-71
+15-->[:react-native-community_voice] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-community\voice\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-68
+16    <!--
+17    This manifest file is used only by Gradle to configure debug-only capabilities
+18    for React Native Apps.
+19    -->
+20    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+20-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:16:5-78
+20-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:16:22-75
+21    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+21-->[com.facebook.flipper:flipper:0.201.0] C:\Users\DELL\.gradle\caches\transforms-3\9b2c28bd5719adb7e465469e2ca76c12\transformed\jetified-flipper-0.201.0\AndroidManifest.xml:14:5-76
+21-->[com.facebook.flipper:flipper:0.201.0] C:\Users\DELL\.gradle\caches\transforms-3\9b2c28bd5719adb7e465469e2ca76c12\transformed\jetified-flipper-0.201.0\AndroidManifest.xml:14:22-73
+22    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+22-->[androidx.media3:media3-common:1.3.1] C:\Users\DELL\.gradle\caches\transforms-3\d63bfbe99b7473276dbc5844d7fa1152\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:22:5-79
+22-->[androidx.media3:media3-common:1.3.1] C:\Users\DELL\.gradle\caches\transforms-3\d63bfbe99b7473276dbc5844d7fa1152\transformed\jetified-media3-common-1.3.1\AndroidManifest.xml:22:22-76
+23
+24    <permission
+24-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:22:5-24:47
+25        android:name="com.eboxvendor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+25-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:23:9-81
+26        android:protectionLevel="signature" />
+26-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:24:9-44
+27
+28    <uses-permission android:name="com.eboxvendor.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+28-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:26:5-97
+28-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:26:22-94
+29
+30    <application
+30-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:8:5-27:19
+31        android:name="com.eboxvendor.MainApplication"
+31-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:9:7-38
+32        android:allowBackup="false"
+32-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:13:7-34
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.9.0] C:\Users\DELL\.gradle\caches\transforms-3\13659b94c66de92d98d7f8af61234b95\transformed\core-1.9.0\AndroidManifest.xml:28:18-86
+34        android:debuggable="true"
+35        android:extractNativeLibs="true"
+36        android:icon="@mipmap/ic_launcher"
+36-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:11:7-41
+37        android:label="@string/app_name"
+37-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:10:7-39
+38        android:roundIcon="@mipmap/ic_launcher_round"
+38-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:12:7-52
+39        android:theme="@style/AppTheme"
+39-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:14:7-38
+40        android:usesCleartextTraffic="true" >
+40-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\debug\AndroidManifest.xml:6:9-44
+41        <activity
+41-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:15:7-26:18
+42            android:name="com.eboxvendor.MainActivity"
+42-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:16:9-37
+43            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+43-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:18:9-118
+44            android:exported="true"
+44-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:21:9-32
+45            android:label="@string/app_name"
+45-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:17:9-41
+46            android:launchMode="singleTask"
+46-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:19:9-40
+47            android:windowSoftInputMode="adjustResize" >
+47-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:20:9-51
+48            <intent-filter>
+48-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:22:9-25:25
+49                <action android:name="android.intent.action.MAIN" />
+49-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:23:13-65
+49-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:23:21-62
+50
+51                <category android:name="android.intent.category.LAUNCHER" />
+51-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:24:13-73
+51-->D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\AndroidManifest.xml:24:23-70
+52            </intent-filter>
+53        </activity>
+54
+55        <provider
+55-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+56            android:name="com.imagepicker.ImagePickerProvider"
+56-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-63
+57            android:authorities="com.eboxvendor.imagepickerprovider"
+57-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-71
+58            android:exported="false"
+58-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+59            android:grantUriPermissions="true" >
+59-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+60            <meta-data
+60-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-15:70
+61                android:name="android.support.FILE_PROVIDER_PATHS"
+61-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:17-67
+62                android:resource="@xml/imagepicker_provider_paths" />
+62-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-67
+63        </provider>
+64        <provider
+64-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:8:9-16:20
+65            android:name="com.reactnativecommunity.webview.RNCWebViewFileProvider"
+65-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:13-83
+66            android:authorities="com.eboxvendor.fileprovider"
+66-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:10:13-64
+67            android:exported="false"
+67-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-37
+68            android:grantUriPermissions="true" >
+68-->[:react-native-webview] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-47
+69            <meta-data
+69-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-15:70
+70                android:name="android.support.FILE_PROVIDER_PATHS"
+70-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:14:17-67
+71                android:resource="@xml/file_provider_paths" />
+71-->[:react-native-image-picker] D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:17-67
+72        </provider>
+73
+74        <activity
+74-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:19:9-21:40
+75            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+75-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:20:13-77
+76            android:exported="false" />
+76-->[com.facebook.react:react-android:0.73.6] C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\AndroidManifest.xml:21:13-37
+77
+78        <provider
+78-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+79            android:name="androidx.startup.InitializationProvider"
+79-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:25:13-67
+80            android:authorities="com.eboxvendor.androidx-startup"
+80-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:26:13-68
+81            android:exported="false" >
+81-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:27:13-37
+82            <meta-data
+82-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+83                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+83-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:30:17-75
+84                android:value="androidx.startup" />
+84-->[androidx.emoji2:emoji2:1.2.0] C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\AndroidManifest.xml:31:17-49
+85            <meta-data
+85-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\DELL\.gradle\caches\transforms-3\4445fe79bf905819a8215a4f222f1322\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:29:13-31:52
+86                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+86-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\DELL\.gradle\caches\transforms-3\4445fe79bf905819a8215a4f222f1322\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:30:17-78
+87                android:value="androidx.startup" />
+87-->[androidx.lifecycle:lifecycle-process:2.6.1] C:\Users\DELL\.gradle\caches\transforms-3\4445fe79bf905819a8215a4f222f1322\transformed\jetified-lifecycle-process-2.6.1\AndroidManifest.xml:31:17-49
+88            <meta-data
+88-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:29:13-31:52
+89                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+89-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:30:17-85
+90                android:value="androidx.startup" />
+90-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:31:17-49
+91        </provider>
+92
+93        <receiver
+93-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:34:9-52:20
+94            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+94-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:35:13-76
+95            android:directBootAware="false"
+95-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:36:13-44
+96            android:enabled="true"
+96-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:37:13-35
+97            android:exported="true"
+97-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:38:13-36
+98            android:permission="android.permission.DUMP" >
+98-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:39:13-57
+99            <intent-filter>
+99-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:40:13-42:29
+100                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:17-91
+100-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:41:25-88
+101            </intent-filter>
+102            <intent-filter>
+102-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:43:13-45:29
+103                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+103-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:17-85
+103-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:44:25-82
+104            </intent-filter>
+105            <intent-filter>
+105-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:46:13-48:29
+106                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+106-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:17-88
+106-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:47:25-85
+107            </intent-filter>
+108            <intent-filter>
+108-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:49:13-51:29
+109                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+109-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:17-95
+109-->[androidx.profileinstaller:profileinstaller:1.3.0] C:\Users\DELL\.gradle\caches\transforms-3\0f099b6580320a91cfdc75edaa838a1d\transformed\jetified-profileinstaller-1.3.0\AndroidManifest.xml:50:25-92
+110            </intent-filter>
+111        </receiver>
+112
+113        <meta-data
+113-->[com.facebook.soloader:soloader:0.10.5] C:\Users\DELL\.gradle\caches\transforms-3\03d018e18e7118763cc731de8f689ba0\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
+114            android:name="com.facebook.soloader.enabled"
+114-->[com.facebook.soloader:soloader:0.10.5] C:\Users\DELL\.gradle\caches\transforms-3\03d018e18e7118763cc731de8f689ba0\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
+115            android:value="false" />
+115-->[com.facebook.soloader:soloader:0.10.5] C:\Users\DELL\.gradle\caches\transforms-3\03d018e18e7118763cc731de8f689ba0\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
+116    </application>
+117
+118</manifest>

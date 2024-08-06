@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   useColorScheme,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 // import ToggleSwitch from 'toggle-switch-react-native';
@@ -23,25 +24,39 @@ import {
   categorySound,
   categoryVideo,
 } from '../../data/global-data';
+import axios from 'axios';
+import Video from 'react-native-video';
 // import Video from 'react-native-video';
 // import HTMLView from 'react-native-htmlview';
 // import WebView from 'react-native-webview';
 
 export default function AddProduct({ProductType}) {
   const deviceTheme = useColorScheme();
+  // console.log('ProductType', ProductType);
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryVideos, setGalleryVideos] = useState([]);
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [discount, setDiscount] = useState('');
+  const [mrpRate, setMrpRate] = useState('');
+  const [productDiscount, setProductDiscount] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [on, setOff] = useState(false);
-  const [whatsIncluded, setWhatsIncluded] = useState('');
-  console.log('selectedCategory', selectedCategory);
-  const editorRef = React.createRef();
+  const [productBrand, setProductBrand] = useState('');
+  const [stockInHand, setStockInHand] = useState('');
+  const [modelName, setModelName] = useState('');
+  const [materialType, setMaterialType] = useState('');
+  const [productDimension, setProductDimension] = useState('');
+  const [productWeight, setProductWeight] = useState('');
+  const [coutryOfOrgin, setCoutryOfOrgin] = useState('');
+  const [manufactureName, setManufactureName] = useState('');
+  const [color, setColor] = useState('');
+  const [warranty, setWarranty] = useState('');
+
+  // const [on, setOff] = useState(false);
+  // const [whatsIncluded, setWhatsIncluded] = useState('');
+  // console.log('selectedCategory', selectedCategory);
+  // const editorRef = React.createRef();
   //   console.log('whatsIncluded', <HTMLView value={whatsIncluded} />);
-  const renderedHtml = whatsIncluded;
+  // const renderedHtml = whatsIncluded;
   const categories = [
     // {
     //   type: 'Select',
@@ -81,9 +96,12 @@ export default function AddProduct({ProductType}) {
     setAddItems(prevBoards => [...prevBoards, newBoard]);
   };
 
-  const handleSelectItemChange = (index, value) => {
+  // console.log('addItems', addItems);
+
+  const handleSelectItemChange = (index, label) => {
     const updatedItems = [...addItems];
-    updatedItems[index].selectItem = value;
+    // console.log('updatedItems', updatedItems);
+    updatedItems[index].selectItem = label;
     setAddItems(updatedItems);
   };
 
@@ -97,7 +115,7 @@ export default function AddProduct({ProductType}) {
     ImagePicker.launchImageLibrary(
       {
         mediaType: 'photo',
-        selectionLimit: 3, // Set selection limit to 3
+        selectionLimit: 6, // Set selection limit to 3
         includeBase64: false,
       },
       response => {
@@ -108,8 +126,8 @@ export default function AddProduct({ProductType}) {
         } else if (response.customButton) {
           console.log('User tapped custom button: ', response.customButton);
         } else if (response.assets) {
-          if (response.assets.length > 3) {
-            alert('You can only select 3 images');
+          if (response.assets.length > 6) {
+            Alert.alert('You can only select 3 images');
           } else {
             const selectedImages = response.assets.map(asset => asset.uri);
             console.log('selectedImages', response.assets.length);
@@ -124,7 +142,7 @@ export default function AddProduct({ProductType}) {
     ImagePicker.launchImageLibrary(
       {
         mediaType: 'video', // Specify media type as video
-        selectionLimit: 3, // Set selection limit to 3
+        selectionLimit: 1, // Set selection limit to 3
         includeBase64: false,
       },
       response => {
@@ -159,6 +177,189 @@ export default function AddProduct({ProductType}) {
 
   const asterisk = () => <Text style={{color: '#f44336'}}>*</Text>;
 
+  const addProduct = async () => {
+    if (
+      !productName ||
+      // !productPrice ||
+      // !mrpRate ||
+      !selectedCategory ||
+      // !productBrand ||
+      // !stockInHand ||
+      // !modelName ||
+      // !materialType ||
+      // !productDimension ||
+      // !productWeight ||
+      // !coutryOfOrgin ||
+      // !manufactureName ||
+      galleryImages.length === 0
+      // !galleryVideos
+    ) {
+      Alert.alert(
+        'Error',
+        'Please fill all mandatory fields and add images/videos',
+      );
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('vendor_id', '54436425on7y9687f6956');
+      formData.append('product_type', ProductType);
+      formData.append('product_name', productName);
+      formData.append('product_price', productPrice);
+      formData.append('discount', productDiscount);
+      formData.append('mrp_rate', mrpRate);
+      formData.append('product_category', selectedCategory);
+      formData.append('brand', productBrand);
+      formData.append('stock_in_hand', stockInHand);
+      formData.append('model_name', modelName);
+      formData.append('material_type', materialType);
+      formData.append('product_dimension', productDimension);
+      formData.append('product_weight', productWeight);
+      formData.append('country_of_orgin', coutryOfOrgin);
+      formData.append('manufacture_name', manufactureName);
+      formData.append('product_color', color);
+      formData.append(
+        'Specifications',
+        JSON.stringify(
+          addItems.map(item => ({
+            name: item.selectItem,
+            value: item.ItemSpecification,
+          })),
+        ),
+      );
+
+      // Append images to FormData
+      galleryImages.forEach((uri, index) => {
+        formData.append('images', {
+          uri,
+          name: `image_${index}.jpg`,
+          type: 'image/jpeg',
+        });
+      });
+
+      // Append video to FormData
+      if (galleryVideos) {
+        formData.append('video', {
+          uri: galleryVideos[0], // Assuming only one video is allowed
+          name: 'video.mp4',
+          type: 'video/mp4',
+        });
+      }
+
+      const config = {
+        url: 'product/addproduct',
+        method: 'post',
+        baseURL: 'http://192.168.1.103:9000/api/',
+        headers: {'Content-Type': 'multipart/form-data'},
+        data: formData,
+      };
+      // console.log('Response:', response);
+      // const response = await axios(config);
+      await axios(config).then(function (response) {
+        if (response.status === 200) {
+          Alert.alert(response.data.message);
+          console.log('Response:', response);
+          // navigation.navigate('home');
+        } else {
+          Alert.alert('Error', 'Error while adding product');
+        }
+      });
+      // console.log('Response>>>>>:', response);
+      // if (response.status === 200) {
+      //   Alert.alert('Success', 'Product added successfully');
+      //   // Reset form or navigate away
+      // } else {
+      //   Alert.alert('Error1111', 'Error while adding product');
+      // }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.message);
+        if (error.response) {
+          console.error('Response data:', error.response.data);
+          Alert.alert(
+            'Error',
+            error.response.data.message || 'Error while adding product',
+          );
+        } else if (error.request) {
+          console.error('Request data:', error.request);
+          Alert.alert('Error', 'No response received from server');
+        }
+      } else {
+        console.error('Unknown error:', error);
+        Alert.alert('Error', 'An unknown error occurred');
+      }
+    }
+  };
+
+  // const addProduct = async e => {
+  //   e.preventDefault();
+  //   if (
+  //     !productName ||
+  //     !productPrice ||
+  //     !mrpRate ||
+  //     !selectedCategory ||
+  //     !productBrand ||
+  //     !stockInHand ||
+  //     !modelName ||
+  //     !materialType ||
+  //     !productDimension ||
+  //     !productWeight ||
+  //     !coutryOfOrgin ||
+  //     !manufactureName ||
+  //     galleryImages.length === 0 || // Ensure images are selected
+  //     !galleryVideos // Ensure video is selected
+  //   ) {
+  //     Alert.alert('Error', 'Please fill all mandatory fields and add images/videos');
+  //   } else {
+  //     try {
+  //       const config = {
+  //         url: 'product/addproduct',
+  //         method: 'post',
+  //         baseURL: 'http://192.168.1.103:9000/api/',
+  //         headers: {'Content-Type': 'application/json'},
+  //         data: {
+  //           product_type: ProductType,
+  //           product_name: productName,
+  //           product_price: productPrice,
+  //           discount: productDiscount,
+  //           mrp_rate: mrpRate,
+  //           product_category: selectedCategory,
+  //           brand: productBrand.id,
+  //           stock_in_hand: stockInHand,
+  //           model_name: modelName,
+  //           material_type: materialType,
+  //           product_dimension: productDimension,
+  //           product_weight: productWeight,
+  //           country_of_origin: coutryOfOrgin,
+  //           manufacture_name: manufactureName,
+  //           product_color: color,
+  //           Specifications: addItems.map(item => ({
+  //             name: item.selectItem,
+  //             value: item.ItemSpecification,
+  //           })),
+  //         },
+  //       };
+  //       const response = await axios(config);
+  //       if (response.status === 201) {
+  //         Alert.alert('Success', 'Product added successfully');
+  //         // Reset form or navigate away
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //       console.log('error', error);
+  //       Alert.alert('Error', 'Error while adding product');
+  //     }
+  //   }
+  // };
+
+  // product_image: galleryImages.map((image, index) => {
+  //   return {
+  //     image: image,
+  //     index: index
+  //     }
+  //     }
+  //     ),
+
   return (
     <ScrollView style={{padding: 15}}>
       <View style={{flexDirection: 'row'}}>
@@ -181,7 +382,7 @@ export default function AddProduct({ProductType}) {
             fontFamily: 'Montserrat-Medium',
           }}>
           {' '}
-          (max 3 image)
+          (max 6 image)
         </Text>
       </View>
       <Text
@@ -283,15 +484,26 @@ export default function AddProduct({ProductType}) {
           onPress={uploadVideo}>
           <AntDesign name="plus" size={20} color="#313131" />
         </TouchableOpacity>
-        {/* {galleryVideos.map((videoUri, index) => (
-          <Video
-            key={index}
-            source={{uri: videoUri}}
-            style={{width: 200, height: 200}}
-            controls={true}
-            resizeMode="contain"
-          />
-        ))} */}
+        {galleryVideos.map((videoUri, index) => (
+          <View
+            style={{
+              // marginLeft: 10,
+              // backgroundColor: 'yellow',
+              width: 200,
+              height: 130,
+              position: 'absolute',
+              left: 120,
+              top: -10,
+            }}>
+            <Video
+              key={index}
+              source={{uri: videoUri}}
+              style={{width: '100%', height: '100%', borderRadius: 10}}
+              controls={false}
+              resizeMode="contain"
+            />
+          </View>
+        ))}
         {/* <ScrollView
           horizontal
           style={{marginLeft: 10, flex: 1}}
@@ -413,8 +625,8 @@ export default function AddProduct({ProductType}) {
             placeholderTextColor="#757575"
             placeholder="MRP"
             keyboardType="numeric"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={mrpRate}
+            onChangeText={pprice => setMrpRate(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -424,8 +636,8 @@ export default function AddProduct({ProductType}) {
             placeholderTextColor="#757575"
             placeholder="%"
             keyboardType="numeric"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={productDiscount}
+            onChangeText={pprice => setProductDiscount(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -437,8 +649,8 @@ export default function AddProduct({ProductType}) {
             placeholderTextColor="#757575"
             placeholder="Enter brand"
             // keyboardType="numeric"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={productBrand}
+            onChangeText={pprice => setProductBrand(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -448,8 +660,8 @@ export default function AddProduct({ProductType}) {
             placeholderTextColor="#757575"
             placeholder="Stock in hand"
             keyboardType="numeric"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={stockInHand}
+            onChangeText={pprice => setStockInHand(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -460,8 +672,8 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Model name"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={modelName}
+            onChangeText={pprice => setModelName(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -470,8 +682,8 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Material type"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={materialType}
+            onChangeText={pprice => setMaterialType(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -485,8 +697,8 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="e.g. 7D x 7W x 7H cm"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={productDimension}
+            onChangeText={pprice => setProductDimension(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -495,8 +707,8 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="e.g. 200 grams"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={productWeight}
+            onChangeText={pprice => setProductWeight(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -507,8 +719,8 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Country of orgin"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={coutryOfOrgin}
+            onChangeText={pprice => setCoutryOfOrgin(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -517,20 +729,20 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Manufacture name"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={manufactureName}
+            onChangeText={pprice => setManufactureName(pprice)}
             style={styles.productInput}
           />
         </View>
       </View>
       <View style={{flexDirection: 'row'}}>
         <View style={{flex: 0.6, marginRight: 2}}>
-          <Text style={styles.productLable}>Shipping Info</Text>
+          <Text style={styles.productLable}>Color</Text>
           <TextInput
             placeholderTextColor="#757575"
-            placeholder="Details on shipping"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            placeholder="Product color"
+            value={color}
+            onChangeText={pprice => setColor(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -539,8 +751,8 @@ export default function AddProduct({ProductType}) {
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Enter warranty"
-            // value={productPrice}
-            // onChangeText={pprice => setProductPrice(pprice)}
+            value={warranty}
+            onChangeText={pprice => setWarranty(pprice)}
             style={styles.productInput}
           />
         </View>
@@ -572,14 +784,6 @@ export default function AddProduct({ProductType}) {
                   value={ele.selectItem}
                   itemTextStyle={styles.itemTextStyle}
                   onChange={item => handleSelectItemChange(index, item.value)}
-                  // renderLeftIcon={() => (
-                  //   <AntDesign
-                  //     style={styles.icon}
-                  //     color="black"
-                  //     name="Safety"
-                  //     size={20}
-                  //   />
-                  // )}
                 />
               </View>
               <View style={{flex: 0.6, marginLeft: 2}}>
@@ -862,10 +1066,7 @@ export default function AddProduct({ProductType}) {
             borderRadius: 15,
             marginHorizontal: 50,
           }}
-          // onPress={() => {
-          //   navigation.navigate('Order Confirmation');
-          // }}
-        >
+          onPress={addProduct}>
           <Text
             style={{
               color: THEMECOLOR.textColor,

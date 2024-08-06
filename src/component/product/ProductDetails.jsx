@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -18,23 +18,25 @@ import {useNavigation} from '@react-navigation/native';
 // import Dropdown from 'react-native-select-dropdown';
 import {addsOnProducts} from '../../data/global-data';
 import THEMECOLOR from '../../utilities/color';
+import Video from 'react-native-video';
+import axios from 'axios';
+import moment from 'moment';
 
 // function ProductDetails({selectedProduct, closeModal}) {
 function ProductDetails({route}) {
-  // console.log('selectedProduct>>>>>>>>>>>>>>', selectedProduct);
+  const product = route.params.item;
+  console.log('product>>>>>', product);
   const navigation = useNavigation();
-  const [productSpecification, setProductSpecification] = useState(true);
-  const [productDetails, setProductDetails] = useState(false);
+
+  const [productSpecification, setProductSpecification] = useState(false);
+  const [productDetails, setProductDetails] = useState(true);
   const [coutryOfOrgin, setCoutryOfOrgin] = useState(false);
   const [manufacturer, setManufacturer] = useState(false);
   const [quantity, setQuantity] = useState('');
-
-  const product = route.params.item;
-  console.log('product', product);
-
-  const navigateToSearch = () => {
-    navigation.navigate('Search');
-  };
+  const [mainMedia, setMainMedia] = useState(product.product_image[0]);
+  const [selectedProduct, setSelectedProduct] = useState(route.params.item);
+  const [allProducts, setAllProducts] = useState([]);
+  const [relevantProducts, setRelevantProducts] = useState([]);
 
   const quantityOptions = [
     {label: '1', value: 1},
@@ -43,6 +45,54 @@ function ProductDetails({route}) {
     {label: '4', value: 4},
     {label: '5', value: 5},
   ];
+
+  const navigateToSearch = () => {
+    navigation.navigate('Search');
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      let res = await axios.get(
+        'http://192.168.1.103:9000/api/product/getsellproduct',
+      );
+      if (res.status === 200) {
+        setAllProducts(res.data.allSellProduct);
+        const filteringRelevant = res.data.allSellProduct.filter(
+          item =>
+            (item.product_category === 'Sound' ||
+              item.product_category === 'Lighting' ||
+              item.product_category === 'Video' ||
+              item.product_category === 'Fabrication' ||
+              item.product_category === 'Genset' ||
+              item.product_category === 'shamiana') &&
+            item._id !== product._id,
+        );
+        setRelevantProducts(filteringRelevant);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+  const handleProductClick = async productId => {
+    try {
+      let res = await axios.get(
+        `http://192.168.1.103:9000/api/product/getproduct/${productId}`,
+      );
+      if (res.status === 200) {
+        setSelectedProduct(res.data.product);
+        setMainMedia(res.data.product.product_image[0]);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+  console.log('selectedProduct', selectedProduct);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -125,7 +175,7 @@ function ProductDetails({route}) {
               fontFamily: 'Montserrat-Medium',
               marginBottom: 2,
             }}>
-            JBL Store
+            {product.brand}
           </Text>
           <Text
             style={{
@@ -135,7 +185,7 @@ function ProductDetails({route}) {
             }}>
             {/* JBL Go 4, Wireless Ultra Portable Bluetooth Speaker, Pro Sound,
               Vibrant Colors, Water & Dust Proof, Type C (without Mic, Black) */}
-            {product.productName}
+            {product.product_name}
           </Text>
           {/* <View
             style={{
@@ -179,8 +229,8 @@ function ProductDetails({route}) {
               </Text>
             </View>
           </View> */}
-          <View style={{width: '100%', marginVertical: 20}}>
-            <Image
+          {/* <View style={{width: '100%', marginVertical: 20}}> */}
+          {/* <Image
               style={{
                 width: '100%',
                 height: 250,
@@ -191,12 +241,83 @@ function ProductDetails({route}) {
               source={{
                 uri: product.productImage || 'https://via.placeholder.com/300',
               }}
-            />
-            {/* <TouchableOpacity
+            /> */}
+          {/* <TouchableOpacity
               style={{position: 'absolute', bottom: 10, left: 10}}>
               <Ionicons name="heart-outline" size={27} color="#CC0C39" />
             </TouchableOpacity> */}
+          {/* </View> */}
+          <View style={{width: '100%', height: 300, marginBottom: 10}}>
+            {mainMedia.endsWith('.mp4') ? (
+              <Video
+                source={{
+                  uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                    /\\/g,
+                    '/',
+                  )}`,
+                }}
+                style={styles.mainMedia}
+                controls={true}
+                resizeMode="contain"
+              />
+            ) : (
+              <Image
+                source={{
+                  uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                    /\\/g,
+                    '/',
+                  )}`,
+                }}
+                style={[styles.mainMedia, {marginTop: 20}]}
+                resizeMode="cover"
+              />
+            )}
           </View>
+          <ScrollView horizontal style={styles.thumbnailContainer}>
+            {product.product_image.map((image, index) => (
+              <TouchableOpacity key={index} onPress={() => setMainMedia(image)}>
+                <Image
+                  source={{
+                    uri: `http://192.168.1.103:9000/${image.replace(
+                      /\\/g,
+                      '/',
+                    )}`,
+                  }}
+                  style={[
+                    styles.thumbnail,
+                    mainMedia === image && {
+                      borderColor: '#007185', // Highlight color
+                      borderWidth: 2,
+                    },
+                  ]}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            ))}
+            {product.product_video && (
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'black',
+                  opacity: 0.6,
+                  width: 60,
+                  height: 60,
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderColor:
+                    mainMedia === product.product_video ? '#007185' : '#ccc', // Highlight color
+                  borderWidth: mainMedia === product.product_video ? 2 : 1,
+                  // padding: 5,
+                }}
+                onPress={() => setMainMedia(product.product_video)}>
+                <Image
+                  source={require('../../../assets/play-button.png')} // Use a placeholder image or icon for video
+                  style={{width: 40, height: 40}}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            )}
+          </ScrollView>
           <View>
             {/* <View
               style={{
@@ -264,7 +385,7 @@ function ProductDetails({route}) {
                     color: 'black',
                     fontFamily: 'Montserrat-Medium',
                   }}>
-                  4.3
+                  0{/* 4.3 */}
                 </Text>
                 <AntDesign
                   name="star"
@@ -283,7 +404,7 @@ function ProductDetails({route}) {
                     fontFamily: 'Montserrat-Medium',
                   }}>
                   {' '}
-                  243 rating
+                  0 rating
                 </Text>
               </View>
             </View>
@@ -300,7 +421,7 @@ function ProductDetails({route}) {
                     // letterSpacing: 1,
                     fontFamily: 'Montserrat-Bold',
                   }}>
-                  ₹ {product.productPrice}
+                  ₹ {product.product_price}
                 </Text>
               </View>
               <View style={{marginLeft: 5, marginTop: 7}}>
@@ -313,7 +434,7 @@ function ProductDetails({route}) {
                     textDecorationLine: 'line-through',
                   }}>
                   {' '}
-                  ₹ 5000
+                  ₹ {product.mrp_rate}
                 </Text>
               </View>
               <View style={{marginLeft: 5, marginTop: 7}}>
@@ -325,7 +446,8 @@ function ProductDetails({route}) {
                     fontFamily: 'Montserrat-Medium',
                   }}>
                   {' '}
-                  14% OFF
+                  {product.discount ? product.discount + '%' + ' OFF' : ''}
+                  {/* 14% OFF */}
                 </Text>
               </View>
             </View>
@@ -389,36 +511,6 @@ function ProductDetails({route}) {
                 <View style={{marginHorizontal: 10}}>
                   <TouchableOpacity
                     onPress={() => {
-                      setProductSpecification(true);
-                      setCoutryOfOrgin(false);
-                      setProductDetails(false);
-                      setManufacturer(false);
-                    }}>
-                    <Text
-                      style={{
-                        fontFamily: 'Montserrat-Medium',
-                        fontSize: 13,
-                        textAlign: 'center',
-                        color: productSpecification
-                          ? THEMECOLOR.textColor
-                          : '#8d8d8d',
-                      }}>
-                      Specifications
-                    </Text>
-                    <View
-                      style={{
-                        borderBottomColor: productSpecification
-                          ? THEMECOLOR.mainColor
-                          : 'transparent',
-                        borderBottomWidth: productSpecification ? 4.5 : 0,
-                        position: 'relative',
-                        top: 2,
-                      }}></View>
-                  </TouchableOpacity>
-                </View>
-                <View style={{marginHorizontal: 10}}>
-                  <TouchableOpacity
-                    onPress={() => {
                       setProductSpecification(false);
                       setCoutryOfOrgin(false);
                       setProductDetails(true);
@@ -441,6 +533,36 @@ function ProductDetails({route}) {
                           ? THEMECOLOR.mainColor
                           : 'transparent',
                         borderBottomWidth: productDetails ? 4.5 : 0,
+                        position: 'relative',
+                        top: 2,
+                      }}></View>
+                  </TouchableOpacity>
+                </View>
+                <View style={{marginHorizontal: 10}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setProductSpecification(true);
+                      setCoutryOfOrgin(false);
+                      setProductDetails(false);
+                      setManufacturer(false);
+                    }}>
+                    <Text
+                      style={{
+                        fontFamily: 'Montserrat-Medium',
+                        fontSize: 13,
+                        textAlign: 'center',
+                        color: productSpecification
+                          ? THEMECOLOR.textColor
+                          : '#8d8d8d',
+                      }}>
+                      Specifications
+                    </Text>
+                    <View
+                      style={{
+                        borderBottomColor: productSpecification
+                          ? THEMECOLOR.mainColor
+                          : 'transparent',
+                        borderBottomWidth: productSpecification ? 4.5 : 0,
                         position: 'relative',
                         top: 2,
                       }}></View>
@@ -490,7 +612,7 @@ function ProductDetails({route}) {
                         color: manufacturer ? THEMECOLOR.textColor : '#8d8d8d',
                         textAlign: 'center',
                       }}>
-                      Manufacture
+                      Manufacturer
                     </Text>
                     <View
                       style={{
@@ -508,225 +630,144 @@ function ProductDetails({route}) {
             <View style={{marginTop: 10}}>
               {productSpecification ? (
                 <View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>Brand</Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
+                  {product.Specifications.length > 0 ? (
+                    <>
+                      {product.Specifications.map(spe => (
+                        <View key={spe._id} style={styles.productsDetasilRow}>
+                          <View style={{flex: 0.5}}>
+                            <Text style={styles.productDetailsHead}>
+                              {spe.name}
+                            </Text>
+                          </View>
+                          <View style={{flex: 0.5}}>
+                            <Text style={styles.productsDetailsAns}>
+                              {/* JBL Store */}
+                              {spe.value}
+                            </Text>
+                          </View>
+                        </View>
+                      ))}
+                    </>
+                  ) : (
+                    <>
                       <Text style={styles.productsDetailsAns}>
-                        JBL Store
-                        {/* {product.brand} */}
+                        Specifications not Available
                       </Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Maximum power
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>4.2 Watts</Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Connectivity
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>
-                        Bluetooth, wireless
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Audio output mode
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>Stereo</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>Material</Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>Fabric</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>Model Name</Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>GO 3</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Speaker Type
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>Portable</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Special Feature
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>
-                        Ultra portable, IP67 Water proof
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Recommented Use
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>
-                        For Smartphones or tablets
-                      </Text>
-                    </View>
-                  </View>
-
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Product Dimension
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>
-                        7.5D X 8.7W X 4.1H Cm
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Product Weight
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>209 Grams</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Battery Life
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>5 Hours</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Charging Time
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>2.5 Hours</Text>
-                    </View>
-                  </View>
-                  <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
-                      <Text style={styles.productDetailsHead}>
-                        Maximum Range
-                      </Text>
-                    </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>10 Meters</Text>
-                    </View>
-                  </View>
+                    </>
+                  )}
                 </View>
               ) : productDetails ? (
-                <View style={{marginTop: 2}}>
-                  <Text style={styles.productsDetailsAns}>
-                    <MaterialCommunityIcons
-                      name="star-four-points"
-                      size={13}
-                      color="black"
-                    />{' '}
-                    Ultimate JBL Pro Sound: Enjoy signature JBL bass without any
-                    distortion.
-                  </Text>
-                  <Text style={styles.productsDetailsAns}>
-                    <MaterialCommunityIcons
-                      name="star-four-points"
-                      size={13}
-                      color="black"
-                    />{' '}
-                    Port-anywhere: Feather light, ultra-portable grab-and-go
-                    design.
-                  </Text>
-                  <Text style={styles.productsDetailsAns}>
-                    <MaterialCommunityIcons
-                      name="star-four-points"
-                      size={13}
-                      color="black"
-                    />{' '}
-                    Charging Time: 2.5 Hrs IP67 water-resistant and
-                    dust-resistant: Engineered to withstand splashes and sand.
-                  </Text>
-                  <Text style={styles.productsDetailsAns}>
-                    <MaterialCommunityIcons
-                      name="star-four-points"
-                      size={13}
-                      color="black"
-                    />{' '}
-                    Quick-Connect: Experience your music and movies without any
-                    lagging with Bluetooth 5.1’s Insta-sync.
-                  </Text>
-                  <Text style={styles.productsDetailsAns}>
-                    <MaterialCommunityIcons
-                      name="star-four-points"
-                      size={13}
-                      color="black"
-                    />{' '}
-                    Mega Playtime: One single charge = upto 5 Hour battery
-                    backup under optimum audio settings.
-                  </Text>
+                <View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>Brand</Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.brand ? product.brand : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>Model Name</Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.model_name ? product.model_name : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>
+                        Product Dimensions
+                      </Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.product_dimension
+                          ? product.product_dimension
+                          : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>Item Weight</Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.product_weight
+                          ? product.product_weight
+                          : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>
+                        Material Type
+                      </Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.material_type ? product.material_type : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>Color</Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.product_color ? product.product_color : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>
+                        Warrenty Type
+                      </Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.warranty ? product.warranty : 'N/A'}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
               ) : coutryOfOrgin ? (
                 <>
                   <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
+                    <View style={{flex: 0.5}}>
                       <Text style={styles.productDetailsHead}>
                         Country of Orgin
                       </Text>
                     </View>
-                    <View style={{flex: 0.6}}>
-                      <Text style={styles.productsDetailsAns}>India</Text>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.country_of_orgin
+                          ? product.country_of_orgin
+                          : 'Unkown'}
+                      </Text>
                     </View>
                   </View>
                 </>
               ) : manufacturer ? (
                 <>
                   <View style={styles.productsDetasilRow}>
-                    <View style={{flex: 0.4}}>
+                    <View style={{flex: 0.5}}>
                       <Text style={styles.productDetailsHead}>Manufacture</Text>
                     </View>
-                    <View style={{flex: 0.6}}>
+                    <View style={{flex: 0.5}}>
                       <Text style={styles.productsDetailsAns}>
-                        Harman International Industries, Inc
+                        {product.manufature_name
+                          ? product.manufature_name
+                          : 'Unknown'}
                       </Text>
                     </View>
                   </View>
@@ -747,24 +788,45 @@ function ProductDetails({route}) {
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}>
-                {addsOnProducts.map((items, index) => (
-                  <Pressable key={index} style={styles.addsOnView}>
+                {relevantProducts.map((items, index) => (
+                  <Pressable
+                    key={index}
+                    style={styles.addsOnView}
+                    // onPress={() => handleProductClick(items._id)}
+                  >
                     <View style={{padding: 3}}>
-                      <Image
-                        style={styles.addsOnImage}
-                        source={{
-                          uri: items.productImage,
-                        }}
-                        // source={{
-                        //   uri: 'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-eternal-lighting-echomate-247x247.jpg',
-                        // }}
-                      />
+                      {items.product_image && items.product_image.length > 0 ? (
+                        <Image
+                          style={styles.addsOnImage}
+                          source={{
+                            uri: `http://192.168.1.103:9000/${items.product_image[0].replace(
+                              /\\/g,
+                              '/',
+                            )}`,
+                          }}
+                          // source={{
+                          //   uri: 'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-eternal-lighting-echomate-247x247.jpg',
+                          // }}
+                        />
+                      ) : (
+                        <View
+                          style={{
+                            width: '100%',
+                            height: 100,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: '#f3f3f3',
+                            borderRadius: 10,
+                          }}>
+                          <Text style={{color: '#ccc'}}>No Image</Text>
+                        </View>
+                      )}
                     </View>
                     <View style={{backgroundColor: 'transparent', padding: 5}}>
                       <Text style={styles.addsOnText}>
-                        {items.productName.length < 15
-                          ? items.productName
-                          : items.productName.substring(0, 14) + '...'}
+                        {items.product_name.length < 15
+                          ? items.product_name
+                          : items.product_name.substring(0, 14) + '...'}
                       </Text>
                       {/* <View
                           style={{
@@ -811,7 +873,7 @@ function ProductDetails({route}) {
                                 size={13}
                                 color="black"
                               /> */}
-                            ₹ {items.productPrice}
+                            ₹ {items.product_price}
                           </Text>
                         </View>
                         <View
@@ -855,104 +917,95 @@ function ProductDetails({route}) {
               }}>
               Customer Reviews
             </Text>
-            {Array.from({length: 5}).map((_, index) => (
-              <View key={index}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginVertical: 10,
-                    alignItems: 'center',
-                  }}>
-                  <View>
-                    <Image
+            {product.Reviews.length > 0 ? (
+              <>
+                {product.Reviews.map((ratingItem, index) => (
+                  <View key={index}>
+                    <View
                       style={{
-                        width: 30,
-                        height: 30,
-                        resizeMode: 'stretch',
-                        alignSelf: 'center',
-                        borderRadius: 50,
-                      }}
-                      // source={{
-                      //   uri: showItems.productImage[0]?.imageUrl,
-                      // }}
-                      source={{
-                        uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
-                      }}
-                    />
-                  </View>
-                  <View style={{marginLeft: 10}}>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontSize: 15,
-                        fontFamily: 'Montserrat-SemiBold',
+                        flexDirection: 'row',
+                        marginVertical: 10,
+                        alignItems: 'center',
                       }}>
-                      Kiru
-                    </Text>
+                      <View>
+                        <AntDesign name="user" color="black" size={15} />
+                      </View>
+                      <View style={{marginLeft: 10}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 15,
+                            fontFamily: 'Montserrat-SemiBold',
+                          }}>
+                          {ratingItem.user_name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                      }}>
+                      {Array.from({length: 5}).map((_, index) => (
+                        <AntDesign
+                          key={index}
+                          name="star"
+                          size={13}
+                          color={
+                            index < ratingItem.ratings ? '#fdd663' : '#d3d3d3'
+                          } // Change color based on rating
+                        />
+                      ))}
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: 13,
+                          marginBottom: 1,
+                          marginTop: 5,
+                          fontFamily: 'Montserrat-SemiBold',
+                        }}>
+                        {ratingItem.review_title}
+                      </Text>
+                      <Text
+                        style={{
+                          color: '#616161',
+                          fontSize: 12,
+                          marginBottom: 1,
+                          marginTop: 2,
+                          fontFamily: 'Montserrat-Regular',
+                        }}>
+                        {/* Review on 9 July 2024 */}
+                        {ratingItem.review_on
+                          ? moment(ratingItem.review_on).format('ll')
+                          : // ? new Date(ratingItem.review_on).toLocaleDateString()
+                            'No date provided'}
+                      </Text>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: 12,
+                          marginBottom: 1,
+                          marginTop: 5,
+                          fontFamily: 'Montserrat-Regular',
+                          lineHeight: 18,
+                        }}>
+                        {ratingItem.review_description}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                  }}>
-                  {Array.from({length: 5}).map((_, index) => (
-                    <AntDesign
-                      key={index}
-                      name="star"
-                      size={13}
-                      color="#fdd663"
-                    />
-                  ))}
-                  {/* <Text
-                    style={{
-                      color: 'maroon',
-                      fontSize: 13,
-                      fontFamily: 'Montserrat-Regular',
-                      marginLeft: 5,
-                    }}>
-                    Verified Purchase
-                  </Text> */}
-                </View>
-                <View>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 13,
-                      marginBottom: 1,
-                      marginTop: 5,
-                      fontFamily: 'Montserrat-SemiBold',
-                    }}>
-                    Amazing!
-                  </Text>
-                  <Text
-                    style={{
-                      color: '#616161',
-                      fontSize: 12,
-                      marginBottom: 1,
-                      marginTop: 2,
-                      fontFamily: 'Montserrat-Regular',
-                    }}>
-                    Review on 9 July 2024
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 12,
-                      marginBottom: 1,
-                      marginTop: 5,
-                      fontFamily: 'Montserrat-Regular',
-                      lineHeight: 18,
-                    }}>
-                    Every speaker has conditions under which it works best. The
-                    JBL Flips sound better on the table. This baby on the other
-                    hand sounds amazing on the floor. Just place it on the floor
-                    you will think it’s a much larger speaker, sounds
-                    incredible. Great bass, dynamic mids and beautiful highs.
-                    Just buy it.
-                  </Text>
-                </View>
-              </View>
-            ))}
+                ))}
+              </>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: 'black',
+                  fontFamily: 'Montserrat-Medium',
+                }}>
+                Be the first to review this product!
+              </Text>
+            )}
             <TouchableOpacity
               style={{
                 borderRadius: 20,
@@ -965,7 +1018,12 @@ function ProductDetails({route}) {
                 marginTop: 25,
                 marginHorizontal: 50,
               }}
-              onPress={() => navigation.navigate('ProductReview')}>
+              onPress={() =>
+                navigation.navigate('ProductReview', {
+                  productId: product._id,
+                  productImage: mainMedia,
+                })
+              }>
               <Text
                 style={{
                   fontSize: 13,
@@ -1153,6 +1211,23 @@ const styles = StyleSheet.create({
     // padding: 5,
     borderRadius: 10,
     // width: '15%',
+  },
+  mainMedia: {
+    width: '100%',
+    height: '100%',
+  },
+  thumbnailContainer: {
+    flexDirection: 'row',
+    marginBottom: 20,
+    marginTop: 25,
+  },
+  thumbnail: {
+    width: 60,
+    height: 60,
+    marginRight: 10,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
   },
 });
 export default ProductDetails;

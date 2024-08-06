@@ -6,18 +6,36 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {allProducts, productList} from '../../data/global-data';
+// import {allProducts, productList} from '../../data/global-data';
 import {useNavigation} from '@react-navigation/native';
 import THEMECOLOR from '../../utilities/color';
+import axios from 'axios';
 
 const Productfilter = ({route}) => {
   const filterType = route.params.filterType;
   const navigation = useNavigation();
-  const [productObject, setProductObject] = useState(allProducts[0]);
+  // const [productObject, setProductObject] = useState(allProducts[0]);
   const [selectedObject, setSelectedObject] = useState(0);
+  const [allProducts, setAllProducts] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const fetchData = async () => {
+    try {
+      let res = await axios.get(
+        'http://192.168.1.103:9000/api/product/getsellproduct',
+      );
+      if (res.status === 200) {
+        setAllProducts(res.data.allSellProduct);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
 
   const selectedProduct = (product, index) => {
     setProductObject(product);
@@ -101,20 +119,34 @@ const Productfilter = ({route}) => {
                 borderRadius: 10,
                 elevation: 2,
               }}>
-              <Image
-                style={{
-                  width: '100%',
-                  height: 150,
-                  resizeMode: 'cover',
-                  borderRadius: 10,
-                }}
-                // source={{
-                //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
-                // }}
-                source={{
-                  uri: ele.imageUrl,
-                }}
-              />
+              {ele.product_image && ele.product_image.length > 0 ? (
+                <Image
+                  style={{
+                    width: '100%',
+                    height: 100,
+                    resizeMode: 'center',
+                    borderRadius: 10,
+                  }}
+                  source={{
+                    uri: `http://192.168.1.103:9000/${ele.product_image[0].replace(
+                      /\\/g,
+                      '/',
+                    )}`,
+                  }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: '100%',
+                    height: 100,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#f3f3f3',
+                    borderRadius: 10,
+                  }}>
+                  <Text style={{color: '#ccc'}}>No Image</Text>
+                </View>
+              )}
               <View style={{marginTop: 5, padding: 5}}>
                 <Text
                   style={{
@@ -127,9 +159,9 @@ const Productfilter = ({route}) => {
                     marginBottom: 5,
                   }}>
                   {/* {`Aputure LS 300X BI - Color LED Moonlight`} */}
-                  {ele.productName.length < 15
-                    ? ele.productName
-                    : ele.productName.substring(0, 15) + '...'}
+                  {ele.product_name.length < 15
+                    ? ele.product_name
+                    : ele.product_name.substring(0, 15) + '...'}
                 </Text>
                 <View style={{flexDirection: 'row', marginBottom: 2}}>
                   {Array.from({length: 5}).map((_, index) => (
@@ -166,7 +198,7 @@ const Productfilter = ({route}) => {
                       fontFamily: 'Montserrat-SemiBold',
                       // letterSpacing: 1,
                     }}>
-                    ₹ {ele.productPrice}
+                    ₹ {ele.product_price}
                   </Text>
                   <TouchableOpacity
                     style={{

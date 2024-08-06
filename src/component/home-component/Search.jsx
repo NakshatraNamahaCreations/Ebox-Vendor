@@ -68,6 +68,17 @@ export default function Search() {
             // letterSpacing: 1,
           }}
         />
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={{
+            position: 'absolute',
+            top: 12,
+            //   bottom: 100,
+            right: 10,
+            zIndex: 111,
+          }}>
+          <Feather name="mic" size={23} color="black" />
+        </TouchableOpacity>
       </View>
       <ScrollView>
         {searchProduct !== '' && filteredProducts.length > 0

@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   Pressable,
   StyleSheet,
@@ -7,17 +8,68 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import THEMECOLOR from '../../utilities/color';
+import axios from 'axios';
 
-function ProductReview({navigation}) {
+function ProductReview({navigation, route}) {
+  const productId = route.params.productId;
+  const productImage = route.params.productImage;
+  console.log('Product review page', productImage, productId);
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [reviewDescription, setReviewDescription] = useState('');
+  const [rating, setRating] = useState(0);
+
+  const writeReview = async () => {
+    if (!rating || !reviewTitle || !reviewDescription) {
+      Alert.alert('Error', 'Please fill all fields');
+    } else {
+      try {
+        const config = {
+          url: `product/review/${productId}`,
+          method: 'put',
+          baseURL: 'http://192.168.1.103:9000/api/',
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            user_id: 'bt987t3r78t3f23',
+            user_name: 'Jimmy',
+            review_title: reviewTitle,
+            review_description: reviewDescription,
+            ratings: rating,
+          },
+        };
+        const response = await axios(config);
+        if (response.status === 200) {
+          Alert.alert(
+            'Thanks for sharing your rating with us and the community!',
+          );
+          // Reset form or navigate away
+          navigation.goBack();
+        }
+      } catch (error) {
+        console.error(error);
+        console.log('error', error);
+        Alert.alert('Error', 'Error while adding product');
+      }
+    }
+  };
+
+  // product_image: galleryImages.map((image, index) => {
+  //   return {
+  //     image: image,
+  //     index: index
+  //     }
+  //     }
+  //     ),
+
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
       <View style={{paddingTop: 20, paddingBottom: 10}}>
-        <View style={{marginLeft: 10}}>
+        <View
+          style={{marginLeft: 10, flexDirection: 'row', alignItems: 'center'}}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons
               name="arrow-back"
@@ -36,18 +88,30 @@ function ProductReview({navigation}) {
               }}
             />
           </TouchableOpacity>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 15,
+              fontFamily: 'Montserrat-SemiBold',
+              marginLeft: 20,
+            }}>
+            Write Reviews
+          </Text>
         </View>
       </View>
       <View style={{padding: 16}}>
         <View style={{flexDirection: 'row'}}>
           <Image
             style={{width: 50, height: 50, borderRadius: 5}}
-            // source={{
-            //   uri: product.productImage,
-            // }}
             source={{
-              uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
+              uri: `http://192.168.1.103:9000/${productImage.replace(
+                /\\/g,
+                '/',
+              )}`,
             }}
+            // source={{
+            //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
+            // }}
           />
           {/* <Text style={{color: 'black'}}>ProductReview</Text> */}
         </View>
@@ -62,7 +126,15 @@ function ProductReview({navigation}) {
           </Text>
           <View style={{flexDirection: 'row', marginVertical: 15}}>
             {Array.from({length: 5}).map((_, index) => (
-              <AntDesign key={index} name="staro" size={20} color="#ffa41c" />
+              <TouchableOpacity
+                key={index}
+                onPress={() => setRating(index + 1)}>
+                <AntDesign
+                  name={rating > index ? 'star' : 'staro'}
+                  size={20}
+                  color="#ffa41c"
+                />
+              </TouchableOpacity>
             ))}
           </View>
           <Text
@@ -88,6 +160,8 @@ function ProductReview({navigation}) {
             }}
             placeholderTextColor="#a1a1a1"
             placeholder="What's most important to know?"
+            value={reviewTitle}
+            onChangeText={reTit => setReviewTitle(reTit)}
           />
           <Text
             style={{
@@ -115,7 +189,9 @@ function ProductReview({navigation}) {
             placeholder="What did you use this product for?"
             multiline
             numberOfLines={4}
-            maxLength={40}
+            // maxLength={40}
+            value={reviewDescription}
+            onChangeText={revDesc => setReviewDescription(revDesc)}
           />
 
           <TouchableOpacity
@@ -128,14 +204,12 @@ function ProductReview({navigation}) {
               elevation: 3,
               marginHorizontal: 50,
             }}
-            onPress={() => {
-              navigation.goBack();
-            }}>
+            onPress={writeReview}>
             <Text
               style={{
                 color: 'black',
                 fontSize: 15,
-                letterSpacing: 1,
+                // letterSpacing: 1,
                 fontFamily: 'Montserrat-Medium',
                 textAlign: 'center',
               }}>
