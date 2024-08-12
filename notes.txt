@@ -4,3 +4,8 @@
 4. Snackbar react native paper, chip
 
 android/app/build/outputs/apk/debug/app-debug.apk
+
+------------------------------
+not cleared.. fix later.
+-------------------------------
+image is not being updating when selecting from relevant products

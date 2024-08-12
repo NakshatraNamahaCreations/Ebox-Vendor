@@ -26,12 +26,16 @@ import {
 } from '../../data/global-data';
 import axios from 'axios';
 import Video from 'react-native-video';
+import {Button, useTheme} from 'react-native-paper';
+import {useNavigation} from '@react-navigation/native';
 // import Video from 'react-native-video';
 // import HTMLView from 'react-native-htmlview';
 // import WebView from 'react-native-webview';
 
 export default function AddProduct({ProductType}) {
   const deviceTheme = useColorScheme();
+  const theme = useTheme();
+  const navigation = useNavigation();
   // console.log('ProductType', ProductType);
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryVideos, setGalleryVideos] = useState([]);
@@ -50,6 +54,7 @@ export default function AddProduct({ProductType}) {
   const [manufactureName, setManufactureName] = useState('');
   const [color, setColor] = useState('');
   const [warranty, setWarranty] = useState('');
+  const [isResponse, setIsResponse] = useState(false);
 
   // const [on, setOff] = useState(false);
   // const [whatsIncluded, setWhatsIncluded] = useState('');
@@ -176,23 +181,24 @@ export default function AddProduct({ProductType}) {
   };
 
   const asterisk = () => <Text style={{color: '#f44336'}}>*</Text>;
-
+  console.log('addItems', addItems);
   const addProduct = async () => {
     if (
       !productName ||
-      // !productPrice ||
-      // !mrpRate ||
+      !productPrice ||
+      !mrpRate ||
       !selectedCategory ||
-      // !productBrand ||
-      // !stockInHand ||
-      // !modelName ||
-      // !materialType ||
-      // !productDimension ||
-      // !productWeight ||
-      // !coutryOfOrgin ||
-      // !manufactureName ||
-      galleryImages.length === 0
-      // !galleryVideos
+      !productBrand ||
+      !stockInHand ||
+      !modelName ||
+      !materialType ||
+      !productDimension ||
+      !productWeight ||
+      !coutryOfOrgin ||
+      !manufactureName ||
+      galleryImages.length === 0 ||
+      !galleryVideos
+      // !selectedProductType ||
     ) {
       Alert.alert(
         'Error',
@@ -201,8 +207,10 @@ export default function AddProduct({ProductType}) {
       return;
     }
     try {
+      setIsResponse(true);
       const formData = new FormData();
       formData.append('vendor_id', '54436425on7y9687f6956');
+      formData.append('vendor_name', 'Jimmy Morgan');
       formData.append('product_type', ProductType);
       formData.append('product_name', productName);
       formData.append('product_price', productPrice);
@@ -216,7 +224,7 @@ export default function AddProduct({ProductType}) {
       formData.append('product_dimension', productDimension);
       formData.append('product_weight', productWeight);
       formData.append('country_of_orgin', coutryOfOrgin);
-      formData.append('manufacture_name', manufactureName);
+      formData.append('manufacturer_name', manufactureName);
       formData.append('product_color', color);
       formData.append(
         'Specifications',
@@ -228,7 +236,6 @@ export default function AddProduct({ProductType}) {
         ),
       );
 
-      // Append images to FormData
       galleryImages.forEach((uri, index) => {
         formData.append('images', {
           uri,
@@ -237,15 +244,13 @@ export default function AddProduct({ProductType}) {
         });
       });
 
-      // Append video to FormData
       if (galleryVideos) {
         formData.append('video', {
-          uri: galleryVideos[0], // Assuming only one video is allowed
+          uri: galleryVideos[0],
           name: 'video.mp4',
           type: 'video/mp4',
         });
       }
-
       const config = {
         url: 'product/addproduct',
         method: 'post',
@@ -253,24 +258,34 @@ export default function AddProduct({ProductType}) {
         headers: {'Content-Type': 'multipart/form-data'},
         data: formData,
       };
-      // console.log('Response:', response);
-      // const response = await axios(config);
       await axios(config).then(function (response) {
         if (response.status === 200) {
           Alert.alert(response.data.message);
+          setIsResponse(true);
           console.log('Response:', response);
-          // navigation.navigate('home');
+          // setProductName('');
+          // setGalleryVideos([]);
+          // setGalleryImages([]);
+          // setProductPrice('');
+          // setMrpRate('');
+          // setProductDiscount('');
+          // setSelectedCategory('');
+          // setProductBrand('');
+          // setStockInHand('');
+          // setModelName('');
+          // setMaterialType('');
+          // setProductDimension('');
+          // setCoutryOfOrgin('');
+          // setManufactureName('');
+          // setColor('');
+          // setWarranty('');
+          // setAddItems([]);
+          // setProductWeight('');
+          navigation.navigate('Home');
         } else {
           Alert.alert('Error', 'Error while adding product');
         }
       });
-      // console.log('Response>>>>>:', response);
-      // if (response.status === 200) {
-      //   Alert.alert('Success', 'Product added successfully');
-      //   // Reset form or navigate away
-      // } else {
-      //   Alert.alert('Error1111', 'Error while adding product');
-      // }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         console.error('Axios error:', error.message);
@@ -288,6 +303,8 @@ export default function AddProduct({ProductType}) {
         console.error('Unknown error:', error);
         Alert.alert('Error', 'An unknown error occurred');
       }
+    } finally {
+      setIsResponse(false);
     }
   };
 
@@ -725,7 +742,7 @@ export default function AddProduct({ProductType}) {
           />
         </View>
         <View style={{flex: 0.6, marginLeft: 2}}>
-          <Text style={styles.productLable}>Manufacture {asterisk()}</Text>
+          <Text style={styles.productLable}>Manufacturer {asterisk()}</Text>
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Manufacture name"
@@ -1059,7 +1076,7 @@ export default function AddProduct({ProductType}) {
         </View>
       </View> */}
       <View style={{marginVertical: 5, marginTop: 20, marginBottom: 40}}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             backgroundColor: THEMECOLOR.mainColor,
             padding: 15,
@@ -1077,7 +1094,22 @@ export default function AddProduct({ProductType}) {
             }}>
             Add Product
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Button
+          // icon="camera"
+          loading={isResponse === true ? true : false}
+          // disabled={isResponse === true ? false : true}
+          mode="contained"
+          onPress={addProduct}
+          textColor={THEMECOLOR.textColor}
+          style={{
+            // fontSize: 13,
+            backgroundColor: THEMECOLOR.mainColor,
+            marginHorizontal: 70,
+            // color: THEMECOLOR.textColor,
+          }}>
+          Add Product
+        </Button>
       </View>
     </ScrollView>
   );

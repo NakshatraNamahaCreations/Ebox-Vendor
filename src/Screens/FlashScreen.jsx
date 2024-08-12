@@ -19,8 +19,8 @@ export default function FlashScreen({navigation}) {
       useNativeDriver: true,
     }).start();
     setTimeout(() => {
-      navigation.navigate('BottomTab');
-      // navigation.navigate('Login');
+      // navigation.navigate('BottomTab');
+      navigation.navigate('Login');
     }, 3000);
   }, [fadeAnim]);
 

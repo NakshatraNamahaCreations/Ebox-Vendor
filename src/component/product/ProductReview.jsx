@@ -17,6 +17,7 @@ import axios from 'axios';
 
 function ProductReview({navigation, route}) {
   const productId = route.params.productId;
+  const refreshReviews = route.params.refreshReviews;
   const productImage = route.params.productImage;
   console.log('Product review page', productImage, productId);
   const [reviewTitle, setReviewTitle] = useState('');
@@ -34,8 +35,8 @@ function ProductReview({navigation, route}) {
           baseURL: 'http://192.168.1.103:9000/api/',
           headers: {'Content-Type': 'application/json'},
           data: {
-            user_id: 'bt987t3r78t3f23',
-            user_name: 'Jimmy',
+            user_id: 'KEFIFGH34T3NMSN2374',
+            user_name: 'Bullsai',
             review_title: reviewTitle,
             review_description: reviewDescription,
             ratings: rating,
@@ -47,6 +48,7 @@ function ProductReview({navigation, route}) {
             'Thanks for sharing your rating with us and the community!',
           );
           // Reset form or navigate away
+          refreshReviews();
           navigation.goBack();
         }
       } catch (error) {

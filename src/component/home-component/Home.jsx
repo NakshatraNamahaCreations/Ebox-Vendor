@@ -7,8 +7,11 @@ import {
   ScrollView,
   ImageBackground,
   Pressable,
+  RefreshControl,
+  ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Header from './Header';
 import THEMECOLOR from '../../utilities/color';
 import PopularItems from './PopularItems';
@@ -18,12 +21,62 @@ import DiscountItems from './DiscountItems';
 import {useNavigation} from '@react-navigation/native';
 import {sliderImage} from '../../data/global-data';
 import TopRated from './TopRated';
+import axios from 'axios';
 
 const {width} = Dimensions.get('window');
 
 export default function Home() {
+  const navigation = useNavigation();
   const scrollViewRef = useRef(null);
   const [imgActive, setImgActive] = React.useState(0);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [data, setData] = useState({
+    popularItems: [],
+    recommended: [],
+    exploreShop: [],
+    topRated: [],
+    discounted: [],
+  });
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // setLoading(true);
+    fetchData().finally(() => {
+      setRefreshing(false);
+      // setLoading(false);
+    });
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        'http://192.168.1.103:9000/api/product/getsellproduct',
+      );
+      if (res.status === 200) {
+        setData({
+          popularItems: res.data.allSellProduct,
+          recommended: res.data.allSellProduct,
+          exploreShop: res.data.allSellProduct,
+          topRated: res.data.allSellProduct,
+          discounted: res.data.allSellProduct,
+        });
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Trigger fetchData when refreshing changes
+  useEffect(() => {
+    // if (refreshing) {
+    fetchData();
+    // }
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -53,13 +106,15 @@ export default function Home() {
     img: item.imageUrl,
   }));
 
-  const navigation = useNavigation();
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
       <View style={{padding: 10}}>
         <Header />
       </View>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         <View style={{marginBottom: 30}}>
           {/* <Image
             source={require('../../../assets/offer.jpg')}
@@ -130,7 +185,10 @@ export default function Home() {
               </TouchableOpacity>
             </View>
             {/* new products */}
-            <PopularItems />
+            <PopularItems
+              refreshing={refreshing}
+              allProducts={data.popularItems}
+            />
           </View>
           <View style={{marginBottom: 20}}>
             <View
@@ -232,10 +290,9 @@ export default function Home() {
                     elevation: 3,
                     marginTop: 20,
                   }}
-                  // onPress={() => {
-                  //   navigation.navigate('Add Product');
-                  // }}
-                >
+                  onPress={() => {
+                    navigation.navigate('Add');
+                  }}>
                   <Text
                     style={{
                       color: THEMECOLOR.textColor,
@@ -335,6 +392,21 @@ export default function Home() {
           </View>
         </View>
       </ScrollView>
+      {loading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="#0000ff" />
+        </View>
+      )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+});

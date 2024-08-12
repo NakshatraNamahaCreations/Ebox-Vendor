@@ -7,44 +7,40 @@ import {
   ScrollView,
   Pressable,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
-
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
-// import Dropdown from 'react-native-select-dropdown';
-import {addsOnProducts} from '../../data/global-data';
 import THEMECOLOR from '../../utilities/color';
 import Video from 'react-native-video';
 import axios from 'axios';
 import moment from 'moment';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../../state_management/cartSlice';
+import {Badge} from 'react-native-paper';
 
 // function ProductDetails({selectedProduct, closeModal}) {
 function ProductDetails({route}) {
   const product = route.params.item;
   console.log('product>>>>>', product);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const cart = useSelector(state => state.cart);
+  console.log('cart in product detailed >>>>>>', cart);
+  const [buttonText, setButtonText] = React.useState('ADD TO CART');
 
   const [productSpecification, setProductSpecification] = useState(false);
   const [productDetails, setProductDetails] = useState(true);
   const [coutryOfOrgin, setCoutryOfOrgin] = useState(false);
   const [manufacturer, setManufacturer] = useState(false);
-  const [quantity, setQuantity] = useState('');
-  const [mainMedia, setMainMedia] = useState(product.product_image[0]);
-  const [selectedProduct, setSelectedProduct] = useState(route.params.item);
-  const [allProducts, setAllProducts] = useState([]);
+  const [mainMedia, setMainMedia] = useState(product.product_image[0] || '');
+  const [loading, setLoading] = useState(false);
   const [relevantProducts, setRelevantProducts] = useState([]);
-
-  const quantityOptions = [
-    {label: '1', value: 1},
-    {label: '2', value: 2},
-    {label: '3', value: 3},
-    {label: '4', value: 4},
-    {label: '5', value: 5},
-  ];
+  const [reviews, setReviews] = useState(product.Reviews);
 
   const navigateToSearch = () => {
     navigation.navigate('Search');
@@ -52,47 +48,110 @@ function ProductDetails({route}) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [route.params.item]);
 
   const fetchData = async () => {
+    setLoading(true);
     try {
       let res = await axios.get(
         'http://192.168.1.103:9000/api/product/getsellproduct',
       );
       if (res.status === 200) {
-        setAllProducts(res.data.allSellProduct);
-        const filteringRelevant = res.data.allSellProduct.filter(
-          item =>
-            (item.product_category === 'Sound' ||
-              item.product_category === 'Lighting' ||
-              item.product_category === 'Video' ||
-              item.product_category === 'Fabrication' ||
-              item.product_category === 'Genset' ||
-              item.product_category === 'shamiana') &&
-            item._id !== product._id,
-        );
+        // Log the current product ID and all products
+        // console.log('Current Product ID:', product._id);
+        // console.log('All Products:', res.data.allSellProduct);
+
+        // Filter the products
+        const filteringRelevant = res.data.allSellProduct.filter(item => {
+          // console.log('Checking item ID:', item._id);
+          return (
+            item.product_category === product.product_category &&
+            String(item._id) !== String(product._id) // Ensure this comparison is correct
+          );
+        });
+
+        // console.log('Filtered Relevant Products:', filteringRelevant);
         setRelevantProducts(filteringRelevant);
       }
     } catch (error) {
       console.log('Error:', error);
+    } finally {
+      setLoading(false);
     }
   };
+  useEffect(() => {
+    refreshReviews();
+  }, []);
 
-  const handleProductClick = async productId => {
+  const refreshReviews = async () => {
     try {
-      let res = await axios.get(
-        `http://192.168.1.103:9000/api/product/getproduct/${productId}`,
+      const response = await axios.get(
+        `http://192.168.1.103:9000/api/product/getreview/${product._id}`,
       );
-      if (res.status === 200) {
-        setSelectedProduct(res.data.product);
-        setMainMedia(res.data.product.product_image[0]);
-      }
+      setReviews(response.data.reviews);
     } catch (error) {
-      console.log('Error:', error);
+      console.error(error);
     }
   };
 
-  console.log('selectedProduct', selectedProduct);
+  // console.log('reviews', reviews);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0a6fe8" style={styles.loader} />
+      </View>
+    );
+  }
+
+  // const handleProductClick = async productId => {
+  //   try {
+  //     let res = await axios.get(
+  //       `http://192.168.1.103:9000/api/product/getproduct/${productId}`,
+  //     );
+  //     if (res.status === 200) {
+  //       setSelectedProduct(res.data.product);
+  //       setMainMedia(res.data.product.product_image[0]);
+  //     }
+  //   } catch (error) {
+  //     console.log('Error:', error);
+  //   }
+  // };
+
+  const averageRating =
+    reviews.length > 0
+      ? reviews.reduce((sum, review) => sum + review.ratings, 0) /
+        reviews.length
+      : 0;
+  // console.log('averageRating', averageRating);
+
+  const handleProductClick = item => {
+    navigation.navigate('ProductDetails', {item});
+  };
+
+  const handleAddToCart = () => {
+    dispatch(
+      addToCart({
+        id: product._id,
+        productName: product.product_name,
+        productPrice: product.product_price,
+        productMRP: product.mrp_rate,
+        store: product.shop_name,
+        imageUrl: product.product_image[0],
+      }),
+    );
+    setButtonText('VIEW CART');
+  };
+
+  const handleButtonPress = () => {
+    if (buttonText === 'VIEW CART') {
+      navigation.navigate('Cart'); // Ensure 'Cart' matches your navigator setup
+    } else {
+      handleAddToCart();
+    }
+  };
+
+  console.log('mainMedia', mainMedia);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -140,24 +199,33 @@ function ProductDetails({route}) {
             }}
           />
         </TouchableOpacity>
-        <TouchableOpacity style={{paddingLeft: 20}} onPress={navigateToSearch}>
-          <AntDesign
-            name="search1"
-            color="black"
-            size={20}
-            style={{
-              backgroundColor: '#f5f5f5',
-              width: 40,
-              height: 40,
-              textAlign: 'center',
-              paddingTop: 10,
-              borderRadius: 50,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          />
-        </TouchableOpacity>
+        <View
+          style={{paddingLeft: 20, flexDirection: 'row', alignItems: 'center'}}>
+          <TouchableOpacity onPress={navigateToSearch}>
+            <AntDesign
+              name="search1"
+              color={THEMECOLOR.textColor}
+              size={23}
+              style={{marginHorizontal: 5}}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <AntDesign
+              name="shoppingcart"
+              size={23}
+              color={THEMECOLOR.textColor}
+              style={{marginHorizontal: 5}}
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 10,
+          }}>
+          <Badge theme={{colors: {primary: 'green'}}}>{cart.length}</Badge>
+        </View>
       </View>
       <ScrollView>
         <View
@@ -183,78 +251,22 @@ function ProductDetails({route}) {
               color: 'black',
               fontFamily: 'Montserrat-Bold',
             }}>
-            {/* JBL Go 4, Wireless Ultra Portable Bluetooth Speaker, Pro Sound,
-              Vibrant Colors, Water & Dust Proof, Type C (without Mic, Black) */}
             {product.product_name}
           </Text>
-          {/* <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <View
-              style={{
-                backgroundColor: '#fff9ce',
-                flexDirection: 'row',
-                borderRadius: 6,
-                paddingVertical: 2,
-                paddingHorizontal: 4,
-              }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: 'black',
-                  fontFamily: 'Montserrat-Medium',
-                }}>
-                4.3
-              </Text>
-              <AntDesign
-                name="star"
-                size={12}
-                color="#fdd663"
-                style={{margin: 3}}
-              />
-            </View>
-            <View>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: 'black',
-                  marginLeft: 3,
-                  fontFamily: 'Montserrat-Medium',
-                }}>
-                {' '}
-                243 rating
-              </Text>
-            </View>
-          </View> */}
-          {/* <View style={{width: '100%', marginVertical: 20}}> */}
-          {/* <Image
-              style={{
-                width: '100%',
-                height: 250,
-                resizeMode: 'contain',
-                alignSelf: 'center',
-                borderRadius: 10,
-              }}
-              source={{
-                uri: product.productImage || 'https://via.placeholder.com/300',
-              }}
-            /> */}
-          {/* <TouchableOpacity
-              style={{position: 'absolute', bottom: 10, left: 10}}>
-              <Ionicons name="heart-outline" size={27} color="#CC0C39" />
-            </TouchableOpacity> */}
-          {/* </View> */}
           <View style={{width: '100%', height: 300, marginBottom: 10}}>
             {mainMedia.endsWith('.mp4') ? (
               <Video
+                // source={{
+                //   uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                //     /\\/g,
+                //     '/',
+                //   )}`,
+                // }} //working
                 source={{
                   uri: `http://192.168.1.103:9000/${mainMedia.replace(
                     /\\/g,
                     '/',
-                  )}`,
+                  )}?${new Date().getTime()}`,
                 }}
                 style={styles.mainMedia}
                 controls={true}
@@ -262,11 +274,17 @@ function ProductDetails({route}) {
               />
             ) : (
               <Image
+                // source={{
+                //   uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                //     /\\/g,
+                //     '/',
+                //   )}`,
+                // }} working
                 source={{
                   uri: `http://192.168.1.103:9000/${mainMedia.replace(
                     /\\/g,
                     '/',
-                  )}`,
+                  )}?${new Date().getTime()}`,
                 }}
                 style={[styles.mainMedia, {marginTop: 20}]}
                 resizeMode="cover"
@@ -283,6 +301,9 @@ function ProductDetails({route}) {
                       '/',
                     )}`,
                   }}
+                  // source={{
+                  //   uri: product.productImage || 'https://via.placeholder.com/300',
+                  // }}
                   style={[
                     styles.thumbnail,
                     mainMedia === image && {
@@ -307,11 +328,10 @@ function ProductDetails({route}) {
                   borderColor:
                     mainMedia === product.product_video ? '#007185' : '#ccc', // Highlight color
                   borderWidth: mainMedia === product.product_video ? 2 : 1,
-                  // padding: 5,
                 }}
                 onPress={() => setMainMedia(product.product_video)}>
                 <Image
-                  source={require('../../../assets/play-button.png')} // Use a placeholder image or icon for video
+                  source={require('../../../assets/play-button.png')}
                   style={{width: 40, height: 40}}
                   resizeMode="contain"
                 />
@@ -319,53 +339,6 @@ function ProductDetails({route}) {
             )}
           </ScrollView>
           <View>
-            {/* <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginVertical: 12,
-                alignItems: 'center',
-              }}>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 12,
-                    color: 'white',
-                    backgroundColor: '#CC0C39',
-                    // letterSpacing: 1,
-                    fontFamily: 'Montserrat-Regular',
-                    padding: 5,
-                    borderRadius: 5,
-                    // marginRight: 220,
-                  }}>
-                  Limited time deal
-                </Text>
-              </View>
-              <View>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: '#b9bfb4',
-                    borderRadius: 7,
-                    padding: 7,
-                  }}>
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                    }}>
-                    <AntDesign name="shoppingcart" size={12} color="#fdd663" />
-                  </Text>
-                  <Text
-                    style={{
-                      color: 'black',
-                      fontSize: 12,
-                      fontFamily: 'Montserrat-Medium',
-                      textAlign: 'center',
-                    }}>
-                    Add to Cart
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -385,12 +358,11 @@ function ProductDetails({route}) {
                     color: 'black',
                     fontFamily: 'Montserrat-Medium',
                   }}>
-                  0{/* 4.3 */}
+                  {averageRating}
                 </Text>
                 <AntDesign
                   name="star"
                   size={12}
-                  // color="#ffa41d"
                   color="#fdd663"
                   style={{marginLeft: 3, marginTop: 2}}
                 />
@@ -404,7 +376,8 @@ function ProductDetails({route}) {
                     fontFamily: 'Montserrat-Medium',
                   }}>
                   {' '}
-                  0 rating
+                  {/* {Math.round(averageRating)}  */}
+                  {reviews.length > 0 ? reviews.length : 0} rating
                 </Text>
               </View>
             </View>
@@ -418,7 +391,6 @@ function ProductDetails({route}) {
                   style={{
                     fontSize: 18,
                     color: 'black',
-                    // letterSpacing: 1,
                     fontFamily: 'Montserrat-Bold',
                   }}>
                   ₹ {product.product_price}
@@ -429,7 +401,6 @@ function ProductDetails({route}) {
                   style={{
                     fontSize: 10,
                     color: 'black',
-                    // letterSpacing: 1,
                     fontFamily: 'Montserrat-Medium',
                     textDecorationLine: 'line-through',
                   }}>
@@ -447,32 +418,11 @@ function ProductDetails({route}) {
                   }}>
                   {' '}
                   {product.discount ? product.discount + '%' + ' OFF' : ''}
-                  {/* 14% OFF */}
                 </Text>
               </View>
             </View>
-            {/* <View style={{flexDirection: 'row'}}>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: 'black',
-                  fontFamily: 'Montserrat-Light',
-                }}>
-                M.R.P:
-              </Text>
-              <Text
-                style={{
-                  fontSize: 13,
-                  color: 'black',
-                  // letterSpacing: 1,
-                  fontFamily: 'Montserrat-Light',
-                  textDecorationLine: 'line-through',
-                }}>
-                ₹{product.productPrice}
-              </Text>
-            </View> */}
             <View style={{flexDirection: 'row'}}>
-              <Text
+              {/* <Text
                 style={{
                   fontSize: 12,
                   color: 'black',
@@ -480,7 +430,7 @@ function ProductDetails({route}) {
                   fontFamily: 'Montserrat-Medium',
                 }}>
                 Quantity: 1
-              </Text>
+              </Text> */}
               {/* <Dropdown
                 data={quantityOptions}
                 onSelect={selectedItem => setQuantity(selectedItem.value)}
@@ -670,6 +620,18 @@ function ProductDetails({route}) {
                   </View>
                   <View style={styles.productsDetasilRow}>
                     <View style={{flex: 0.5}}>
+                      <Text style={styles.productDetailsHead}>
+                        Product Category
+                      </Text>
+                    </View>
+                    <View style={{flex: 0.5}}>
+                      <Text style={styles.productsDetailsAns}>
+                        {product.product_category}
+                      </Text>
+                    </View>
+                  </View>
+                  <View style={styles.productsDetasilRow}>
+                    <View style={{flex: 0.5}}>
                       <Text style={styles.productDetailsHead}>Model Name</Text>
                     </View>
                     <View style={{flex: 0.5}}>
@@ -792,8 +754,7 @@ function ProductDetails({route}) {
                   <Pressable
                     key={index}
                     style={styles.addsOnView}
-                    // onPress={() => handleProductClick(items._id)}
-                  >
+                    onPress={() => handleProductClick(items)}>
                     <View style={{padding: 3}}>
                       {items.product_image && items.product_image.length > 0 ? (
                         <Image
@@ -917,9 +878,9 @@ function ProductDetails({route}) {
               }}>
               Customer Reviews
             </Text>
-            {product.Reviews.length > 0 ? (
+            {reviews.length > 0 ? (
               <>
-                {product.Reviews.map((ratingItem, index) => (
+                {reviews.map((ratingItem, index) => (
                   <View key={index}>
                     <View
                       style={{
@@ -1022,6 +983,7 @@ function ProductDetails({route}) {
                 navigation.navigate('ProductReview', {
                   productId: product._id,
                   productImage: mainMedia,
+                  refreshReviews: refreshReviews,
                 })
               }>
               <Text
@@ -1143,7 +1105,8 @@ function ProductDetails({route}) {
         style={{
           backgroundColor: THEMECOLOR.mainColor,
           paddingVertical: 10,
-        }}>
+        }}
+        onPress={handleButtonPress}>
         <Text
           style={{
             fontSize: 13,
@@ -1157,7 +1120,7 @@ function ProductDetails({route}) {
             color={THEMECOLOR.textColor}
             style={{margin: 3}}
           />{' '}
-          ADD TO CART
+          {buttonText}
         </Text>
       </TouchableOpacity>
     </View>
@@ -1228,6 +1191,21 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+  },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  absolute: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  loader: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{translateX: -20}, {translateY: -20}],
   },
 });
 export default ProductDetails;

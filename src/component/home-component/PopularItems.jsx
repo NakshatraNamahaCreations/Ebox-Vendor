@@ -1,12 +1,18 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import {productList} from '../../data/global-data';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
+// import axios from 'axios';
 
-export default function PopularItems() {
+function PopularItems({allProducts}) {
   // const [isModalOpen, setIsModalOpen] = useState(false);
   // const [selectedItem, setSelectedItem] = useState(null);
   // const navigation = useNavigation();
@@ -15,26 +21,42 @@ export default function PopularItems() {
   //   setIsModalOpen(!isModalOpen);
   // };
   const navigation = useNavigation();
-  const [allProducts, setAllProducts] = useState([]);
+  // const [allProducts, setAllProducts] = useState([]);
+  // const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-  const fetchData = async () => {
-    try {
-      let res = await axios.get(
-        'http://192.168.1.103:9000/api/product/getsellproduct',
-      );
-      if (res.status === 200) {
-        setAllProducts(res.data.allSellProduct);
-      }
-    } catch (error) {
-      console.log('Error:', error);
-    }
-  };
+  // // Function to fetch data from the API
+  // const fetchData = useCallback(async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await axios.get(
+  //       'http://192.168.1.103:9000/api/product/getsellproduct',
+  //     );
+  //     if (res.status === 200) {
+  //       setAllProducts(res.data.allSellProduct);
+  //     }
+  //   } catch (error) {
+  //     console.log('Error:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, []);
+
+  // // Trigger fetchData when refreshing changes
+  // useEffect(() => {
+  //   if (refreshing) {
+  //     fetchData();
+  //   }
+  // }, [refreshing, fetchData]);
+
+  // if (!allProducts) {
+  //   return <ActivityIndicator size="large" color="#0000ff" />;
+  // }
 
   return (
     <View>
+      {/* {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : ( */}
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {allProducts.map((item, index) => {
           // Calculate average rating if reviews are present
@@ -137,6 +159,8 @@ export default function PopularItems() {
           );
         })}
       </ScrollView>
+      {/* // )} */}
     </View>
   );
 }
+export default React.memo(PopularItems);

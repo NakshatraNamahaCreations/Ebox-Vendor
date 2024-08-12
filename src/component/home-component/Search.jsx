@@ -6,16 +6,35 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import {productList} from '../../data/global-data';
+import axios from 'axios';
+// import AntDesign from 'react-native-vector-icons/AntDesign';
+// import {productList} from '../../data/global-data';
 
 export default function Search() {
   const navigation = useNavigation();
   const [searchProduct, setSearchProduct] = useState('');
+  const [productList, setProductList] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await axios.get(
+        'http://192.168.1.103:9000/api/product/getsellproduct',
+      );
+      if (res.status === 200) {
+        setProductList(res.data.allSellProduct);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleSearch = val => {
     setSearchProduct(val);
@@ -23,16 +42,14 @@ export default function Search() {
       setFilteredProducts([]); // Clear results when input is empty
       return;
     }
-
     const filtered = productList.filter(
       item =>
-        item.productName.toLowerCase().includes(val.toLowerCase()) ||
-        item.shopName.toLowerCase().includes(val.toLowerCase()) ||
-        item.categoryName.toLowerCase().includes(val.toLowerCase()),
+        item.product_name.toLowerCase().includes(val.toLowerCase()) ||
+        item.product_category.toLowerCase().includes(val.toLowerCase()),
     );
-
     setFilteredProducts(filtered);
   };
+
   return (
     <View style={{backgroundColor: 'white', padding: 10, height: '100%'}}>
       <View
@@ -85,7 +102,11 @@ export default function Search() {
           ? filteredProducts.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                // onPress={() => enablePopup(item)}
+                onPress={() =>
+                  navigation.navigate('ProductDetails', {
+                    item: item,
+                  })
+                }
                 style={{
                   margin: 5,
                   borderWidth: 1,
@@ -98,17 +119,34 @@ export default function Search() {
                   alignItems: 'center',
                 }}>
                 <View style={{flex: 0.4}}>
-                  <Image
-                    style={{
-                      width: 100,
-                      height: 100,
-                      resizeMode: 'center',
-                      borderRadius: 10,
-                    }}
-                    source={{
-                      uri: item.productImage,
-                    }}
-                  />
+                  {item.product_image && item.product_image.length > 0 ? (
+                    <Image
+                      style={{
+                        width: 100,
+                        height: 100,
+                        resizeMode: 'center',
+                        borderRadius: 10,
+                      }}
+                      source={{
+                        uri: `http://192.168.1.103:9000/${item.product_image[0].replace(
+                          /\\/g,
+                          '/',
+                        )}`,
+                      }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 100,
+                        height: 100,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: '#f3f3f3',
+                        borderRadius: 10,
+                      }}>
+                      <Text style={{color: '#ccc'}}>No Image</Text>
+                    </View>
+                  )}
                 </View>
                 <View style={{flex: 0.8}}>
                   <View style={{padding: 5}}>
@@ -122,10 +160,10 @@ export default function Search() {
                         color: 'black',
                         marginBottom: 5,
                       }}>
-                      {item.productName}
-                      {/* {item.productName.length < 15
-                    ? item.productName
-                    : item.productName.substring(0, 15) + '...'} */}
+                      {/* {item.product_name} */}
+                      {item.product_name.length < 70
+                        ? item.product_name
+                        : item.product_name.substring(0, 70) + '...'}
                     </Text>
 
                     {/* <View style={{flexDirection: 'row', marginBottom: 2}}>
@@ -148,7 +186,7 @@ export default function Search() {
                         fontFamily: 'Montserrat-Regular',
                         // letterSpacing: 1,
                       }}>
-                      ₹ {item.productPrice}
+                      ₹ {item.product_price}
                     </Text>
                   </View>
                 </View>

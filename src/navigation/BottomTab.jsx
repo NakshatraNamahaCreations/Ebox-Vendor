@@ -11,10 +11,14 @@ import AddProduct from '../component/product/ProductType';
 import Profile from '../component/profile-component/Profile';
 import {TouchableOpacity} from 'react-native';
 import ProductType from '../component/product/ProductType';
+import {useSelector} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTab() {
+  const cart = useSelector(state => state.cart);
+  // console.log('cart length in bottomtab', cart.length);
+
   const CustomTabBarButton = ({children, onPress, accessibilityState}) => {
     const isSelected = accessibilityState.selected;
 
@@ -84,6 +88,7 @@ export default function BottomTab() {
         options={{
           tabBarLabel: 'Cart',
           headerShown: false,
+          tabBarBadge: cart.length,
           tabBarIcon: ({color, size}) => (
             <Feather name="shopping-cart" color={color} size={size} />
           ),
