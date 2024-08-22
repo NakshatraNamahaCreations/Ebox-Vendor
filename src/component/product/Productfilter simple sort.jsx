@@ -33,7 +33,6 @@ const Productfilter = ({route}) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
-  const [filteredProducts, setFilteredProducts] = useState(allProducts);
   // console.log('cart in product filtereds page >>>>>>', cart);
   // const [productObject, setProductObject] = useState(allProducts[0]);
   const [categoryObject, setCategoryObject] = useState(null);
@@ -54,15 +53,11 @@ const Productfilter = ({route}) => {
 
   const selectedBrand = brand => {
     const brandItem = allProducts.find(item => item.brand === brand);
-    // console.log('brandItem inside function', brandItem);
     if (brandItem) {
       setBrandObject(brand);
     }
   };
-  // console.log('allProducts in proiduct filter page>>>', allProducts);
   // console.log('brandObject', brandObject);
-  // console.log('uniqueBrands', typeof uniqueBrands);
-  // console.log('categoryObject', categoryObject);
 
   const handleAddToCart = product => {
     dispatch(
@@ -205,43 +200,32 @@ const Productfilter = ({route}) => {
   // const [sortedProducts, setSortedProducts] = useState(allProducts);
 
   const sortedProducts = useMemo(
-    () => sortProducts(filteredProducts, checked),
-    [checked, filteredProducts],
+    () => sortProducts(allProducts, checked),
+    [checked, allProducts],
   );
+
+  // useEffect(() => {
+  //   console.log('All Products :', allProducts);
+  //   console.log('Selected Sort Criteria:', checked);
+  //   const sorted = sortProducts(allProducts, checked);
+  //   setSortedProducts(sorted);
+  // }, [checked, allProducts]);
 
   const handleSortOptionSelect = sortOption => {
     setTempChecked(sortOption);
+    // console.log('Sort option selected:', sortOption);
+    // setChecked(sortOption);
+    // setShowSort(false);
   };
 
   const handleApplySort = () => {
-    setChecked(tempChecked);
-    setShowSort(false);
+    setChecked(tempChecked); // Apply the selected sort option
+    setShowSort(false); // Close the modal
   };
 
-  //  const filterPrice = item.product_price >= minPrice && item.product_price <= maxPrice;
+  // console.log('sortedProducts', sortedProducts);
 
-  const applyFilters = () => {
-    const filtered = allProducts.filter(item => {
-      const filterByCategory = categoryObject
-        ? item.product_category === categoryObject
-        : true;
-      const filterByBrand = brandObject ? item.brand === brandObject : true;
-      return filterByCategory && filterByBrand;
-    });
-    setFilteredProducts(filtered);
-    closeFilterModal();
-  };
-
-  const clearFilters = () => {
-    setCategoryObject(null);
-    setBrandObject(null);
-    setFilteredProducts(allProducts);
-    closeFilterModal();
-  };
-
-  console.log('filterProduct', filteredProducts.length);
-  console.log('sortedProducts', sortedProducts.length);
-
+  // console.log('productObject======>', selectedObject, productObject);
   return (
     <View
       style={{
@@ -343,28 +327,6 @@ const Productfilter = ({route}) => {
                   borderRadius: 10,
                   elevation: 2,
                 }}>
-                <View
-                  style={{
-                    position: 'absolute',
-                    borderTopLeftRadius: 10,
-                    borderBottomRightRadius: 10,
-                    // top: 10,
-                    // left: 12,
-                    backgroundColor: '#002f36',
-                    zIndex: 1,
-                    paddingHorizontal: 10,
-                    paddingVertical: 4,
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      color: 'white',
-                      fontFamily: 'Montserrat-SemiBold',
-                      // letterSpacing: 1,
-                    }}>
-                    {ele.product_category}
-                  </Text>
-                </View>
                 {ele.product_image && ele.product_image.length > 0 ? (
                   <Image
                     style={{
@@ -432,18 +394,13 @@ const Productfilter = ({route}) => {
                   </View>
                   <Text
                     style={{
-                      marginVertical: 5,
                       flex: 0.6,
                       fontSize: 11,
                       color: 'black',
-                      borderRadius: 5,
-                      padding: 5,
                       fontFamily: 'Montserrat-SemiBold',
-                      backgroundColor: '#ffc0cb57',
-                      position: 'relative',
+                      // letterSpacing: 1,
                     }}>
-                    {ele.brand}
-                    {/* {moment(ele.createdAt).format('lll')} */}
+                    {moment(ele.createdAt).format('lll')}
                   </Text>
                   <View
                     style={{
@@ -649,8 +606,6 @@ const Productfilter = ({route}) => {
                     // marginBottom: 10,
                     marginTop: 10,
                     fontFamily: 'Montserrat-SemiBold',
-                    // borderBottomWidth: 1,
-                    // borderBottomColor: '#f2f2f2',
                   }}>
                   Sort
                 </Text>
@@ -668,6 +623,8 @@ const Productfilter = ({route}) => {
                       onPress={() => handleSortOptionSelect(sortOption)}
                       style={{
                         paddingVertical: 10,
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#f2f2f2',
                       }}>
                       <Text
                         style={{
@@ -692,14 +649,161 @@ const Productfilter = ({route}) => {
                       </Text>
                     </TouchableOpacity>
                   ))}
+                  {/* <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 3,
+                    }}>
+                    <RadioButton
+                      value="default"
+                      status={checked === 'default' ? 'checked' : 'unchecked'}
+                      onPress={() => setChecked('default')}
+                    />
+                    <Text
+                      style={{
+                        color: '#2f2f2f',
+                        fontSize: 14,
+                        textAlign: 'left',
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Relevance (default)
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 3,
+                    }}>
+                    <RadioButton
+                      value="new"
+                      status={checked === 'new' ? 'checked' : 'unchecked'}
+                      onPress={() => setChecked('new')}
+                    />
+                    <Text
+                      style={{
+                        color: '#2f2f2f',
+                        fontSize: 14,
+                        textAlign: 'left',
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Newest
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 3,
+                    }}>
+                    <RadioButton
+                      value="low"
+                      status={checked === 'low' ? 'checked' : 'unchecked'}
+                      onPress={() => setChecked('low')}
+                    />
+                    <Text
+                      style={{
+                        color: '#2f2f2f',
+                        fontSize: 14,
+                        textAlign: 'left',
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Price (low to high)
+                    </Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 3,
+                    }}>
+                    <RadioButton
+                      value="high"
+                      Type="Price (high to low)"
+                      status={checked === 'high' ? 'checked' : 'unchecked'}
+                      onPress={() => setChecked('high')}
+                    />
+                    <Text
+                      style={{
+                        color: '#2f2f2f',
+                        fontSize: 14,
+                        textAlign: 'left',
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Price (high to low)
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 3,
+                    }}>
+                    <RadioButton
+                      value="ratingLow"
+                      status={checked === 'ratingLow' ? 'checked' : 'unchecked'}
+                      onPress={() => setChecked('ratingLow')}
+                    />
+                    <Text
+                      style={{
+                        color: '#2f2f2f',
+                        fontSize: 14,
+                        textAlign: 'left',
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Rating (low to high)
+                    </Text>
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      paddingVertical: 3,
+                    }}>
+                    <RadioButton
+                      value="ratingHigh"
+                      status={
+                        checked === 'ratingHigh' ? 'checked' : 'unchecked'
+                      }
+                      onPress={() => setChecked('ratingHigh')}
+                    />
+                    <Text
+                      style={{
+                        color: '#2f2f2f',
+                        fontSize: 14,
+                        textAlign: 'left',
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Rating (high to low)
+                    </Text>
+                  </View> */}
                 </View>
-                <View style={{borderColor: '#e9e9e9', borderWidth: 0.8}}></View>
+                <View style={{borderColor: '#e9e9e9', borderWidth: 0.5}}></View>
                 <View
                   style={{
                     flexDirection: 'row',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-between',
                     padding: 10,
                   }}>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#3b3026',
+                      borderWidth: 1,
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      borderRadius: 5,
+                    }}>
+                    <Text
+                      style={{
+                        color: 'white',
+                        fontSize: 15,
+                        fontFamily: 'Montserrat-Medium',
+                      }}>
+                      Clear
+                    </Text>
+                  </TouchableOpacity>
                   <TouchableOpacity
                     onPress={handleApplySort}
                     style={{
@@ -880,7 +984,7 @@ const Productfilter = ({route}) => {
                   padding: 10,
                 }}>
                 <TouchableOpacity
-                  onPress={clearFilters}
+                  onPress={closeFilterModal}
                   style={{
                     backgroundColor: '#3b3026',
                     borderWidth: 1,
@@ -898,7 +1002,7 @@ const Productfilter = ({route}) => {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={applyFilters}
+                  onPress={closeFilterModal}
                   style={{
                     backgroundColor: '#21005d',
                     paddingHorizontal: 10,

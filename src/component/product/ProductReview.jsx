@@ -8,12 +8,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import THEMECOLOR from '../../utilities/color';
 import axios from 'axios';
+import {apiUrl} from '../../api-services/api-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ProductReview({navigation, route}) {
   const productId = route.params.productId;
@@ -24,19 +26,34 @@ function ProductReview({navigation, route}) {
   const [reviewDescription, setReviewDescription] = useState('');
   const [rating, setRating] = useState(0);
 
+  const [vendor, setVendor] = useState(null);
+
+  useEffect(() => {
+    const getVendorData = async () => {
+      try {
+        const vendorData = await AsyncStorage.getItem('vendor');
+        setVendor(vendorData ? JSON.parse(vendorData) : null);
+      } catch (error) {
+        console.error('Failed to load vendor data', error);
+      }
+    };
+
+    getVendorData();
+  }, []);
+
   const writeReview = async () => {
-    if (!rating || !reviewTitle || !reviewDescription) {
+    if (!rating || !reviewTitle) {
       Alert.alert('Error', 'Please fill all fields');
     } else {
       try {
         const config = {
-          url: `product/review/${productId}`,
+          url: `${apiUrl.WRITE_A_REVIEW}${productId}`,
           method: 'put',
-          baseURL: 'http://192.168.1.103:9000/api/',
+          baseURL: apiUrl.BASEURL,
           headers: {'Content-Type': 'application/json'},
           data: {
-            user_id: 'KEFIFGH34T3NMSN2374',
-            user_name: 'Bullsai',
+            user_id: vendor._id,
+            user_name: vendor.vendor_name,
             review_title: reviewTitle,
             review_description: reviewDescription,
             ratings: rating,
@@ -103,18 +120,31 @@ function ProductReview({navigation, route}) {
       </View>
       <View style={{padding: 16}}>
         <View style={{flexDirection: 'row'}}>
-          <Image
-            style={{width: 50, height: 50, borderRadius: 5}}
-            source={{
-              uri: `http://192.168.1.103:9000/${productImage.replace(
-                /\\/g,
-                '/',
-              )}`,
-            }}
-            // source={{
-            //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
-            // }}
-          />
+          {productImage === null ||
+          productImage === undefined ||
+          !productImage ? (
+            <View
+              style={{
+                width: '100%',
+                height: 100,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#f3f3f3',
+                borderRadius: 10,
+              }}>
+              <Text style={{color: '#ccc'}}>No Image</Text>
+            </View>
+          ) : (
+            <Image
+              style={{width: 50, height: 50, borderRadius: 5}}
+              source={{
+                uri: `${apiUrl.IMAGEURL}${productImage.replace(/\\/g, '/')}`,
+              }}
+              // source={{
+              //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
+              // }}
+            />
+          )}
           {/* <Text style={{color: 'black'}}>ProductReview</Text> */}
         </View>
         <View style={{marginVertical: 20}}>

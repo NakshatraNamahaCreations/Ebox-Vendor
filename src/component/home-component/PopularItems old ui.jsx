@@ -1,18 +1,18 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {ScrollView} from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 // import {productList} from '../../data/global-data';
 import {useNavigation} from '@react-navigation/native';
 import THEMECOLOR from '../../utilities/color';
-import {useSelector} from 'react-redux';
-// import {
-//   addToCart,
-//   decrementQuantity,
-//   incrementQuantity,
-//   removeFromCart,
-// } from '../../state_management/cartSlice';
-import {apiUrl} from '../../api-services/api-constants';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../../state_management/cartSlice';
 // import axios from 'axios';
 
 function PopularItems({allProducts}) {
@@ -24,38 +24,25 @@ function PopularItems({allProducts}) {
   //   setSelectedItem(items);
   //   setIsModalOpen(!isModalOpen);
   // };
-  // console.log('allProducts in popular page', allProducts);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
 
   const navigation = useNavigation();
 
-  // const handleAddToCart = product => {
-  //   dispatch(
-  //     addToCart({
-  //       id: product._id,
-  //       productName: product.product_name,
-  //       productPrice: product.product_price,
-  //       mrpPrice: product.mrp_rate,
-  //       store: product.shop_name,
-  //       imageUrl: product.product_image[0],
-  //     }),
-  //   );
-  //   setButtonText('VIEW CART');
-  // };
-
-  // const handleDecrementQuantity = productId => {
-  //   const productInCart = cart.find(item => item.id === productId);
-
-  //   if (productInCart.quantity === 1) {
-  //     // When the quantity is 1, dispatch an action to remove the item from the cart
-  //     dispatch(removeFromCart({id: productId}));
-  //   } else {
-  //     // Otherwise, just decrement the quantity
-  //     dispatch(decrementQuantity({id: productId}));
-  //   }
-  // };
+  const handleAddToCart = product => {
+    dispatch(
+      addToCart({
+        id: product._id,
+        productName: product.product_name,
+        productPrice: product.product_price,
+        mrpPrice: product.mrp_rate,
+        store: product.shop_name,
+        imageUrl: product.product_image[0],
+      }),
+    );
+    setButtonText('VIEW CART');
+  };
 
   // const [allProducts, setAllProducts] = useState([]);
   // const [loading, setLoading] = useState(false);
@@ -90,6 +77,9 @@ function PopularItems({allProducts}) {
 
   return (
     <View>
+      {/* {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : ( */}
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
         {allProducts.map((item, index) => {
           // Calculate average rating if reviews are present
@@ -121,12 +111,12 @@ function PopularItems({allProducts}) {
                 <Image
                   style={{
                     width: '100%',
-                    height: 200,
+                    height: 100,
                     resizeMode: 'center',
                     borderRadius: 10,
                   }}
                   source={{
-                    uri: `${apiUrl.IMAGEURL}${item.product_image[0].replace(
+                    uri: `http://192.168.1.103:9000/${item.product_image[0].replace(
                       /\\/g,
                       '/',
                     )}`,
@@ -155,7 +145,7 @@ function PopularItems({allProducts}) {
                   }}>
                   {item.product_name.length < 10
                     ? item.product_name
-                    : item.product_name.substring(0, 14) + '...'}
+                    : item.product_name.substring(0, 15) + '...'}
                 </Text>
                 <View style={{flexDirection: 'row', marginBottom: 2}}>
                   {Array.from({length: 5}).map((_, index) => (
@@ -190,15 +180,87 @@ function PopularItems({allProducts}) {
                       flex: 0.6,
                       color: 'black',
                       fontFamily: 'Montserrat-SemiBold',
+                      // letterSpacing: 1,
                     }}>
                     ₹ {item.product_price}
                   </Text>
+                  {productInCart ? (
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        flex: 0.6,
+                      }}>
+                      <TouchableOpacity
+                        onPress={() =>
+                          dispatch(decrementQuantity({id: item._id}))
+                        }>
+                        <AntDesign
+                          name="minus"
+                          size={13}
+                          color={THEMECOLOR.secondaryTextColor}
+                          style={{
+                            backgroundColor: THEMECOLOR.mainColor,
+                            padding: 5,
+                            borderRadius: 50,
+                          }}
+                        />
+                      </TouchableOpacity>
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: THEMECOLOR.secondaryTextColor,
+                          marginHorizontal: 10,
+                          fontFamily: 'Montserrat-Medium',
+                          textAlign: 'center',
+                        }}>
+                        {productInCart.quantity}
+                      </Text>
+                      <TouchableOpacity
+                        onPress={() =>
+                          dispatch(incrementQuantity({id: item._id}))
+                        }>
+                        <AntDesign
+                          name="plus"
+                          size={13}
+                          color={THEMECOLOR.secondaryTextColor}
+                          style={{
+                            backgroundColor: THEMECOLOR.mainColor,
+                            padding: 5,
+                            borderRadius: 50,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => handleAddToCart(item)}
+                      style={{
+                        flex: 0.6,
+                        backgroundColor: THEMECOLOR.mainColor,
+                        borderRadius: 15,
+                        height: 30,
+                        paddingTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: THEMECOLOR.secondaryTextColor,
+                          fontFamily: 'Montserrat-Medium',
+                          textAlign: 'center',
+                        }}>
+                        + Add
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
+              {/* <Text style={{color: 'black', fontSize: 20}}>wklgnqewlkgbwe</Text> */}
             </TouchableOpacity>
           );
         })}
       </ScrollView>
+      {/* // )} */}
     </View>
   );
 }

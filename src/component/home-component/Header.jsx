@@ -1,11 +1,13 @@
 import {View, Text, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import THEMECOLOR from '../../utilities/color';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
 
-export default function Header() {
+export default function Header(vendor) {
   const navigation = useNavigation();
 
   const goToNotification = () => {
@@ -15,8 +17,13 @@ export default function Header() {
   const navigateToSearch = () => {
     navigation.navigate('Search');
   };
+  // console.log('vendor in header page>>', vendor);
+
   return (
     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 10}}>
+      {/* // <LinearGradient
+    //   colors={['#20c5ad', '#b2d76566']}
+    //   style={{flexDirection: 'row', alignItems: 'center'}}> */}
       <View style={{flex: 0.7}}>
         <Text
           style={{
@@ -24,9 +31,9 @@ export default function Header() {
             color: 'black',
             // marginBottom: 10,
             fontFamily: 'Montserrat-Bold',
-            textShadowColor: 'gray',
-            textShadowOffset: {width: 2, height: 0},
-            textShadowRadius: 2,
+            // textShadowColor: 'gray',
+            // textShadowOffset: {width: 2, height: 0},
+            // textShadowRadius: 2,
           }}>
           WELCOME
         </Text>
@@ -36,7 +43,7 @@ export default function Header() {
             color: THEMECOLOR.mainColor,
             fontFamily: 'Montserrat-SemiBold',
           }}>
-          Jimmy Morgan
+          {vendor.vendor?.vendor_name}
         </Text>
       </View>
       <View
@@ -82,6 +89,7 @@ export default function Header() {
           />
         </TouchableOpacity>
       </View>
+      {/* // </LinearGradient> */}
     </View>
   );
 }

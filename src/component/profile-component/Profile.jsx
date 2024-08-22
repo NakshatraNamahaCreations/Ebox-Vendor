@@ -1,4 +1,5 @@
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -12,8 +13,23 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
-export default function Profile() {
+export default function Profile({vendorData}) {
+  console.log('vendorData in profile page', vendorData);
+  const navigation = useNavigation();
+  const removeItemValue = async () => {
+    try {
+      await AsyncStorage.removeItem('vendor');
+      console.log('User removed from AsyncStorage');
+      Alert.alert('Logout successful');
+      navigation.navigate('Login');
+    } catch (exception) {
+      console.error('Failed to remove the user from AsyncStorage', exception);
+    }
+  };
+
   return (
     <View style={{paddingVertical: 25, paddingHorizontal: 10}}>
       <ScrollView>
@@ -25,7 +41,7 @@ export default function Profile() {
               // letterSpacing: 1,
               fontFamily: 'Montserrat-Medium',
             }}>
-            JIMMY MORGAN
+            {vendorData.vendor_name}
           </Text>
           <View style={{flexDirection: 'row', marginTop: 5}}>
             <Text
@@ -35,7 +51,7 @@ export default function Profile() {
                 // letterSpacing: 1,
                 fontFamily: 'Montserrat-Regular',
               }}>
-              +91-8918300293
+              +91-{vendorData.mobile_number}
             </Text>
             <Entypo name="dot-single" size={20} color="black" />
             <Text
@@ -45,7 +61,7 @@ export default function Profile() {
                 // letterSpacing: 1,
                 fontFamily: 'Montserrat-Regular',
               }}>
-              jimmy@gmail.com
+              {vendorData.email}
             </Text>
           </View>
           <TouchableOpacity style={{marginTop: 5}}>
@@ -260,6 +276,7 @@ export default function Profile() {
           </View>
         </View>
         <Pressable
+          onPress={removeItemValue}
           style={{
             backgroundColor: '#e1e3f9',
             padding: 10,

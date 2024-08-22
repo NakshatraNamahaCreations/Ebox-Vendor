@@ -37,7 +37,7 @@ export default function ExploreShop() {
                 uri: item.companyLogo,
               }}
             />
-            {item.verifiedBadge && (
+            {/* {item.verifiedBadge && (
               <MaterialIcons
                 name="verified-user"
                 size={20}
@@ -49,7 +49,7 @@ export default function ExploreShop() {
                   zIndex: 1,
                 }}
               />
-            )}
+            )} */}
             <View style={{paddingLeft: 5, paddingRight: 5, marginTop: 15}}>
               <Text
                 style={{
@@ -65,8 +65,6 @@ export default function ExploreShop() {
               </Text>
               <TouchableOpacity
                 style={{
-                  borderColor: THEMECOLOR.mainColor,
-                  borderWidth: 1,
                   borderRadius: 7,
                   marginTop: 7,
                   marginBottom: 5,
@@ -81,7 +79,7 @@ export default function ExploreShop() {
                 }>
                 <Text
                   style={{
-                    color: 'black',
+                    color: THEMECOLOR.textColor,
                     fontFamily: 'Montserrat-SemiBold',
                     fontSize: 12,
                     textAlign: 'center',

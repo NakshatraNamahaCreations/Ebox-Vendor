@@ -28,14 +28,18 @@ import axios from 'axios';
 import Video from 'react-native-video';
 import {Button, useTheme} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {apiUrl} from '../../api-services/api-constants';
 // import Video from 'react-native-video';
 // import HTMLView from 'react-native-htmlview';
 // import WebView from 'react-native-webview';
 
-export default function AddProduct({ProductType}) {
+export default function AddProduct({ProductType, vendorData}) {
   const deviceTheme = useColorScheme();
   const theme = useTheme();
   const navigation = useNavigation();
+  // const vendor = JSON.parse(AsyncStorage.getItem('vendor'));
+  console.log('vendorData in add product page:', vendorData);
   // console.log('ProductType', ProductType);
   const [galleryImages, setGalleryImages] = useState([]);
   const [galleryVideos, setGalleryVideos] = useState([]);
@@ -191,13 +195,13 @@ export default function AddProduct({ProductType}) {
       !productBrand ||
       !stockInHand ||
       !modelName ||
-      !materialType ||
+      // !materialType ||
       !productDimension ||
       !productWeight ||
       !coutryOfOrgin ||
-      !manufactureName ||
-      galleryImages.length === 0 ||
-      !galleryVideos
+      !manufactureName
+      // galleryImages.length === 0 ||
+      // !galleryVideos
       // !selectedProductType ||
     ) {
       Alert.alert(
@@ -209,8 +213,8 @@ export default function AddProduct({ProductType}) {
     try {
       setIsResponse(true);
       const formData = new FormData();
-      formData.append('vendor_id', '54436425on7y9687f6956');
-      formData.append('vendor_name', 'Jimmy Morgan');
+      formData.append('vendor_id', vendorData._id);
+      formData.append('vendor_name', vendorData.vendor_name);
       formData.append('product_type', ProductType);
       formData.append('product_name', productName);
       formData.append('product_price', productPrice);
@@ -252,9 +256,9 @@ export default function AddProduct({ProductType}) {
         });
       }
       const config = {
-        url: 'product/addproduct',
+        url: apiUrl.ADD_PRODUCT,
         method: 'post',
-        baseURL: 'http://192.168.1.103:9000/api/',
+        baseURL: apiUrl.BASEURL,
         headers: {'Content-Type': 'multipart/form-data'},
         data: formData,
       };
@@ -695,7 +699,7 @@ export default function AddProduct({ProductType}) {
           />
         </View>
         <View style={{flex: 0.6, marginLeft: 2}}>
-          <Text style={styles.productLable}>Material Type {asterisk()}</Text>
+          <Text style={styles.productLable}>Material Type</Text>
           <TextInput
             placeholderTextColor="#757575"
             placeholder="Material type"

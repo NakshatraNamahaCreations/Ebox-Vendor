@@ -1,13 +1,82 @@
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  Alert,
+} from 'react-native';
 import React from 'react';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import {bookingHistory} from '../../data/global-data';
 import THEMECOLOR from '../../utilities/color';
+import {useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
+import {clearCart} from '../../state_management/cartSlice';
+import {apiUrl} from '../../api-services/api-constants';
 
-export default function OrderConfirmation() {
+export default function OrderConfirmation({route}) {
+  const userAddress = route.params.address;
+  const vendorData = route.params.vendorData;
+  console.log('userAddress in order confirmation page', userAddress);
+  // console.log('vendorData in order confirmation page', vendorData);
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+  const cart = useSelector(state => state.cart);
+  console.log('cart details in order confirmations page', cart);
+
+  const calculateSubtotal = () => {
+    return cart.reduce((sum, item) => sum + item.totalPrice, 0);
+  };
+
+  const calculateGST = subtotal => {
+    return subtotal * 0.18; // GST at 18%
+  };
+
+  const subtotal = calculateSubtotal();
+  const gst = calculateGST(subtotal).toFixed(2);
+  const total = Number(subtotal) + Number(gst);
+
+  console.log('subtotal', subtotal);
+  console.log('gst', gst);
+  console.log('total in order confimation page', total);
+
+  const proceedToPay = async () => {
+    try {
+      const config = {
+        url: apiUrl.CREATE_ORDER,
+        method: 'post',
+        baseURL: apiUrl.BASEURL,
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          product: cart,
+          delivery_address: userAddress,
+          cart_value: subtotal,
+          gst_applied_value: gst,
+          paid_amount: total,
+          payment_method: 'offline',
+          payment_status: 'success',
+          order_status: 'Order Placed',
+          vendor_id: vendorData._id,
+          vendor_name: vendorData.vendor_name,
+        },
+      };
+      const response = await axios(config);
+      if (response.status === 200) {
+        console.log('Message:', response.data.message);
+        dispatch(clearCart());
+        navigation.navigate('Success');
+      }
+    } catch (error) {
+      console.log('Unknown error:', error);
+      if (error.response && error.response.data && error.response.data.error) {
+        // Alert.alert('Error', error.response.data.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred');
+      }
+    }
+  };
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
       <View
@@ -76,10 +145,10 @@ export default function OrderConfirmation() {
             <Text
               style={{
                 color: 'black',
-                fontFamily: 'Montserrat-Regular',
+                fontFamily: 'Montserrat-SemiBold',
                 // letterSpacing: 1,
               }}>
-              2/182b, 5th street, sengunthapuram(po)
+              {userAddress.fullName}
             </Text>
             <Text
               style={{
@@ -87,7 +156,8 @@ export default function OrderConfirmation() {
                 fontFamily: 'Montserrat-Regular',
                 // letterSpacing: 1,
               }}>
-              Jayankondam, Ariyalur(Dk)
+              {userAddress.houseFlatBlock}, {userAddress.roadArea},
+              {/* 2/182b, 5th street, sengunthapuram(po) */}
             </Text>
             <Text
               style={{
@@ -95,7 +165,26 @@ export default function OrderConfirmation() {
                 fontFamily: 'Montserrat-Regular',
                 // letterSpacing: 1,
               }}>
-              Tamilnadu - 621802
+              {/* Jayankondam, Ariyalur(Dk) */}
+              {userAddress.cityDownVillage}, {userAddress.distric},
+            </Text>
+            <Text
+              style={{
+                color: 'black',
+                fontFamily: 'Montserrat-Regular',
+                // letterSpacing: 1,
+              }}>
+              {/* Tamilnadu - 621802 */}
+              {userAddress.state} {userAddress.pincode}
+            </Text>
+            <Text
+              style={{
+                color: 'black',
+                fontFamily: 'Montserrat-Regular',
+                // letterSpacing: 1,
+              }}>
+              {/* Tamilnadu - 621802 */}
+              Contact: {userAddress.mobileNumber}
             </Text>
           </View>
           <Text
@@ -109,7 +198,7 @@ export default function OrderConfirmation() {
             Order summary
           </Text>
           <View style={{padding: 10}}>
-            {bookingHistory.map((item, index) => (
+            {cart.map((item, index) => (
               <View
                 key={index}
                 // onPress={() =>
@@ -137,7 +226,10 @@ export default function OrderConfirmation() {
                       borderRadius: 10,
                     }}
                     source={{
-                      uri: item.imageUrl,
+                      uri: `http://192.168.1.103:9000/${item.imageUrl.replace(
+                        /\\/g,
+                        '/',
+                      )}`,
                     }}
                   />
                 </View>
@@ -150,7 +242,9 @@ export default function OrderConfirmation() {
                       color: 'black',
                       marginBottom: 5,
                     }}>
-                    {item.productName}
+                    {item.productName.length < 65
+                      ? item.productName
+                      : item.productName.substring(0, 65) + '...'}
                   </Text>
                   <Text
                     style={{
@@ -165,7 +259,7 @@ export default function OrderConfirmation() {
                       size={14}
                       color="black"
                     /> */}
-                    ₹ {item.productPrice}
+                    ₹ {item.totalPrice}
                   </Text>
                   <Text
                     style={{
@@ -181,7 +275,7 @@ export default function OrderConfirmation() {
             ))}
           </View>
           <View style={{padding: 10}}>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -190,8 +284,7 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Montserrat-Medium',
-                    // letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium', 
                   }}>
                   Subtotal
                 </Text>
@@ -200,14 +293,8 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Montserrat-Medium',
-                    // letterSpacing: 1,
-                  }}>
-                  {/* <MaterialIcons
-                    name="currency-rupee"
-                    size={14}
-                    color="black"
-                  /> */}
+                    fontFamily: 'Montserrat-Medium', 
+                  }}> 
                   ₹ 1025000{' '}
                 </Text>
               </View>
@@ -222,8 +309,7 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Montserrat-Medium',
-                    // letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium', 
                   }}>
                   GST 18%
                 </Text>
@@ -232,26 +318,20 @@ export default function OrderConfirmation() {
                 <Text
                   style={{
                     color: 'black',
-                    fontFamily: 'Montserrat-Medium',
-                    // letterSpacing: 1,
-                  }}>
-                  {/* <MaterialIcons
-                    name="currency-rupee"
-                    size={14}
-                    color="black"
-                  /> */}
+                    fontFamily: 'Montserrat-Medium', 
+                  }}> 
                   ₹ 10000{' '}
                 </Text>
               </View>
-            </View>
-            <View
+            </View> */}
+            {/* <View
               style={{
                 borderBottomWidth: 1,
                 marginTop: 10,
                 borderBottomColor: '#e1e1e1',
                 backgroundColor: 'white',
                 borderStyle: 'dashed',
-              }}></View>
+              }}></View> */}
             <View
               style={{
                 flexDirection: 'row',
@@ -283,7 +363,7 @@ export default function OrderConfirmation() {
                     size={14}
                     color="black"
                   /> */}
-                  ₹ 1045000{' '}
+                  ₹ {total}{' '}
                 </Text>
               </View>
             </View>
@@ -296,9 +376,10 @@ export default function OrderConfirmation() {
                 padding: 10,
                 borderRadius: 5,
               }}
-              onPress={() => {
-                navigation.navigate('Success');
-              }}>
+              onPress={
+                proceedToPay
+                // navigation.navigate('Success');
+              }>
               <Text
                 style={{
                   color: THEMECOLOR.textColor,

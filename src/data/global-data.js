@@ -249,13 +249,13 @@ const priceFilter = [
 
 const sliderImage = [
   {
-    imageUrl: require('../../assets/Kiru3_5.png'),
+    imageUrl: require('../../assets/Untitled-2-01.jpg'),
   },
   {
-    imageUrl: require('../../assets/Kiru3_4.png'),
+    imageUrl: require('../../assets/Untitled-2-02.jpg'),
   },
   {
-    imageUrl: require('../../assets/Kiru3_3.png'),
+    imageUrl: require('../../assets/Untitled-2-03.jpg'),
   },
 ];
 

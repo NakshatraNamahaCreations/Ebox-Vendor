@@ -16,18 +16,13 @@ import Header from './Header';
 import THEMECOLOR from '../../utilities/color';
 import PopularItems from './PopularItems';
 import ExploreShop from './ExploreShop';
-// import Recommended from './Recommended';
-// import DiscountItems from './DiscountItems';
+import Recommended from './Recommended';
+import DiscountItems from './DiscountItems';
 import {useNavigation} from '@react-navigation/native';
 import {sliderImage} from '../../data/global-data';
 import TopRated from './TopRated';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import WhyEventBox from './WhyEventBox';
-import NewArrivals from './NewArrivals';
-import {apiUrl} from '../../api-services/api-constants';
-// import {List} from 'react-native-paper';
-import Accordion from './Accordion';
 
 const {width} = Dimensions.get('window');
 
@@ -38,62 +33,75 @@ export default function Home() {
   const [imgActive, setImgActive] = React.useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [popularItems, setPopularItems] = useState([]);
-  const [expanded, setExpanded] = React.useState(true);
+  const [ls, setLs] = useState([]);
+  const [filterOut, setFilterOut] = useState([]);
+  const [flp, setFlp] = useState([]);
 
-  const handlePress = () => setExpanded(!expanded);
-  // const [filterOut, setFilterOut] = useState([]);
-  // const [flp, setFlp] = useState([]);
-  // const [filterOutVendor, setFilterOutVendor] = useState([]);
-
-  // const [data, setData] = useState({
-  //   popularItems: [],
-  //   recommended: [],
-  //   exploreShop: [],
-  //   topRated: [],
-  //   discounted: [],
-  // });
+  const [data, setData] = useState({
+    popularItems: [],
+    recommended: [],
+    exploreShop: [],
+    topRated: [],
+    discounted: [],
+  });
 
   useEffect(() => {
     const getVendorData = async () => {
       try {
-        const storedVendorData = await AsyncStorage.getItem('vendor');
-        if (storedVendorData) {
-          const parsedVendorData = JSON.parse(storedVendorData);
-          setVendor(parsedVendorData);
-
-          // Only fetch data after vendor is set
-          // fetchData(parsedVendorData);
-        }
+        const vendorData = await AsyncStorage.getItem('vendor');
+        setVendor(vendorData ? JSON.parse(vendorData) : null);
       } catch (error) {
         console.error('Failed to load vendor data', error);
       }
     };
-    getVendorData();
-  }, []); // This useEffect runs once when the component mounts
-  // console.log('vendor in home page', vendor?._id);
 
-  useEffect(() => {
-    // Only fetch data if vendor data is available
-    if (vendor) {
-      fetchData(vendor);
-    }
-  }, [vendor]);
+    getVendorData();
+  }, []);
+  console.log('vendor in home page', vendor);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    // setLoading(true);
+    fetchData().finally(() => {
+      setRefreshing(false);
+      // setLoading(false);
+    });
+  }, []);
 
   const fetchData = async () => {
-    // loading all selling data and filterout in frontend
     try {
       setLoading(true);
       const res = await axios.get(
-        `${apiUrl.BASEURL}${apiUrl.GET_SELLING_PRODUCTS}`,
+        'http://192.168.1.103:9000/api/product/getsellproduct',
       );
       if (res.status === 200) {
         const filteredProducts = res.data.allSellProduct.filter(
           item => item.vendor_id !== vendor?._id,
         );
-        setPopularItems(filteredProducts);
-        // setFlp(res.data.allSellProduct);
+
+        setData({
+          popularItems: filteredProducts,
+          recommended: filteredProducts,
+          exploreShop: filteredProducts,
+          topRated: filteredProducts,
+          discounted: filteredProducts,
+        });
+        setLs(filteredProducts);
+        setFlp(res.data.allSellProduct);
       }
+      // const filterRes = await axios.get(
+      //   `http://192.168.1.103:9000/api/product/getfilteroutproducts/${vendor?._id}`,
+      // );
+      // if (filterRes.status === 200) {
+      //   const resultData = filterRes.data.products;
+      //   setfilterData({
+      //     popularItems: resultData,
+      //     recommended: resultData,
+      //     exploreShop: resultData,
+      //     topRated: resultData,
+      //     discounted: resultData,
+      //   });
+      // }
     } catch (error) {
       console.log('Error:', error);
     } finally {
@@ -101,61 +109,45 @@ export default function Home() {
     }
   };
 
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    fetchData(vendor).finally(() => {
-      setRefreshing(false);
-    });
-  }, [vendor]);
+  const fetchFilteroutData = async () => {
+    try {
+      setLoading(true);
 
-  // console.log('popularItems', popularItems);
+      const filterRes = await axios.get(
+        `http://192.168.1.103:9000/api/product/getfilteroutproducts/${vendor?._id}`,
+      );
+      if (filterRes.status === 200) {
+        // const resultData = filterRes.data.products;
+        setFilterOut(filterRes.data.products);
+        // console.log('resultData', resultData);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  console.log(
+    'filterOut',
+    filterOut.filter(item => item.product_type === 'sell').length,
+  );
 
-  // const fetchFilteroutData = async () => {
-  //   // receiving from backend
-  //   try {
-  //     setLoading(true);
-  //     const filterRes = await axios.get(
-  //       `${apiUrl.BASEURL}${apiUrl.FILTEROUT_PRODUCTS}${vendor?._id}`,
-  //     );
-  //     if (filterRes.status === 200) {
-  //       setFilterOut(filterRes.data.products.reverse());
-  //     }
-  //     const filterVendorRes = await axios.get(
-  //       `${apiUrl.BASEURL}${apiUrl.FILTEROUT_VENDOR}${vendor?._id}`,
-  //     );
-  //     if (filterVendorRes.status === 200) {
-  //       setFilterOutVendor(filterVendorRes.data.remaingVendor);
-  //     }
-  //   } catch (error) {
-  //     console.log('Error:', error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  useEffect(() => {
+    fetchFilteroutData();
+  }, []);
 
-  // console.log(
-  //   'filterOut',
-  //   filterOut.filter(item => item.product_type === 'sell').length,
-  // );
-
-  // useEffect(() => {
-  //   fetchFilteroutData();
-  // }, []);
-
-  // console.log(
-  //   'filterOutVendor in home page>>>>>>>>>>>>>>>>>>',
-  //   filterOutVendor,
-  // );
-  // console.log(
-  //   'filterOutVendor lenght>>>>>>>>>>>>>>>>>>',
-  //   filterOutVendor.length,
-  // );
-  // console.log('Filtered vendor product', ls.length);
-  // console.log('All selling products count:', flp.length);
+  // console.log('data>>>>>>>>>>>>>>>>>>', data.popularItems?.length);
+  console.log('Filtered vendor product', ls.length);
+  console.log('All selling products count:', flp.length);
 
   // console.log('vendor._id', vendor?._id);
 
   // Trigger fetchData when refreshing changes
+  useEffect(() => {
+    // if (refreshing) {
+    fetchData();
+    // }
+  }, [vendor?._id]);
 
   // const memoizedData = useMemo(() => data, [data]);
   // console.log('memoizedData', memoizedData);
@@ -190,32 +182,21 @@ export default function Home() {
   // console.log('product list', data);
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
-      <View
-        style={{
-          padding: 10,
-          marginHorizontal: 10,
-          marginTop: 10,
-          backgroundColor: THEMECOLOR.secondaryColor,
-          borderRadius: 20,
-          marginBottom: 15,
-          // elevation: 2,
-          // borderBottomLeftRadius: 20,
-        }}>
+      <View style={{padding: 10}}>
         <Header vendor={vendor} />
       </View>
-
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
         <View style={{marginBottom: 30}}>
           {/* <Image
-            source={require('../../../assets/Untitled-2-02.jpg')}
+            source={require('../../../assets/offer.jpg')}
             style={{
-              width: width - 10, // Adjusted width to account for margins
+              width: width - 30, // Adjusted width to account for margins
               height: 200,
               borderRadius: 15,
-              // resizeMode: 'center',
+              resizeMode: 'center',
               // marginHorizontal: 10,
             }}
           /> */}
@@ -226,16 +207,15 @@ export default function Home() {
             pagingEnabled
             horizontal>
             {imageSliderData.map((e, index) => (
-              <View key={index.toString()}>
+              <View key={index.toString()} style={{borderRadius: 10}}>
                 <Image
                   key={index}
                   style={{
                     width: width - 10, // Adjusted width to account for margins
-                    height: 200,
+                    height: 150,
                     // borderRadius: 20,
                     marginHorizontal: 5,
-                    // resizeMode: 'center',
-                    borderRadius: 25,
+                    // resizeMode: 'cover',
                   }}
                   source={e.img}
                   onError={() => console.log('Error loading image:', e.img)}
@@ -260,13 +240,12 @@ export default function Home() {
                   color: 'black',
                   fontFamily: 'Montserrat-SemiBold',
                 }}>
-                Explore Products
+                New products for sale
               </Text>
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('Product Filter', {
-                    filterType: 'Explore Products',
-                    allPopularItems: popularItems,
+                    filterType: 'New products for sale',
                   })
                 }>
                 <Text
@@ -280,7 +259,10 @@ export default function Home() {
               </TouchableOpacity>
             </View>
             {/* new products */}
-            <PopularItems refreshing={refreshing} allProducts={popularItems} />
+            <PopularItems
+              refreshing={refreshing}
+              allProducts={data.popularItems}
+            />
           </View>
           <View style={{marginBottom: 20}}>
             <Text
@@ -289,13 +271,11 @@ export default function Home() {
                 color: 'black',
                 fontFamily: 'Montserrat-SemiBold',
                 paddingLeft: 10,
-                marginBottom: 10,
               }}>
-              Why us?
+              Why join event box
             </Text>
-            <WhyEventBox />
           </View>
-          <View style={{marginBottom: 20}}>
+          {/* <View style={{marginBottom: 20}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -310,7 +290,7 @@ export default function Home() {
                   color: 'black',
                   fontFamily: 'Montserrat-SemiBold',
                 }}>
-                Our Partner Vendor's
+                Explore Shop
               </Text>
               <TouchableOpacity onPress={() => navigation.navigate('All Shop')}>
                 <Text
@@ -324,11 +304,46 @@ export default function Home() {
               </TouchableOpacity>
             </View>
             <ExploreShop />
-          </View>
+          </View> */}
+          {/* <View style={{marginBottom: 20}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 10,
+                marginHorizontal: 8,
+              }}>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                }}>
+                Recommended for you
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Product Filter', {
+                    filterType: 'Recommended for you',
+                  })
+                }>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: THEMECOLOR.viewColor,
+                    fontFamily: 'Montserrat-Bold',
+                  }}>
+                  View all
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <Recommended />
+          </View> */}
           <View style={{marginBottom: 20}}>
             <View
               style={{
-                backgroundColor: THEMECOLOR.secondaryColor,
+                backgroundColor: '#ea536221',
                 padding: 10,
                 flexDirection: 'row',
                 borderRadius: 20,
@@ -352,7 +367,7 @@ export default function Home() {
                 </Text>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#20c5ad',
+                    backgroundColor: '#1b8d5b',
                     width: '60%', // height: '30%',
                     paddingTop: 13,
                     paddingBottom: 13,
@@ -388,54 +403,80 @@ export default function Home() {
               />
             </View>
           </View>
-        </View>
-        <View style={{paddingHorizontal: 10, marginBottom: 20}}>
-          <Text
-            style={{
-              color: THEMECOLOR.textColor,
-              fontSize: 15,
-              //   textAlign: 'center',
-              fontFamily: 'Montserrat-SemiBold',
-            }}>
-            Frequently Asked Questions
-          </Text>
-        </View>
-        <View>
-          <Accordion title="How to book a event on EventBox">
-            <Text
+          {/* <View style={{marginBottom: 20}}>
+            <View
               style={{
-                color: THEMECOLOR.textColor,
-                fontSize: 14,
-                fontFamily: 'Montserrat-Medium',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 10,
+                marginHorizontal: 8,
               }}>
-              This is the content of section 1
-            </Text>
-          </Accordion>
-          <Accordion title="Who is a EventBox Partner?">
-            <Text
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                }}>
+                Top Rated items
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Product Filter', {
+                    filterType: 'Top Rated items',
+                  })
+                }>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: THEMECOLOR.viewColor,
+                    fontFamily: 'Montserrat-Bold',
+                  }}>
+                  View all
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <TopRated />
+            <Recommended />
+          </View> */}
+          {/* <View style={{marginBottom: 20}}>
+            <View
               style={{
-                color: THEMECOLOR.textColor,
-                fontSize: 14,
-                fontFamily: 'Montserrat-Medium',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 10,
+                marginHorizontal: 8,
               }}>
-              This is the content of section 2
-            </Text>
-          </Accordion>
-          <Accordion title="Section 3">
-            <Text
-              style={{
-                color: THEMECOLOR.textColor,
-                fontSize: 14,
-                fontFamily: 'Montserrat-Medium',
-              }}>
-              This is the content of section 3
-            </Text>
-          </Accordion>
+              <Text
+                style={{
+                  fontSize: 15,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                }}>
+                Discounted items
+              </Text>
+            </View>
+            <DiscountItems />
+            <TouchableOpacity
+              style={{padding: 10}}
+              onPress={() =>
+                navigation.navigate('Product Filter', {
+                  filterType: 'Discount items',
+                })
+              }>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: THEMECOLOR.viewColor,
+                  fontFamily: 'Montserrat-Bold',
+                }}>
+                View all
+              </Text>
+            </TouchableOpacity>
+          </View> */}
         </View>
       </ScrollView>
-      <View style={{position: 'absolute', bottom: 50, right: 10}}>
-        <NewArrivals filterOut={popularItems} />
-      </View>
       {loading && (
         <View style={styles.overlay}>
           <ActivityIndicator size="large" color="#0000ff" />

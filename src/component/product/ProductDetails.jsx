@@ -22,6 +22,7 @@ import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {addToCart} from '../../state_management/cartSlice';
 import {Badge} from 'react-native-paper';
+import {apiUrl} from '../../api-services/api-constants';
 
 // function ProductDetails({selectedProduct, closeModal}) {
 function ProductDetails({route}) {
@@ -54,7 +55,7 @@ function ProductDetails({route}) {
     setLoading(true);
     try {
       let res = await axios.get(
-        'http://192.168.1.103:9000/api/product/getsellproduct',
+        `${apiUrl.BASEURL}${apiUrl.GET_SELLING_PRODUCTS}`,
       );
       if (res.status === 200) {
         // Log the current product ID and all products
@@ -86,7 +87,7 @@ function ProductDetails({route}) {
   const refreshReviews = async () => {
     try {
       const response = await axios.get(
-        `http://192.168.1.103:9000/api/product/getreview/${product._id}`,
+        `${apiUrl.BASEURL}${apiUrl.GET_REVIEW}${product._id}`,
       );
       setReviews(response.data.reviews);
     } catch (error) {
@@ -135,7 +136,7 @@ function ProductDetails({route}) {
         id: product._id,
         productName: product.product_name,
         productPrice: product.product_price,
-        productMRP: product.mrp_rate,
+        mrpPrice: product.mrp_rate,
         store: product.shop_name,
         imageUrl: product.product_image[0],
       }),

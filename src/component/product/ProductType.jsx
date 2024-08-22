@@ -1,34 +1,34 @@
-import {View, Text, TouchableOpacity, useColorScheme} from 'react-native';
+import {View, Text, useColorScheme} from 'react-native';
 import React, {useState} from 'react';
-import Selling from './Selling';
-import Rental from './Rental';
 import AddProduct from './AddProduct';
 import {RadioButton} from 'react-native-paper';
 
-export default function ProductType() {
-  const colorScheme = useColorScheme();
-  // console.log('colorScheme', colorScheme);
+export default function ProductType({vendorData}) {
+  console.log('vendorData in product type page', vendorData);
   const [onFocus, setOnFocus] = useState('sell');
 
   return (
     <View style={{flex: 1, backgroundColor: 'white', height: '100%'}}>
       <View
         style={{
-          padding: 20,
           backgroundColor: 'white',
-          elevation: 4,
-          marginBottom: 10,
+          paddingVertical: 20,
+          paddingHorizontal: 10,
         }}>
+        {/* <LinearGradient
+        style={{paddingVertical: 20, paddingHorizontal: 10}}
+        colors={['#20c5ad', '#b2d76566']}> */}
         <Text
           style={{
-            fontFamily: 'Montserrat-Medium',
+            fontFamily: 'Montserrat-SemiBold',
             // letterSpacing: 1,
             color: 'black',
-            fontSize: 20,
+            fontSize: 15,
             textAlign: 'left',
           }}>
-          Add product
+          ADD PRODUCTS
         </Text>
+        {/* </LinearGradient> */}
       </View>
       <View
         style={{
@@ -44,13 +44,13 @@ export default function ProductType() {
         />
         <Text
           style={{
-            fontFamily: 'Montserrat-Medium',
+            fontFamily: 'Montserrat-Bold',
             // letterSpacing: 1,
             color: 'black',
             fontSize: 13,
             textAlign: 'left',
           }}>
-          Selling
+          SELLING
         </Text>
         <RadioButton
           value="rental"
@@ -59,13 +59,13 @@ export default function ProductType() {
         />
         <Text
           style={{
-            fontFamily: 'Montserrat-Medium',
+            fontFamily: 'Montserrat-Bold',
             // letterSpacing: 1,
             color: 'black',
             fontSize: 13,
             textAlign: 'left',
           }}>
-          Rental
+          RENTAL
         </Text>
       </View>
       {/* <View style={{flexDirection: 'row', marginTop: 15}}>
@@ -106,7 +106,7 @@ export default function ProductType() {
           </Text>
         </TouchableOpacity>
       </View> */}
-      <AddProduct ProductType={onFocus} />
+      <AddProduct ProductType={onFocus} vendorData={vendorData} />
       {/* {onFocus === 'Sell' && (
         <>
           <Selling deviceTheme={colorScheme} />

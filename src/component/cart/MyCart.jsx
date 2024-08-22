@@ -13,7 +13,8 @@ import {
 } from '../../state_management/cartSlice';
 import Octicons from 'react-native-vector-icons/Octicons';
 
-export default function MyCart() {
+export default function MyCart({vendorData}) {
+  console.log('vendorData in cart', vendorData);
   const navigation = useNavigation();
   const cart = useSelector(state => state.cart);
   const dispatch = useDispatch();
@@ -225,7 +226,7 @@ export default function MyCart() {
                           textDecorationLine: 'line-through',
                         }}>
                         {' '}
-                        ₹ {item.productMRP}{' '}
+                        ₹ {item.mrpPrice}{' '}
                       </Text>
                       <Text
                         style={{
@@ -425,6 +426,7 @@ export default function MyCart() {
                   onPress={() => {
                     navigation.navigate(
                       'Add Address',
+                      {vendorData: vendorData},
                       // {product:product,product2:product2,product3:product3,product4
                       //  {
                       //   category: category,

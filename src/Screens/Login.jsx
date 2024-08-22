@@ -1,15 +1,59 @@
-import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 import React, {useState} from 'react';
 import THEMECOLOR from '../utilities/color';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {bookingHistory} from '../data/global-data';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {apiUrl} from '../api-services/api-constants';
 
 export default function Login({navigation}) {
   const [mobileNumber, setMobileNumber] = useState('');
 
-  const handleLogin = () => {
-    alert('Login successful');
-    navigation.navigate('BottomTab');
+  const handleLogin = async () => {
+    if (!mobileNumber) {
+      Alert.alert('Error', 'Please enter mobile number');
+      return;
+    }
+    // alert('Registration successful! Please login');
+    try {
+      const config = {
+        url: apiUrl.LOGIN_WITH_MOBILE,
+        method: 'post',
+        baseURL: apiUrl.BASEURL,
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          mobile_number: mobileNumber,
+        },
+      };
+      const response = await axios(config);
+
+      if (response.status === 200) {
+        Alert.alert('Success', response.data.message);
+        console.log('AsyncStorage', response.data.vendor);
+        // AsyncStorage.setItem('token', response.data.vendor);
+        await AsyncStorage.setItem(
+          'vendor',
+          JSON.stringify(response.data.vendor),
+        );
+        navigation.navigate('BottomTab');
+        // navigation.navigate('AddShopDetails');
+      }
+    } catch (error) {
+      console.log('Unknown error:', error);
+      if (error.response && error.response.data) {
+        Alert.alert('Error', error.response.data.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred');
+      }
+    }
   };
 
   return (
@@ -63,6 +107,8 @@ export default function Login({navigation}) {
         placeholderTextColor="#757575"
         placeholder="Enter phone number"
         value={mobileNumber}
+        maxLength={10}
+        keyboardType="numeric"
         onChangeText={val => setMobileNumber(val)}
         style={{
           borderWidth: 1,

@@ -6,15 +6,52 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import THEMECOLOR from '../../utilities/color';
+import moment from 'moment';
+import {apiUrl} from '../../api-services/api-constants';
+import axios from 'axios';
+import {useNavigation} from '@react-navigation/native';
 
-export default function OrderSummary({navigation, route}) {
-  const product = route.params.product;
-  console.log('product>>>>>>>>>>', product);
+export default function OrderSummary({route}) {
+  const navigation = useNavigation();
+  const {product, vendorData} = route.params;
+  const returingProducts = product.product?.map(ele => ele);
+  console.log('product in order summary>>>>>>>>>> ', product);
+  console.log('returingProducts>>>>>>>>>> ', returingProducts);
+  const [popularItems, setPopularItems] = useState([]);
+
+  useEffect(() => {
+    // Only fetch data if vendor data is available
+    if (vendorData) {
+      fetchData(vendorData);
+    }
+  }, [vendorData]);
+
+  const fetchData = async () => {
+    // loading all selling data and filterout in frontend
+    try {
+      const res = await axios.get(
+        `${apiUrl.BASEURL}${apiUrl.GET_SELLING_PRODUCTS}`,
+      );
+      if (res.status === 200) {
+        const filteredProducts = res.data.allSellProduct.filter(
+          item => item.vendor_id !== vendorData?._id,
+        );
+        setPopularItems(filteredProducts);
+        // setFlp(res.data.allSellProduct);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  console.log('popularItems', popularItems);
+
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
       <TouchableOpacity
@@ -56,7 +93,7 @@ export default function OrderSummary({navigation, route}) {
               fontFamily: 'Montserrat-Medium',
               marginBottom: 5,
             }}>
-            {product.orderDate}
+            {moment(product.order_date).format('LLL')}
           </Text>
           {/* <TouchableOpacity>
           <Text
@@ -82,7 +119,7 @@ export default function OrderSummary({navigation, route}) {
               fontFamily: 'Montserrat-Medium',
               // marginBottom: 20,
             }}>
-            {product.orderStatus}
+            {product.order_status}
           </Text>
           {/* <View style={{marginTop: 10, marginBottom: 10}}>
             <Text
@@ -95,71 +132,76 @@ export default function OrderSummary({navigation, route}) {
               {product.products.length} items in this order
             </Text>
           </View> */}
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                padding: 10,
-                marginBottom: 5,
-              }}>
-              <View style={{flex: 0.2}}>
-                <View
-                  style={{
-                    width: 50,
-                    height: 50,
-                    // borderWidth: 1,
-                    // borderColor: '#e3e1e1',
-                    borderRadius: 10,
-                  }}>
-                  <Image
-                    source={{
-                      uri: product.imageUrl,
-                    }}
+          {returingProducts.map(item => (
+            <View key={item._id}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 10,
+                  marginBottom: 5,
+                }}>
+                <View style={{flex: 0.2}}>
+                  <View
                     style={{
-                      width: '100%',
-                      height: '100%',
-                      resizeMode: 'contain',
-                    }}
-                  />
+                      width: 50,
+                      height: 50,
+                      // borderWidth: 1,
+                      // borderColor: '#e3e1e1',
+                      borderRadius: 10,
+                    }}>
+                    <Image
+                      source={{
+                        uri: `${apiUrl.IMAGEURL}${item.imageUrl}`,
+                      }}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        resizeMode: 'contain',
+                      }}
+                    />
+                  </View>
+                </View>
+                <View style={{flex: 0.6}}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: 'black',
+                      fontFamily: 'Montserrat-Medium',
+                    }}>
+                    {item.productName.length < 58
+                      ? item.productName
+                      : item.productName.substring(0, 58) + '...'}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      // color: '#454444',
+                      color: '#ea5362',
+                      marginTop: 5,
+                      fontFamily: 'Montserrat-Medium',
+                    }}>
+                    Qty: {item.quantity}
+                  </Text>
+                </View>
+                <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: 'black',
+                      fontFamily: 'Montserrat-SemiBold',
+                    }}>
+                    {/* <MaterialIcons
+            name="currency-rupee"
+            // size={13}
+            color="#3c4145"
+          /> */}
+                    {/* {item.totalPrice} */}₹ {item.totalPrice}
+                  </Text>
                 </View>
               </View>
-              <View style={{flex: 0.6}}>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    fontFamily: 'Montserrat-Medium',
-                  }}>
-                  {product.productName}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 11,
-                    // color: '#454444',
-                    color: '#ea5362',
-                    fontFamily: 'Montserrat-Medium',
-                  }}>
-                  Qty: {product.quantity}
-                </Text>
-              </View>
-              <View style={{flex: 0.2, alignItems: 'flex-end'}}>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'black',
-                    fontFamily: 'Montserrat-SemiBold',
-                  }}>
-                  {/* <MaterialIcons
-                    name="currency-rupee"
-                    // size={13}
-                    color="#3c4145"
-                  /> */}
-                  {/* {item.totalPrice} */}₹ {product.productPrice}
-                </Text>
-              </View>
             </View>
-          </View>
+          ))}
         </View>
         <View
           style={{
@@ -216,44 +258,11 @@ export default function OrderSummary({navigation, route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹1025000
+                  ₹{product.cart_value}
                 </Text>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: 10,
-              }}>
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    letterSpacing: 1,
-                    fontFamily: 'Montserrat-Medium',
-                  }}>
-                  Event Box Fee
-                </Text>
-              </View>
-              <View>
-                <Text
-                  style={{
-                    color: 'black',
-                    fontSize: 13,
-                    letterSpacing: 1,
-                    fontFamily: 'Montserrat-Medium',
-                  }}>
-                  {/* <MaterialIcons
-                    name="currency-rupee"
-                    size={14}
-                    color="black"
-                  /> */}
-                  ₹20000
-                </Text>
-              </View>
-            </View>
+
             <View
               style={{
                 flexDirection: 'row',
@@ -284,7 +293,7 @@ export default function OrderSummary({navigation, route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹10000
+                  ₹{product.gst_applied_value}
                 </Text>
               </View>
             </View>
@@ -311,6 +320,7 @@ export default function OrderSummary({navigation, route}) {
                     color: 'black',
                     fontFamily: 'Montserrat-Bold',
                     fontSize: 13,
+                    letterSpacing: 1,
                   }}>
                   {' '}
                   {/* <MaterialIcons
@@ -318,7 +328,7 @@ export default function OrderSummary({navigation, route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹1045000{' '}
+                  ₹{product.paid_amount}{' '}
                 </Text>
               </View>
             </View>
@@ -353,8 +363,8 @@ export default function OrderSummary({navigation, route}) {
             <Text
               style={{
                 fontSize: 12,
-                color: '#636363',
-                fontFamily: 'Montserrat-Medium',
+                color: '#3f3f3f',
+                fontFamily: 'Montserrat-SemiBold',
               }}>
               Order id
             </Text>
@@ -364,14 +374,14 @@ export default function OrderSummary({navigation, route}) {
                 color: 'black',
                 fontFamily: 'Montserrat-Regular',
               }}>
-              {`J372Y9YE`}
+              {product._id.substring(product._id.length - 8)}
             </Text>
             <View style={{marginTop: 5}}>
               <Text
                 style={{
                   fontSize: 12,
-                  color: '#636363',
-                  fontFamily: 'Montserrat-Medium',
+                  color: '#3f3f3f',
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
                 Payment
               </Text>
@@ -381,17 +391,17 @@ export default function OrderSummary({navigation, route}) {
                   color: 'black',
                   fontFamily: 'Montserrat-Regular',
                 }}>
-                Online
+                {product.payment_method}
               </Text>
             </View>
             <View style={{marginTop: 5}}>
               <Text
                 style={{
                   fontSize: 12,
-                  color: '#636363',
-                  fontFamily: 'Montserrat-Medium',
+                  color: '#3f3f3f',
+                  fontFamily: 'Montserrat-SemiBold',
                 }}>
-                Address
+                Shipping Address
               </Text>
               <Text
                 style={{
@@ -399,18 +409,7 @@ export default function OrderSummary({navigation, route}) {
                   color: 'black',
                   fontFamily: 'Montserrat-Regular',
                 }}>
-                Ibis Party Hall, No.26, 1, Hosur Rd, Zuzuvadi, Madiwala, 1st
-                Stage, Bommanahalli, Bengaluru, Karnataka 560068
-              </Text>
-            </View>
-            <View style={{marginTop: 5}}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: '#636363',
-                  fontFamily: 'Montserrat-Medium',
-                }}>
-                Event on
+                {product.delivery_address.fullName}
               </Text>
               <Text
                 style={{
@@ -418,10 +417,113 @@ export default function OrderSummary({navigation, route}) {
                   color: 'black',
                   fontFamily: 'Montserrat-Regular',
                 }}>
-                June 28, 2024, 10:00 AM - June 28, 2024, 6:00 PM
+                {product.delivery_address.houseFlatBlock},{' '}
+                {product.delivery_address.roadArea},{' '}
+                {product.delivery_address.cityDownVillage},{' '}
+                {product.delivery_address.distric},{' '}
+                {product.delivery_address.state} -{' '}
+                {product.delivery_address.pincode}
+                {/* Ibis Party Hall, No.26, 1, Hosur Rd, Zuzuvadi, Madiwala, 1st
+                Stage, Bommanahalli, Bengaluru, Karnataka 560068 */}
               </Text>
             </View>
           </View>
+        </View>
+        <View
+          style={{
+            borderColor: '#f7f6fd',
+            borderWidth: 5,
+            marginBottom: 5,
+          }}></View>
+        <Text
+          style={{
+            fontSize: 14,
+            color: 'black',
+            fontFamily: 'Montserrat-SemiBold',
+            padding: 10,
+          }}>
+          You may also like
+        </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            margin: 10,
+            // justifyContent: 'center',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            // gap: 10,
+          }}>
+          {popularItems.slice(0, 5).map(item => (
+            <TouchableOpacity
+              key={item._id}
+              style={{width: '33.33%', paddingHorizontal: 5, marginBottom: 10}}
+              onPress={() =>
+                navigation.navigate('ProductDetails', {
+                  item: item,
+                })
+              }>
+              <View
+                style={{
+                  width: '100%',
+                  height: 150,
+                  borderRadius: 10,
+                  backgroundColor: '#e5e5e5',
+                  marginBottom: 10,
+                  padding: 5,
+                }}>
+                <Image
+                  source={{
+                    uri: `${apiUrl.IMAGEURL}${item.product_image[0].replace(
+                      /\\/g,
+                      '/',
+                    )}`,
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    borderRadius: 10,
+                    alignSelf: 'center',
+                  }}
+                />
+              </View>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'black',
+                  fontFamily: 'Montserrat-Medium',
+                }}>
+                {item.product_name.length < 12
+                  ? item.product_name
+                  : item.product_name.substring(0, 11) + '...'}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                  marginTop: 2,
+                }}>
+                ₹{item.product_price}
+              </Text>
+            </TouchableOpacity>
+          ))}
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Product Filter', {
+                filterType: 'Browsing History',
+                allPopularItems: popularItems,
+              })
+            }>
+            <Text
+              style={{
+                fontSize: 14,
+                color: 'black',
+                fontFamily: 'Montserrat-SemiBold',
+                marginLeft: 15,
+              }}>
+              View All
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <View

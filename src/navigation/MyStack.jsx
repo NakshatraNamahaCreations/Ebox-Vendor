@@ -1,5 +1,5 @@
 import {createStackNavigator} from '@react-navigation/stack';
-import FlashScreen from '../Screens/FlashScreen';
+import SplashScreen from '../Screens/SplashScreen';
 import Login from '../Screens/Login';
 import Register from '../Screens/Register';
 import BottomTab from './BottomTab';
@@ -18,6 +18,7 @@ import ProductDetails from '../component/product/ProductDetails';
 import AddShopDetails from '../Screens/AddShopDetails';
 import WaitingScreen from '../Screens/WaitingScreen';
 import ProductReview from '../component/product/ProductReview';
+import ShopAddress from '../Screens/ShopAddress';
 
 const Stack = createStackNavigator();
 
@@ -25,8 +26,8 @@ function MyStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="FlashScreen"
-        component={FlashScreen}
+        name="SplashScreen"
+        component={SplashScreen}
         options={{title: 'Welcome', headerShown: false}}
       />
       <Stack.Screen
@@ -98,6 +99,13 @@ function MyStack() {
       <Stack.Screen
         name="Shop Details"
         component={ShopDetails}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AddShopAddress"
+        component={ShopAddress}
         options={{
           headerShown: false,
         }}
