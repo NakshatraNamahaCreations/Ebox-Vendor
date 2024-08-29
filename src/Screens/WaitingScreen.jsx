@@ -1,8 +1,81 @@
-import {View, Text, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  BackHandler,
+  Alert,
+  Button,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import THEMECOLOR from '../utilities/color';
+import {apiUrl} from '../api-services/api-constants';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WaitingScreen({navigation}) {
+  const [isApproved, setIsApproved] = useState(false);
+
+  useEffect(() => {
+    const checkApprovalStatus = async () => {
+      const userData = await AsyncStorage.getItem('vendor');
+      if (userData) {
+        const user = JSON.parse(userData);
+        // Fetch the latest approval status from the server
+        try {
+          const response = await axios.get(
+            `${apiUrl.BASEURL}${apiUrl.GET_VENDOR_PROFILE}${user._id}`,
+          );
+          const updatedUser = response.data;
+          setIsApproved(updatedUser.is_approved);
+
+          // Update the AsyncStorage with the latest user data
+          if (updatedUser.is_approved) {
+            await AsyncStorage.setItem('vendor', JSON.stringify(updatedUser));
+          }
+          // if (updatedUser.is_approved) {
+          //   // Enable the button if approved
+          //   setIsApproved(true);
+          // } else {
+          //   // Stay on this screen if not approved
+          //   setIsApproved(false);
+          // }
+        } catch (error) {
+          console.error('Error checking approval status:', error);
+        }
+      }
+    };
+
+    // Check approval status on component mount
+    checkApprovalStatus();
+
+    // Optional: Polling to check approval status periodically
+    const interval = setInterval(checkApprovalStatus, 5000); // every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Disable back button
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {text: 'Cancel', onPress: () => null, style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: false},
+        );
+        return true; // Prevent default behavior of back button
+      },
+    );
+
+    // Clean up the event listener
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <View
       style={{
@@ -37,8 +110,8 @@ export default function WaitingScreen({navigation}) {
         Your details has been submitted, We will let you know once your account
         has been approved.
       </Text>
-      {/* <View style={{position: 'absolute', bottom: 40, width: '50%'}}>
-        <TouchableOpacity
+      <View style={{position: 'absolute', bottom: 40, width: '50%'}}>
+        {/* <TouchableOpacity
           style={{
             backgroundColor: THEMECOLOR.mainColor,
             padding: 10,
@@ -57,8 +130,13 @@ export default function WaitingScreen({navigation}) {
             }}>
             Continue
           </Text>
-        </TouchableOpacity>
-      </View> */}
+        </TouchableOpacity> */}
+        <Button
+          title="Continue"
+          onPress={() => navigation.navigate('BottomTab')}
+          disabled={!isApproved}
+        />
+      </View>
     </View>
   );
 }

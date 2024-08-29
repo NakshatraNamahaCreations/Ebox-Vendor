@@ -20,7 +20,7 @@ import ExploreShop from './ExploreShop';
 // import DiscountItems from './DiscountItems';
 import {useNavigation} from '@react-navigation/native';
 import {sliderImage} from '../../data/global-data';
-import TopRated from './TopRated';
+// import TopRated from './TopRated';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WhyEventBox from './WhyEventBox';
@@ -280,7 +280,10 @@ export default function Home() {
               </TouchableOpacity>
             </View>
             {/* new products */}
-            <PopularItems refreshing={refreshing} allProducts={popularItems} />
+            <PopularItems
+              refreshing={refreshing}
+              allProducts={popularItems.reverse()}
+            />
           </View>
           <View style={{marginBottom: 20}}>
             <Text
@@ -400,7 +403,24 @@ export default function Home() {
             Frequently Asked Questions
           </Text>
         </View>
-        <View>
+        <View style={{marginBottom: 20}}>
+          {/* <List.Section title="Accordions">
+            <List.Accordion
+              title="Uncontrolled Accordion"
+              left={props => <List.Icon {...props} icon="folder" />}>
+              <List.Item title="First item" />
+              <List.Item title="Second item" />
+            </List.Accordion>
+
+            <List.Accordion
+              title="Controlled Accordion"
+              left={props => <List.Icon {...props} icon="folder" />}
+              expanded={expanded}
+              onPress={handlePress}>
+              <List.Item title="First item" />
+              <List.Item title="Second item" />
+            </List.Accordion>
+          </List.Section> */}
           <Accordion title="How to book a event on EventBox">
             <Text
               style={{

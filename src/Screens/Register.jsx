@@ -67,16 +67,11 @@ export default function Register({navigation}) {
       const response = await axios(config);
       if (response.status === 200) {
         Alert.alert('Success', response.data.message);
-        // console.log('AsyncStorage', response.data.newVendor);
-        // // AsyncStorage.setItem('token', response.data.newVendor);
         await AsyncStorage.setItem(
           'vendor',
           JSON.stringify(response.data.newVendor),
         );
-        navigation.navigate('BottomTab');
-        // navigation.navigate('AddShopDetails', {
-        //   vendor: response.data.newVendor,
-        // });
+        navigation.navigate('AddShopDetails');
       }
     } catch (error) {
       console.log('Unknown error:', error);

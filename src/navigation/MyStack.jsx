@@ -19,6 +19,8 @@ import AddShopDetails from '../Screens/AddShopDetails';
 import WaitingScreen from '../Screens/WaitingScreen';
 import ProductReview from '../component/product/ProductReview';
 import ShopAddress from '../Screens/ShopAddress';
+import RequestReturn from '../component/order/RequestReturn';
+import EmailSummary from '../component/order/EmailSummary';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +46,13 @@ function MyStack() {
         name="AddShopDetails"
         component={AddShopDetails}
         options={{title: 'ShopDetails', headerShown: false}}
+      />
+      <Stack.Screen
+        name="AddShopAddress"
+        component={ShopAddress}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="Waiting"
@@ -104,13 +113,6 @@ function MyStack() {
         }}
       />
       <Stack.Screen
-        name="AddShopAddress"
-        component={ShopAddress}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="All Shop"
         component={AllShop}
         options={{
@@ -127,6 +129,20 @@ function MyStack() {
       <Stack.Screen
         name="Order Summary"
         component={OrderSummary}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Request Return"
+        component={RequestReturn}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Email Summary"
+        component={EmailSummary}
         options={{
           headerShown: false,
         }}

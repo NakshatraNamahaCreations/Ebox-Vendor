@@ -3,54 +3,120 @@ import React, {useEffect, useRef, useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import THEMECOLOR from '../utilities/color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
+import axios from 'axios';
+import {apiUrl} from '../api-services/api-constants';
 
 export default function SplashScreen({navigation}) {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [vendor, setVendor] = useState(null);
+  const [vendorApiRes, setVendorApiRes] = useState(null);
+  const [navigationReady, setNavigationReady] = useState(false);
 
   useEffect(() => {
+    // Fade-in animation
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 3500,
       useNativeDriver: true,
     }).start();
-  }, []);
+
+    // Delay navigation by 10 seconds
+    const timer = setTimeout(() => {
+      setNavigationReady(true);
+    }, 100000); // 10 seconds
+
+    return () => clearTimeout(timer);
+  }, [fadeAnim]);
 
   useEffect(() => {
-    retrieveData(); // Corrected function name
-  }, []);
+    const retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('vendor');
+        if (value !== null) {
+          setVendor(JSON.parse(value));
+        } else {
+          navigation.navigate('Login');
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+
+    retrieveData();
+  }, [navigation]);
 
   useEffect(() => {
-    // if (Object.keys(vendor).length > 0) {
-    condition();
-    // }
+    const fetchData = async () => {
+      if (vendor?._id) {
+        try {
+          const res = await axios.get(
+            `${apiUrl.BASEURL}${apiUrl.GET_VENDOR_PROFILE}${vendor?._id}`,
+          );
+          if (res.status === 200) {
+            const updatedUser = res.data;
+            setVendorApiRes(updatedUser);
+            // Update AsyncStorage with latest user data
+            await AsyncStorage.setItem('vendor', JSON.stringify(updatedUser));
+          } else {
+            console.error(
+              'Failed to fetch vendor profile:',
+              res.status,
+              res.statusText,
+            );
+          }
+        } catch (error) {
+          console.log('Error:', error);
+        }
+      }
+    };
+
+    fetchData();
   }, [vendor]);
 
-  const retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('vendor');
-      if (value !== null) {
-        setVendor(JSON.parse(value));
-      } else {
-        setTimeout(() => {
-          navigation.navigate('Login');
-        }, 3000);
-      }
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
-  const condition = () => {
-    // console.log('vendor in splashscreen...', vendor);
+  useEffect(() => {
     if (vendor) {
-      setTimeout(() => {
+      if (vendorApiRes?.is_approved === true) {
         navigation.navigate('BottomTab');
-      }, 7000);
+      } else {
+        navigation.navigate('Waiting');
+      }
     }
-  };
-  console.log('vendor in splashscreen...', vendor);
+  }, [navigationReady, vendorApiRes, navigation]);
+  console.log('vendor in splashscreen...', vendorApiRes);
+  console.log('vendor approval', vendorApiRes?.is_approved);
+
+  // useEffect(() => {
+  //   retrieveData();
+  // }, []);
+
+  // const retrieveData = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('vendor');
+  //     if (value !== null) {
+  //       setVendor(JSON.parse(value));
+  //     } else {
+  //       setTimeout(() => {
+  //         navigation.navigate('Login');
+  //       }, 3000);
+  //     }
+  //   } catch (error) {
+  //     console.log('error', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   const condition = () => {
+  //     if (vendor?.is_approved === true) {
+  //       setTimeout(() => {
+  //         navigation.navigate('BottomTab');
+  //       }, 7000);
+  //     } else {
+  //       navigation.navigate('Waiting');
+  //     }
+  //   };
+
+  //   condition();
+  // }, [vendor]);
 
   // const decisionMaking = async () => {
   //   try {
@@ -69,11 +135,11 @@ export default function SplashScreen({navigation}) {
   // };
 
   // const checkVendor = () => {
-  if (vendor) {
-    setTimeout(() => {
-      navigation.navigate('BottomTab');
-    }, 3000);
-  }
+  // if (vendor) {
+  //   setTimeout(() => {
+  //     navigation.navigate('BottomTab');
+  //   }, 3000);
+  // }
   // };
   // useEffect(() => {
   //   decisionMaking();
@@ -117,10 +183,6 @@ export default function SplashScreen({navigation}) {
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      {/* <Image
-        source={require('../../assets/logo.png')}
-        style={{width: 150, height: 150}}
-      /> */}
       <Animated.View
         style={{
           flex: 1,

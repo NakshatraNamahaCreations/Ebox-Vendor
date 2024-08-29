@@ -3,6 +3,7 @@ import {createSlice} from '@reduxjs/toolkit';
 const cartSlice = createSlice({
   name: 'cart',
   initialState: [], // Ensure this is an array
+
   reducers: {
     addToCart: (state, action) => {
       const existingProduct = state.find(item => item.id === action.payload.id);
@@ -13,13 +14,16 @@ const cartSlice = createSlice({
         existingProduct.totalPrice =
           existingProduct.quantity * existingProduct.productPrice;
       } else {
+        const orderId =
+          BigInt(Math.floor(Math.random() * 1e16)) * BigInt(1e4) +
+          BigInt(Math.floor(Math.random() * 1e4));
         state.push({
           // ...action.payload,
           // totalPrice: action.payload.productPrice,
           // mrpPrice: action.payload.mrpPrice,
           // store: action.payload.store,  //old one. working
           // quantity: 1,
-
+          orderId: orderId.toString().padStart(20, '0'),
           id: action.payload.id,
           productName: action.payload.productName,
           productPrice: action.payload.productPrice,
@@ -32,6 +36,7 @@ const cartSlice = createSlice({
         });
       }
     },
+
     removeFromCart: (state, action) => {
       return state.filter(item => item.id !== action.payload.id);
     },

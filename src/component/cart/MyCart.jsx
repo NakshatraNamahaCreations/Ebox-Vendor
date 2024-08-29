@@ -34,8 +34,8 @@ export default function MyCart({vendorData}) {
   const total = Number(subtotal) + Number(gst);
   const grand = total.toFixed(2);
   // console.log('subtotal', subtotal);
-  // console.log('gst', gst);
-  // console.log('total', grand);
+  console.log('gst', gst / 2);
+  console.log('total', grand);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>

@@ -12,3 +12,9 @@ not cleared.. fix later.
 2. products is showing in vendor app itself >>> home
 
 server link: https://eventbox.nakshatranamahacreations.in/
+
+order_status: 
+    Order Placed, 
+    Order Deliverd, 
+    Order Cancelled,
+    Order Returned

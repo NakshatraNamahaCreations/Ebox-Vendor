@@ -8,6 +8,8 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  FlatList,
+  Dimensions,
 } from 'react-native';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -152,7 +154,32 @@ function ProductDetails({route}) {
     }
   };
 
-  console.log('mainMedia', mainMedia);
+  const renderItem = ({item}) => {
+    if (item.endsWith('.mp4')) {
+      return (
+        <Video
+          source={{
+            uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
+          }}
+          style={styles.mainMedia}
+          controls={true}
+          resizeMode="contain"
+        />
+      );
+    } else {
+      return (
+        <Image
+          source={{
+            uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
+          }}
+          style={styles.mainMedia}
+          resizeMode="cover"
+        />
+      );
+    }
+  };
+
+  // console.log('mainMedia', mainMedia);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -254,15 +281,10 @@ function ProductDetails({route}) {
             }}>
             {product.product_name}
           </Text>
+          {/* working below code for showing product frist image  */}
           <View style={{width: '100%', height: 300, marginBottom: 10}}>
             {mainMedia.endsWith('.mp4') ? (
               <Video
-                // source={{
-                //   uri: `http://192.168.1.103:9000/${mainMedia.replace(
-                //     /\\/g,
-                //     '/',
-                //   )}`,
-                // }} //working
                 source={{
                   uri: `http://192.168.1.103:9000/${mainMedia.replace(
                     /\\/g,
@@ -275,12 +297,6 @@ function ProductDetails({route}) {
               />
             ) : (
               <Image
-                // source={{
-                //   uri: `http://192.168.1.103:9000/${mainMedia.replace(
-                //     /\\/g,
-                //     '/',
-                //   )}`,
-                // }} working
                 source={{
                   uri: `http://192.168.1.103:9000/${mainMedia.replace(
                     /\\/g,
@@ -292,6 +308,18 @@ function ProductDetails({route}) {
               />
             )}
           </View>
+          {/* not working */}
+          {/* <View>
+            <FlatList
+              data={[mainMedia]} // Render only the current main media
+              renderItem={renderItem}
+              keyExtractor={item => item}
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              style={styles.mainMediaContainer}
+            />
+          </View> */}
           <ScrollView horizontal style={styles.thumbnailContainer}>
             {product.product_image.map((image, index) => (
               <TouchableOpacity key={index} onPress={() => setMainMedia(image)}>
@@ -302,9 +330,6 @@ function ProductDetails({route}) {
                       '/',
                     )}`,
                   }}
-                  // source={{
-                  //   uri: product.productImage || 'https://via.placeholder.com/300',
-                  // }}
                   style={[
                     styles.thumbnail,
                     mainMedia === image && {
@@ -1129,6 +1154,10 @@ function ProductDetails({route}) {
 }
 
 const styles = StyleSheet.create({
+  mainMediaContainer: {
+    width: Dimensions.get('window').width,
+    height: 300,
+  },
   productsDetailsAns: {
     color: '#2c2c2c',
     fontSize: 12,

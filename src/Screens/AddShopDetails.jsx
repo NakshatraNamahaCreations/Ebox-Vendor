@@ -6,7 +6,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 // import {Checkbox} from 'react-native-paper';
 import THEMECOLOR from '../utilities/color';
 // import {Picker} from '@react-native-picker/picker';
@@ -17,10 +17,10 @@ import ImageResizer from 'react-native-image-resizer';
 import {RadioButton} from 'react-native-paper';
 import {apiUrl} from '../api-services/api-constants';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function AddShopDetails({navigation, route}) {
-  const {vendor} = route.params;
-  // console.log('response data from reguter page to addshop details>>', vendor);
+export default function AddShopDetails({navigation}) {
+  const [vendorAsync, setVendorAsync] = useState(null);
   const [businessName, setBusinessName] = useState('');
   const [godownName, setGodownName] = useState('');
   const [godownLink, setGodownLink] = useState('');
@@ -37,6 +37,20 @@ export default function AddShopDetails({navigation, route}) {
   const [checked, setChecked] = useState('');
   // console.log('checked', checked);
 
+  useEffect(() => {
+    const getVendorData = async () => {
+      try {
+        const vendorData = await AsyncStorage.getItem('vendor');
+        setVendorAsync(vendorData ? JSON.parse(vendorData) : null);
+      } catch (error) {
+        console.error('Failed to load vendor data', error);
+      }
+    };
+
+    getVendorData();
+  }, []);
+  console.log('vendorAsync in shop details', vendorAsync);
+
   const resizeImage = async imageUri => {
     const resizedImage = await ImageResizer.createResizedImage(
       imageUri,
@@ -48,19 +62,6 @@ export default function AddShopDetails({navigation, route}) {
     );
     return resizedImage.uri;
   };
-
-  // const uploadBussinessImage = () => {
-  //   ImagePicker.launchImageLibrary({noData: true}, async response => {
-  //     if (response.assets) {
-  //       console.log('Gellery image:', response);
-  //       const fileNAME = response.assets[0].fileName;
-  //       const galleryPic = response.assets[0].uri;
-  //       const resizedImageUri = await resizeImage(galleryPic);
-  //       setImageUri(resizedImageUri);
-  //       setImageFileName(fileNAME);
-  //     }
-  //   });
-  // };
 
   const uploadBussinessLogo = () => {
     ImagePicker.launchImageLibrary({noData: true}, async response => {
@@ -88,95 +89,6 @@ export default function AddShopDetails({navigation, route}) {
     });
   };
 
-  // console.log('imageUri', imageUri, imageFileName);
-
-  // const handleAddShopDetails = () => {
-  //   if (
-  //     !businessName ||
-  //     !gstNumber ||
-  //     !logoOrImageFileName ||
-  //     !vehicleFileName
-  //   ) {
-  //     alert('Please fill all the fields');
-  //   } else {
-  //     // alert('Registration successful! Please login');
-  //     navigation.navigate('AddShopAddress', {
-  //       vendorId: vendor._id,
-  //       businessName: businessName,
-  //       godownName: godownName,
-  //       godownLink: godownLink,
-  //       gstNumber: gstNumber,
-  //       panNumber: panNumber,
-  //       vehicleType: vehicleType,
-  //       numberPlate: numberPlate,
-  //       // imageFileName: imageFileName,
-  //       // imageUri: imageUri,
-  //       // logoOrImageUri: logoOrImageUri,
-  //       logoOrImageFileName: logoOrImageFileName,
-  //       // vehicleUri: vehicleUri,
-  //       vehicleFileName: vehicleFileName,
-  //       checked: checked,
-  //     });
-  //   }
-  // };
-
-  // const handleAddShopDetails = async () => {
-  //   if (
-  //     !businessName ||
-  //     !gstNumber ||
-  //     !logoOrImageFileName ||
-  //     !vehicleFileName
-  //   ) {
-  //     Alert.alert('Please fill all the fields');
-  //   } else {
-  //     formData.append('shop_name', businessName);
-  //     formData.append('godown_name', godownName);
-  //     formData.append('godown_pin', godownLink);
-  //     formData.append('gst_number', gstNumber);
-  //     formData.append('pan_number', panNumber);
-  //     formData.append('vehicle_name', vehicleType);
-  //     formData.append('number_plate', numberPlate);
-  //     formData.append('vehicle_by', checked);
-  //     formData.append('shop_image_or_logo', {
-  //       uri: logoOrImageFileName,
-  //       type: 'image/jpeg',
-  //       name: 'image.jpg',
-  //     });
-  //     formData.append('vehicle_image', {
-  //       uri: vehicleFileName,
-  //       type: 'image/jpeg',
-  //       name: 'image.jpg',
-  //     });
-  //     try {
-  //       const config = {
-  //         url: `${apiUrl.UPDATE_VENDOR_PROFILE}${vendor._id}`,
-  //         method: 'put',
-  //         baseURL: apiUrl.BASEURL,
-  //         headers: {'Content-Type': 'multipart/form-data'},
-  //         data: formData,
-  //       };
-  //       const response = await axios(config);
-  //       if (response.status === 200) {
-  //         Alert.alert('Success', response.data.message);
-  //         console.log('AsyncStorage', response.data);
-  //         // AsyncStorage.setItem('token', response.data.newVendor);
-  //         // await AsyncStorage.setItem(
-  //         //   'vendor',
-  //         //   JSON.stringify(response.data.),
-  //         // );
-  //         // navigation.navigate('Waiting');
-  //       }
-  //     } catch (error) {
-  //       console.log('Unknown error:', error);
-  //       if (error.response && error.response.data) {
-  //         Alert.alert('Error', error.response.data.message);
-  //       } else {
-  //         Alert.alert('Error', 'An unknown error occurred');
-  //       }
-  //     }
-  //   }
-  // };
-
   const handleAddShopDetails = async () => {
     if (
       !businessName ||
@@ -186,7 +98,7 @@ export default function AddShopDetails({navigation, route}) {
     ) {
       Alert.alert('Please fill all the fields');
     } else {
-      const formData = new FormData(); // Make sure to create `formData` before using it.
+      const formData = new FormData();
       formData.append('shop_name', businessName);
       formData.append('godown_name', godownName);
       formData.append('godown_pin', godownLink);
@@ -196,28 +108,30 @@ export default function AddShopDetails({navigation, route}) {
       formData.append('number_plate', numberPlate);
       formData.append('vehicle_by', checked);
       formData.append('shop_image_or_logo', {
-        uri: logoOrImageFileName,
+        uri: logoOrImageUri,
         type: 'image/jpeg',
-        name: 'image.jpg',
+        name: logoOrImageFileName || 'image.jpg',
       });
       formData.append('vehicle_image', {
-        uri: vehicleFileName,
+        uri: vehicleUri,
         type: 'image/jpeg',
-        name: 'image.jpg',
+        name: vehicleFileName || 'image.jpg',
       });
 
       try {
         const response = await axios.put(
-          `${apiUrl.BASEURL}${apiUrl.UPDATE_VENDOR_PROFILE}${vendor._id}`,
+          `${apiUrl.BASEURL}${apiUrl.UPDATE_VENDOR_PROFILE}${vendorAsync._id}`,
           formData,
           {
             headers: {'Content-Type': 'multipart/form-data'},
           },
         );
+        console.log('response', response.data);
 
         if (response.status === 200) {
           Alert.alert('Success', response.data.message);
-          console.log('AsyncStorage', response.data.vendor);
+          console.log('AsyncStorage', response.data.vendorShop);
+          navigation.navigate('AddShopAddress');
         }
       } catch (error) {
         console.log('Unknown error:', error);

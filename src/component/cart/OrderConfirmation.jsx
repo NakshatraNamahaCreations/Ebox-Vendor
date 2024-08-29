@@ -41,6 +41,32 @@ export default function OrderConfirmation({route}) {
   console.log('subtotal', subtotal);
   console.log('gst', gst);
   console.log('total in order confimation page', total);
+  const constructingCart = cart.map((item, index) => ({
+    ...item,
+    AindexValue: index + 1,
+
+    order_id: item.orderId,
+    product_id: item.id,
+    product_image: item.imageUrl,
+    product_name: item.productName,
+    store_or_seller: item.store,
+    product_price: item.productPrice,
+    applied_quantity: item.quantity,
+    totalPrice: item.totalPrice,
+    product_mrp: item.mrpPrice,
+
+    delivery_address: userAddress,
+    // cart_value: subtotal,
+    gst_applied_value: gst,
+    paid_amount: total,
+    payment_method: 'offline',
+    payment_status: 'success',
+    order_status: 'Order Placed',
+    vendor_id: vendorData._id,
+    vendor_name: vendorData.vendor_name,
+  }));
+
+  console.log('constructingCart', constructingCart);
 
   const proceedToPay = async () => {
     try {
@@ -49,18 +75,19 @@ export default function OrderConfirmation({route}) {
         method: 'post',
         baseURL: apiUrl.BASEURL,
         headers: {'Content-Type': 'application/json'},
-        data: {
-          product: cart,
-          delivery_address: userAddress,
-          cart_value: subtotal,
-          gst_applied_value: gst,
-          paid_amount: total,
-          payment_method: 'offline',
-          payment_status: 'success',
-          order_status: 'Order Placed',
-          vendor_id: vendorData._id,
-          vendor_name: vendorData.vendor_name,
-        },
+        data: constructingCart,
+        // data: {
+        //   product: cart,
+        //   delivery_address: userAddress,
+        //   cart_value: subtotal,
+        //   gst_applied_value: gst,
+        //   paid_amount: total,
+        //   payment_method: 'offline',
+        //   payment_status: 'success',
+        //   order_status: 'Order Placed',
+        //   vendor_id: vendorData._id,
+        //   vendor_name: vendorData.vendor_name,
+        // },
       };
       const response = await axios(config);
       if (response.status === 200) {
@@ -363,7 +390,7 @@ export default function OrderConfirmation({route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹ {total}{' '}
+                  ₹ {total.toFixed(2)}{' '}
                 </Text>
               </View>
             </View>

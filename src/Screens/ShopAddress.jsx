@@ -5,63 +5,40 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {apiUrl} from '../api-services/api-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import THEMECOLOR from '../utilities/color';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function ShopAddress({navigation, route}) {
-  // const {
-  //   vendorId,
-  //   businessName,
-  //   godownName,
-  //   godownLink,
-  //   gstNumber,
-  //   panNumber,
-  //   vehicleType,
-  //   numberPlate,
-  //   logoOrImageUri,
-  //   logoOrImageFileName,
-  //   vehicleUri,
-  //   vehicleFileName,
-  //   checked,
-  // } = route.params;
-  // console.log(
-  //   'CONSOLE LOG IN ADD ADDRESS PAGE',
-  //   'vendorId:',
-  //   vendorId,
-  //   'businessName:',
-  //   businessName,
-  //   'godownName:',
-  //   godownName,
-  //   'godownLink:',
-  //   godownLink,
-  //   'gstNumber:',
-  //   gstNumber,
-  //   'panNumber:',
-  //   panNumber,
-  //   'vehicleType:',
-  //   vehicleType,
-  //   'numberPlate:',
-  //   numberPlate,
-  //   'logoOrImageUri:',
-  //   logoOrImageUri,
-  //   'logoOrImageFileName:',
-  //   logoOrImageFileName,
-  //   'vehicleUri:',
-  //   vehicleUri,
-  //   'vehicleFileName:',
-  //   vehicleFileName,
-  //   'checked:',
-  //   checked,
-  // );
-  const [locality, setLocality] = useState('');
-  const [area, setArea] = useState('');
-  const [city, setCity] = useState('');
-  const [locationPin, setLocationPin] = useState('');
+function ShopAddress({navigation}) {
+  // console.log('add shop address details>>', vendor);
+  const [vendorAsync, setVendorAsync] = useState(null);
+
+  useEffect(() => {
+    const getVendorData = async () => {
+      try {
+        const vendorData = await AsyncStorage.getItem('vendor');
+        setVendorAsync(vendorData ? JSON.parse(vendorData) : null);
+      } catch (error) {
+        console.error('Failed to load vendor data', error);
+      }
+    };
+
+    getVendorData();
+  }, []);
+  console.log('vendorAsync in shop address', vendorAsync);
+
+  const [directions, setDirections] = useState('');
+  const [houseFlatBlock, setHouseFlatBlock] = useState('');
+  const [roadArea, setRoadArea] = useState('');
+  const [cityDownVillage, setCityDownVillage] = useState('');
+  const [distric, setDistric] = useState('');
+  const [state, setState] = useState('');
+  const [pincode, setPincode] = useState('');
 
   // const handleSubmit = async () => {
   //   if (!locality || !area || !city || !locationPin) {
@@ -122,6 +99,52 @@ function ShopAddress({navigation, route}) {
   //   }
   // };
 
+  const handleAddAddress = async () => {
+    if (
+      !houseFlatBlock ||
+      !cityDownVillage ||
+      !roadArea ||
+      !distric ||
+      !state ||
+      !pincode
+    ) {
+      Alert.alert('Error', 'Please fill in all the fields');
+      return;
+    }
+    try {
+      const config = {
+        url: `${apiUrl.ADD_SHIPPING_ADDRESS}${vendorAsync._id}`,
+        method: 'put',
+        baseURL: apiUrl.BASEURL,
+        headers: {'Content-Type': 'application/json'},
+        data: {
+          address: {
+            fullName: vendorAsync.vendor_name,
+            mobileNumber: vendorAsync.mobile_number,
+            houseFlatBlock,
+            roadArea,
+            cityDownVillage,
+            distric,
+            state,
+            pincode,
+            directions,
+          },
+        },
+      };
+      const response = await axios(config);
+      if (response.status === 200) {
+        navigation.navigate('Waiting');
+      }
+    } catch (error) {
+      console.log('Unknown error:', error);
+      if (error.response && error.response.data && error.response.data.error) {
+        // Alert.alert('Error', error.response.data.message);
+      } else {
+        Alert.alert('Error', 'An unknown error occurred');
+      }
+    }
+  };
+
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
       <View>
@@ -130,7 +153,7 @@ function ShopAddress({navigation, route}) {
           style={{width: '100%', height: 350}}
         />
       </View>
-      <View style={{padding: 15}}>
+      <ScrollView style={{padding: 15}}>
         <Text
           style={{
             color: 'black',
@@ -142,6 +165,18 @@ function ShopAddress({navigation, route}) {
           }}>
           <Ionicons name="location" size={15} color="black" /> Address
         </Text>
+        <View style={{marginVertical: 10}}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 11,
+              fontFamily: 'Montserrat-Medium',
+              // letterSpacing: 1,
+              marginBottom: 5,
+            }}>
+            fetch address here...
+          </Text>
+        </View>
         <View style={{flexDirection: 'row'}}>
           <View style={{flex: 0.6, marginRight: 2}}>
             <Text
@@ -152,14 +187,14 @@ function ShopAddress({navigation, route}) {
                 // letterSpacing: 1,
                 marginBottom: 5,
               }}>
-              Locality
+              HOUSE/FLAT/BLOCK
             </Text>
             <TextInput
-              placeholderTextColor="#757575"
-              placeholder="e.g. 1st Floor, Kukke Plaza"
-              value={locality}
+              // placeholderTextColor="#757575"
+              // placeholder="e.g. 1st Floor, Kukke Plaza"
+              value={houseFlatBlock}
               // maxLength={10}
-              onChangeText={val => setLocality(val)}
+              onChangeText={val => setHouseFlatBlock(val)}
               // keyboardType="number-pad"
               style={{
                 borderWidth: 1,
@@ -185,14 +220,14 @@ function ShopAddress({navigation, route}) {
                 // letterSpacing: 1,
                 marginBottom: 5,
               }}>
-              Area
+              AREA/ROAD
             </Text>
             <TextInput
-              placeholderTextColor="#757575"
-              placeholder="e.g. Electronic City"
-              value={area}
+              // placeholderTextColor="#757575"
+              // placeholder="e.g. Electronic City"
+              value={roadArea}
               // maxLength={10}
-              onChangeText={val => setArea(val)}
+              onChangeText={val => setRoadArea(val)}
               // keyboardType="number-pad"
               style={{
                 borderWidth: 1,
@@ -220,14 +255,115 @@ function ShopAddress({navigation, route}) {
                 // letterSpacing: 1,
                 marginBottom: 5,
               }}>
-              City
+              CITY/DOWN/VILLAGE
             </Text>
             <TextInput
-              placeholderTextColor="#757575"
-              placeholder="e.g. Bangalore"
-              value={city}
+              // placeholderTextColor="#757575"
+              // placeholder="e.g. Bangalore"
+              value={cityDownVillage}
               // maxLength={10}
-              onChangeText={val => setCity(val)}
+              onChangeText={val => setCityDownVillage(val)}
+              // keyboardType="number-pad"
+              style={{
+                borderWidth: 1,
+                // width: '100%',
+                borderColor: '#d5d5d5',
+                color: 'black',
+                fontSize: 14,
+                borderRadius: 10,
+                paddingLeft: 15,
+                backgroundColor: 'white',
+                marginBottom: 10,
+                fontFamily: 'Montserrat-Medium',
+                // letterSpacing: 1,
+              }}
+            />
+          </View>
+          <View style={{flex: 0.6, marginRight: 2}}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 14,
+                fontFamily: 'Montserrat-Medium',
+                // letterSpacing: 1,
+                marginBottom: 5,
+              }}>
+              DISTRIC
+            </Text>
+            <TextInput
+              // placeholderTextColor="#757575"
+              // placeholder="e.g. Bangalore"
+              value={distric}
+              // maxLength={10}
+              onChangeText={val => setDistric(val)}
+              // keyboardType="number-pad"
+              style={{
+                borderWidth: 1,
+                // width: '100%',
+                borderColor: '#d5d5d5',
+                color: 'black',
+                fontSize: 14,
+                borderRadius: 10,
+                paddingLeft: 15,
+                backgroundColor: 'white',
+                marginBottom: 10,
+                fontFamily: 'Montserrat-Medium',
+                // letterSpacing: 1,
+              }}
+            />
+          </View>
+          {/* <View style={{flex: 0.6, marginLeft: 2}}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 14,
+                fontFamily: 'Montserrat-Medium',
+                // letterSpacing: 1,
+                marginBottom: 5,
+              }}>
+              Business Location Pin
+            </Text>
+            <TextInput
+              // placeholderTextColor="#757575"
+              // placeholder="Google map link"
+              value={locationPin}
+              // maxLength={10}
+              onChangeText={val => setLocationPin(val)}
+              // keyboardType="number-pad"
+              style={{
+                borderWidth: 1,
+                // width: '100%',
+                borderColor: '#d5d5d5',
+                color: 'black',
+                fontSize: 14,
+                borderRadius: 10,
+                paddingLeft: 15,
+                backgroundColor: 'white',
+                marginBottom: 10,
+                fontFamily: 'Montserrat-Medium',
+                // letterSpacing: 1,
+              }}
+            />
+          </View> */}
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flex: 0.6, marginRight: 2}}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 14,
+                fontFamily: 'Montserrat-Medium',
+                // letterSpacing: 1,
+                marginBottom: 5,
+              }}>
+              STATE
+            </Text>
+            <TextInput
+              // placeholderTextColor="#757575"
+              // placeholder="e.g. Bangalore"
+              value={state}
+              // maxLength={10}
+              onChangeText={val => setState(val)}
               // keyboardType="number-pad"
               style={{
                 borderWidth: 1,
@@ -253,14 +389,14 @@ function ShopAddress({navigation, route}) {
                 // letterSpacing: 1,
                 marginBottom: 5,
               }}>
-              Business Location Pin
+              PINCODE
             </Text>
             <TextInput
-              placeholderTextColor="#757575"
-              placeholder="Google map link"
-              value={locationPin}
+              // placeholderTextColor="#757575"
+              // placeholder="Google map link"
+              value={pincode}
               // maxLength={10}
-              onChangeText={val => setLocationPin(val)}
+              onChangeText={val => setPincode(val)}
               // keyboardType="number-pad"
               style={{
                 borderWidth: 1,
@@ -287,7 +423,7 @@ function ShopAddress({navigation, route}) {
             marginHorizontal: 100,
             marginTop: 20,
           }}
-          onPress={handleSubmit}>
+          onPress={handleAddAddress}>
           <Text
             style={{
               color: THEMECOLOR.textColor,
@@ -298,7 +434,7 @@ function ShopAddress({navigation, route}) {
             Submit
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 }

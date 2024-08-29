@@ -9,8 +9,8 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import Entypo from 'react-native-vector-icons/Entypo';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import moment from 'moment';
@@ -19,7 +19,7 @@ import THEMECOLOR from '../../utilities/color';
 import Octicons from 'react-native-vector-icons/Octicons';
 
 export default function OrderHistory({vendorData}) {
-  console.log('vendorData in order history page>>>', vendorData);
+  // console.log('vendorData in order history page>>>', vendorData);
   const navigation = useNavigation();
   const [orderHistory, setOrderHistory] = useState([]);
   const fetchData = async () => {
@@ -38,9 +38,18 @@ export default function OrderHistory({vendorData}) {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log('vendor Orders in order history ', orderHistory);
-  const returingAllProducts = orderHistory.flatMap(ele => ele.product);
-  // console.log('returingAllProducts', returingAllProducts);
+  // console.log('vendor Orders in order history ', orderHistory);
+  // const formattedProducts = orderHistory.flatMap(order =>
+  //   order.product.map(product => ({
+  //     ...product,
+  //     // order_id: order._id +  ,
+  //     payment_method: order.payment_method,
+  //     order_date: order.order_date,
+  //     order_status: order.order_status,
+  //     delivery_address: order.delivery_address,
+  //   })),
+  // );
+  // console.log('formattedProducts', formattedProducts);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -140,13 +149,13 @@ export default function OrderHistory({vendorData}) {
               <>
                 {orderHistory.map(item => (
                   <TouchableOpacity
-                    key={item._id}
+                    key={item.order_id}
                     style={{
                       backgroundColor: 'white',
                       marginBottom: 10,
                       borderRadius: 7,
-                      borderColor: '#eee',
-                      borderWidth: 1,
+                      borderTopColor: '#eee',
+                      borderTopWidth: 1,
                     }}
                     onPress={() =>
                       navigation.navigate('Order Summary', {
@@ -162,7 +171,7 @@ export default function OrderHistory({vendorData}) {
                         marginBottom: 5,
                       }}>
                       <View style={{flex: 0.2}}>
-                        <View
+                        {/* <View
                           style={{
                             backgroundColor: 'yellow',
                             borderRadius: 50,
@@ -170,19 +179,25 @@ export default function OrderHistory({vendorData}) {
                             height: 50,
                             justifyContent: 'center',
                             alignItems: 'center',
-                          }}>
-                          <FontAwesome
-                            name={
-                              item.order_status === 'Order Placed'
-                                ? 'flag-checkered'
-                                : 'calendar-check-o'
-                            }
-                            size={25}
-                            color="#3b3b3b"
-                          />
-                        </View>
+                          }}> */}
+                        <Image
+                          source={{
+                            uri: `${apiUrl.IMAGEURL}${item.product_image}`,
+                          }}
+                          style={{
+                            flex: 0.2,
+                            borderWidth: 1,
+                            borderColor: '#e3e1e1',
+                            paddingVertical: 10,
+                            height: 80,
+                            borderRadius: 10,
+                            resizeMode: 'cover',
+                            margin: 4,
+                          }}
+                        />
+                        {/* </View> */}
                       </View>
-                      <View style={{flex: 0.7}}>
+                      <View style={{flex: 0.7, marginLeft: 13}}>
                         <Text
                           style={{
                             fontSize: 15,
@@ -190,7 +205,10 @@ export default function OrderHistory({vendorData}) {
                             // letterSpacing: 1,
                             fontFamily: 'Montserrat-SemiBold',
                           }}>
-                          {item.order_status}
+                          {/* {item.order_status} */}
+                          {item.product_name.length < 57
+                            ? item.product_name
+                            : item.product_name.substring(0, 55) + '...'}
                         </Text>
                         <Text
                           style={{
@@ -200,23 +218,32 @@ export default function OrderHistory({vendorData}) {
                             marginVertical: 2,
                             fontFamily: 'Montserrat-Regular',
                           }}>
-                          ₹{item.paid_amount}
-                          <Entypo name="dot-single" size={20} color="gray" />
-                          {moment(item.order_date).format('LLL')}
+                          ₹{item.totalPrice}
+                          <Text
+                            style={{
+                              fontSize: 14,
+                              color: 'black',
+                              fontFamily: 'Montserrat-SemiBold',
+                            }}>
+                            {' '}
+                            •{' '}
+                          </Text>
+                          {/* <Entypo name="dot-single" size={20} color="gray" /> */}
+                          {moment(item.ordered_date).format('LLL')}
                         </Text>
                       </View>
                       <TouchableOpacity style={{flex: 0.1}}>
                         <Feather name="arrow-right" size={20} color="#313131" />
                       </TouchableOpacity>
                     </View>
-                    <View
+                    {/* <View
                       style={{
                         borderTopColor: '#f9f9f9',
                         borderTopWidth: 1,
                         paddingTop: 5,
                         marginBottom: 5,
-                      }}></View>
-                    <View
+                      }}></View> */}
+                    {/* <View
                       style={{
                         flexDirection: 'row',
                         marginBottom: 10,
@@ -267,7 +294,7 @@ export default function OrderHistory({vendorData}) {
                           </Text>
                         </View>
                       )}
-                    </View>
+                    </View> */}
                   </TouchableOpacity>
                 ))}
               </>

@@ -315,7 +315,7 @@ const Productfilter = ({route}) => {
             justifyContent: 'space-between',
             // marginTop: 20,
           }}>
-          {sortedProducts.map((ele, index) => {
+          {sortedProducts.reverse().map((ele, index) => {
             // Calculate average rating if reviews are present
             const averageRating =
               ele.Reviews.length > 0

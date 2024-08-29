@@ -5,23 +5,24 @@ import {
   Pressable,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import THEMECOLOR from '../../utilities/color';
 import moment from 'moment';
 import {apiUrl} from '../../api-services/api-constants';
 import axios from 'axios';
 import {useNavigation} from '@react-navigation/native';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import RNFS from 'react-native-fs';
 
 export default function OrderSummary({route}) {
   const navigation = useNavigation();
   const {product, vendorData} = route.params;
-  const returingProducts = product.product?.map(ele => ele);
   console.log('product in order summary>>>>>>>>>> ', product);
-  console.log('returingProducts>>>>>>>>>> ', returingProducts);
+
   const [popularItems, setPopularItems] = useState([]);
 
   useEffect(() => {
@@ -50,7 +51,78 @@ export default function OrderSummary({route}) {
       setLoading(false);
     }
   };
-  console.log('popularItems', popularItems);
+  // console.log('popularItems', popularItems);
+
+  const calculateTaxes = product => {
+    if (product && product.totalPrice) {
+      const totalPrice = product.totalPrice;
+      const cgstRate = 0.09; // 9%
+      const sgstRate = 0.09; // 9%
+
+      const cgst = totalPrice * cgstRate;
+      const sgst = totalPrice * sgstRate;
+
+      return {
+        cgst,
+        sgst,
+      };
+    } else {
+      throw new Error('Invalid product or totalPrice');
+    }
+  };
+
+  const taxes = calculateTaxes(product);
+  // console.log(`CGST: ${taxes.cgst.toFixed(2)}`);
+  // console.log(`SGST: ${taxes.sgst.toFixed(2)}`);
+  const finalAmountWithIncludingTax =
+    taxes.cgst + taxes.sgst + product.totalPrice;
+  // const subtotal = calculateTaxes();
+
+  // const gst = calculateGST(subtotal).toFixed(2);
+  // const total = Number(subtotal) + Number(gst);
+  // const grand = total.toFixed(2);
+  // console.log('gst in order summary', gst / 2);
+  // console.log('total in order summary', finalAmountWithIncludingTax.toFixed(2));
+
+  const generatePDF = async () => {
+    const htmlContent = `
+      <h1>Invoice</h1>
+      <p>Booking ID: ${product._id}</p>
+      <p>Date: ${product.ordered_date}</p>
+      <p>Total Amount: ${product.totalPrice}</p>
+      <!-- Add more dynamic content as needed -->
+    `;
+
+    let options = {
+      html: htmlContent,
+      fileName: `invoice_${product._id}`,
+      directory: 'Documents',
+    };
+
+    try {
+      const file = await RNHTMLtoPDF.convert(options);
+      return file.filePath;
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      throw new Error('Failed to generate PDF');
+    }
+  };
+
+  const downloadInvoice = async () => {
+    try {
+      const pdfPath = await generatePDF();
+      const downloadPath = `${RNFS.DownloadDirectoryPath}/invoice_${product._id}.pdf`;
+
+      await RNFS.moveFile(pdfPath, downloadPath);
+      Alert.alert(
+        'Invoice Downloaded',
+        'Your invoice has been saved to Downloads.',
+      );
+    } catch (error) {
+      Alert.alert('Error', 'There was a problem downloading the invoice.');
+      console.error(error);
+    }
+  };
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -86,127 +158,190 @@ export default function OrderSummary({route}) {
             }}>
             Booking Summary
           </Text>
-          <Text
-            style={{
-              fontSize: 12,
-              color: '#636363',
-              fontFamily: 'Montserrat-Medium',
-              marginBottom: 5,
-            }}>
-            {moment(product.order_date).format('LLL')}
-          </Text>
-          {/* <TouchableOpacity>
-          <Text
-            style={{
-              fontSize: 13,
-              color: 'green',
-              fontFamily: 'Montserrat-Light',
-              // marginBottom: 20,
-            }}>
-            Download Invoice{' '}
-            <AntDesign
-              name="download"
-              size={14}
-              color="green"
-              //   onPress={() => navigation.goBack()}
-            />
-          </Text>
-        </TouchableOpacity> */}
-          <Text
-            style={{
-              fontSize: 12,
-              color: 'green',
-              fontFamily: 'Montserrat-Medium',
-              // marginBottom: 20,
-            }}>
-            {product.order_status}
-          </Text>
-          {/* <View style={{marginTop: 10, marginBottom: 10}}>
+          <View style={{flexDirection: 'row', marginVertical: 5}}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: '#3f3f3f',
+                fontFamily: 'Montserrat-SemiBold',
+              }}>
+              Order ID:{' '}
+            </Text>
             <Text
               style={{
                 fontSize: 14,
                 color: 'black',
-              
-                fontFamily: 'Montserrat-SemiBold',
+                fontFamily: 'Montserrat-Regular',
               }}>
-              {product.products.length} items in this order
+              {' '}
+              {product.order_id}
             </Text>
-          </View> */}
-          {returingProducts.map(item => (
-            <View key={item._id}>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: 10,
+              marginBottom: 5,
+            }}>
+            <View style={{flex: 0.2}}>
               <View
                 style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  padding: 10,
-                  marginBottom: 5,
+                  width: 50,
+                  height: 50,
+                  borderRadius: 10,
                 }}>
-                <View style={{flex: 0.2}}>
-                  <View
-                    style={{
-                      width: 50,
-                      height: 50,
-                      // borderWidth: 1,
-                      // borderColor: '#e3e1e1',
-                      borderRadius: 10,
-                    }}>
-                    <Image
-                      source={{
-                        uri: `${apiUrl.IMAGEURL}${item.imageUrl}`,
-                      }}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </View>
-                </View>
-                <View style={{flex: 0.6}}>
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      color: 'black',
-                      fontFamily: 'Montserrat-Medium',
-                    }}>
-                    {item.productName.length < 58
-                      ? item.productName
-                      : item.productName.substring(0, 58) + '...'}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      // color: '#454444',
-                      color: '#ea5362',
-                      marginTop: 5,
-                      fontFamily: 'Montserrat-Medium',
-                    }}>
-                    Qty: {item.quantity}
-                  </Text>
-                </View>
-                <View style={{flex: 0.2, alignItems: 'flex-end'}}>
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      color: 'black',
-                      fontFamily: 'Montserrat-SemiBold',
-                    }}>
-                    {/* <MaterialIcons
-            name="currency-rupee"
-            // size={13}
-            color="#3c4145"
-          /> */}
-                    {/* {item.totalPrice} */}₹ {item.totalPrice}
-                  </Text>
-                </View>
+                <Image
+                  source={{
+                    uri: `${apiUrl.IMAGEURL}${product.product_image}`,
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    resizeMode: 'contain',
+                  }}
+                />
               </View>
             </View>
-          ))}
+            <View style={{flex: 0.6}}>
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: 'black',
+                  fontFamily: 'Montserrat-Medium',
+                }}>
+                {product.product_name.length < 58
+                  ? product.product_name
+                  : product.product_name.substring(0, 58) + '...'}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 11,
+                  color: '#ea5362',
+                  marginTop: 5,
+                  fontFamily: 'Montserrat-Medium',
+                }}>
+                Qty: {product.applied_quantity}
+              </Text>
+              <Text
+                style={{
+                  fontSize: 11,
+                  color: '#7d8592',
+                  marginTop: 5,
+                  fontFamily: 'Montserrat-Medium',
+                }}>
+                Seller: {product.store_or_seller}
+              </Text>
+            </View>
+            <View style={{flex: 0.2, alignItems: 'flex-end'}}>
+              <Text
+                style={{
+                  fontSize: 13,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                }}>
+                {' '}
+                ₹ {product.totalPrice}
+              </Text>
+            </View>
+          </View>
+          <View
+            style={{
+              backgroundColor:
+                product.order_status === 'Order Placed'
+                  ? '#fffbc0'
+                  : product.order_status === 'Order Delivered'
+                  ? '#d1fff9'
+                  : product.order_status === 'Order Returned'
+                  ? '#f9d0d0'
+                  : '#c6c6c6',
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+              borderRadius: 3,
+              marginBottom: 10,
+              marginHorizontal: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                color: 'black',
+                fontFamily: 'Montserrat-Medium',
+                marginBottom: 5,
+              }}>
+              {product.order_status}
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                color: 'black',
+                fontFamily: 'Montserrat-Medium',
+                marginBottom: 5,
+              }}>
+              {product.order_status === 'Order Placed'
+                ? `Your order has been placed, ${moment(
+                    product.ordered_date,
+                  ).format('LLL')}`
+                : product.order_status === 'Order Delivered'
+                ? `Your order has been delivered, ${moment(
+                    product.delivered_date,
+                  ).format('LLL')}`
+                : product.order_status === 'Order Returned'
+                ? `Your order has been returned, ${moment(
+                    product.returned_date,
+                  ).format('LLL')}`
+                : null}
+            </Text>
+          </View>
+          {product.order_status === 'Order Delivered' && (
+            <>
+              <View style={{marginHorizontal: 10, marginVertical: 10}}>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: 'black',
+                    fontFamily: 'Montserrat-Medium',
+                  }}>
+                  Return policy valid till September 2, 2024
+                </Text>
+              </View>
+              <View
+                style={{
+                  borderTopColor: '#f5f5f5',
+                  borderTopWidth: 1,
+                }}>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate('Request Return', {
+                      order: product,
+                      vendorData: vendorData,
+                    })
+                  }>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: 'black',
+                      fontFamily: 'Montserrat-Medium',
+                      textAlign: 'center',
+                      marginVertical: 10,
+                    }}>
+                    Return order
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
         </View>
+        {/* <View
+          style={{
+            borderColor: '#f7f6fd',
+            borderWidth: 2,
+            // marginBottom: 5,
+          }}></View> */}
+
         <View
           style={{
             borderColor: '#f7f6fd',
-            borderWidth: 5,
+            borderWidth: 2,
             marginBottom: 5,
           }}></View>
         <View
@@ -242,7 +377,7 @@ export default function OrderSummary({route}) {
                     letterSpacing: 1,
                     fontFamily: 'Montserrat-Medium',
                   }}>
-                  Total Item
+                  Items
                 </Text>
               </View>
               <View>
@@ -258,7 +393,7 @@ export default function OrderSummary({route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹{product.cart_value}
+                  ₹ {product.totalPrice}
                 </Text>
               </View>
             </View>
@@ -277,7 +412,7 @@ export default function OrderSummary({route}) {
                     fontFamily: 'Montserrat-Medium',
                     letterSpacing: 1,
                   }}>
-                  GST 18%
+                  CGST 9%
                 </Text>
               </View>
               <View>
@@ -293,7 +428,41 @@ export default function OrderSummary({route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹{product.gst_applied_value}
+                  ₹ {taxes.cgst.toFixed(2)}
+                </Text>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
+              <View>
+                <Text
+                  style={{
+                    color: 'black',
+                    fontSize: 13,
+                    fontFamily: 'Montserrat-Medium',
+                    letterSpacing: 1,
+                  }}>
+                  SGST 9%
+                </Text>
+              </View>
+              <View>
+                <Text
+                  style={{
+                    color: 'black',
+                    fontSize: 13,
+                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-Medium',
+                  }}>
+                  {/* <MaterialIcons
+                    name="currency-rupee"
+                    size={14}
+                    color="black"
+                  /> */}
+                  ₹ {taxes.sgst.toFixed(2)}
                 </Text>
               </View>
             </View>
@@ -328,7 +497,7 @@ export default function OrderSummary({route}) {
                     size={14}
                     color="black"
                   /> */}
-                  ₹{product.paid_amount}{' '}
+                  ₹ {finalAmountWithIncludingTax.toFixed(2)}{' '}
                 </Text>
               </View>
             </View>
@@ -337,7 +506,7 @@ export default function OrderSummary({route}) {
         <View
           style={{
             borderColor: '#f7f6fd',
-            borderWidth: 5,
+            borderWidth: 2,
             marginBottom: 5,
           }}></View>
         <View
@@ -357,25 +526,9 @@ export default function OrderSummary({route}) {
             style={{
               borderTopColor: '#f5f5f5',
               borderTopWidth: 1,
-              marginBottom: 5,
+              marginBottom: 2,
             }}></View>
           <View style={{padding: 10}}>
-            <Text
-              style={{
-                fontSize: 12,
-                color: '#3f3f3f',
-                fontFamily: 'Montserrat-SemiBold',
-              }}>
-              Order id
-            </Text>
-            <Text
-              style={{
-                fontSize: 13,
-                color: 'black',
-                fontFamily: 'Montserrat-Regular',
-              }}>
-              {product._id.substring(product._id.length - 8)}
-            </Text>
             <View style={{marginTop: 5}}>
               <Text
                 style={{
@@ -426,13 +579,21 @@ export default function OrderSummary({route}) {
                 {/* Ibis Party Hall, No.26, 1, Hosur Rd, Zuzuvadi, Madiwala, 1st
                 Stage, Bommanahalli, Bengaluru, Karnataka 560068 */}
               </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  color: '#3f3f3f',
+                  fontFamily: 'Montserrat-SemiBold',
+                }}>
+                Phone Number: {product.delivery_address.mobileNumber}
+              </Text>
             </View>
           </View>
         </View>
         <View
           style={{
             borderColor: '#f7f6fd',
-            borderWidth: 5,
+            borderWidth: 2,
             marginBottom: 5,
           }}></View>
         <Text
@@ -540,6 +701,7 @@ export default function OrderSummary({route}) {
             padding: 10,
             borderRadius: 7,
           }}
+          onPress={downloadInvoice}
           // onPress={() => {
           //   navigation.navigate(
           //     'Add Address',
@@ -548,7 +710,7 @@ export default function OrderSummary({route}) {
         >
           <Text
             style={{
-              color: 'black',
+              color: 'white',
               fontSize: 14,
               fontFamily: 'Montserrat-Medium',
               textAlign: 'center',
@@ -557,7 +719,7 @@ export default function OrderSummary({route}) {
             <AntDesign
               name="download"
               size={14}
-              color="black"
+              color="white"
               //   onPress={() => navigation.goBack()}
             />
           </Text>

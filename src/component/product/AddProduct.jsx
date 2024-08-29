@@ -230,6 +230,7 @@ export default function AddProduct({ProductType, vendorData}) {
       formData.append('country_of_orgin', coutryOfOrgin);
       formData.append('manufacturer_name', manufactureName);
       formData.append('product_color', color);
+      formData.append('shop_name', "Jimmy's Store");
       formData.append(
         'Specifications',
         JSON.stringify(
