@@ -1,4 +1,11 @@
-import {View, Text, TextInput, TouchableOpacity, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 // import MapView, {Marker} from 'react-native-maps';
 // import MapViewDirections from 'react-native-maps-directions';
@@ -30,7 +37,14 @@ export default function AddAddress({route}) {
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState(null);
   // const [isAddressSelected, setIsAddressSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const fetchData = async () => {
+    setLoading(true);
     try {
       let res = await axios.get(
         `${apiUrl.BASEURL}${apiUrl.GET_VENDOR_PROFILE}${vendorData._id}`,
@@ -41,12 +55,24 @@ export default function AddAddress({route}) {
       }
     } catch (error) {
       console.log('Error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+        }}>
+        <ActivityIndicator size="large" color="#0a6fe8" />
+      </View>
+    );
+  }
   // console.log('fullName', fullName);
   console.log('vendorAddress', vendorAddress);
 
@@ -621,26 +647,49 @@ export default function AddAddress({route}) {
               onChangeText={directions => setDirections(directions)}
             />
           </View>
-          <TouchableOpacity
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}
-            onPress={handleAddAddress}>
-            <Text
+          <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+            <TouchableOpacity
               style={{
-                color: 'black',
-                fontSize: 15,
-                backgroundColor: THEMECOLOR.mainColor,
-                fontFamily: 'Montserrat-SemiBold',
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                // elevation: 1,
-                borderRadius: 10,
-              }}>
-              Save
-            </Text>
-          </TouchableOpacity>
+                flexDirection: 'row',
+                justifyContent: 'center',
+              }}
+              onPress={() => setShowAddAddress(false)}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 15,
+                  backgroundColor: THEMECOLOR.mainColor,
+                  fontFamily: 'Montserrat-SemiBold',
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  // elevation: 1,
+                  borderRadius: 10,
+                }}>
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginLeft: 5,
+              }}
+              onPress={handleAddAddress}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontSize: 15,
+                  backgroundColor: THEMECOLOR.mainColor,
+                  fontFamily: 'Montserrat-SemiBold',
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  // elevation: 1,
+                  borderRadius: 10,
+                }}>
+                Save
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>

@@ -1,3 +1,4 @@
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,17 +7,59 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import React from 'react';
+
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 import {vendor} from '../../data/global-data';
 import Entypo from 'react-native-vector-icons/Entypo';
 import THEMECOLOR from '../../utilities/color';
+import axios from 'axios';
+import {apiUrl} from '../../api-services/api-constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AllShop() {
   const navigation = useNavigation();
+  const [allvendor, setAllvendor] = useState([]);
+  const [value, setValue] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedValue = await AsyncStorage.getItem('vendor');
+        if (storedValue !== null) {
+          setValue(JSON.parse(storedValue)); // Parse JSON if you stored it in JSON format
+        }
+      } catch (error) {
+        console.error('Error fetching data from AsyncStorage', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // console.log('value====', value);
+  useEffect(() => {
+    getallvendor();
+  }, []);
+  const getallvendor = async () => {
+    try {
+      const res = await axios.get(`${apiUrl.BASEURL}${apiUrl.GET_ALL_VENDOR}`);
+      if (res.status === 200) {
+        const filteredProducts = res.data;
+
+        setAllvendor(filteredProducts);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+  const filterallshop = allvendor.filter(
+    item => item?._id !== value?._id && item?.is_approved === true,
+  );
+  // console.log('filterallshop=====', filterallshop);
+  // console.log('allvendor', allvendor);
   return (
-    <View style={{height: '100%'}}>
+    <View style={{backgroundColor: 'white', height: '100%'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -51,16 +94,15 @@ function AllShop() {
         <View style={{flex: 0.8}}>
           <Text
             style={{
-              fontFamily: 'Poppins-Medium',
-              letterSpacing: 1,
+              fontFamily: 'Montserrat-Medium',
               color: 'black',
-              fontSize: 20,
+              fontSize: 15,
             }}>
             All Shop
           </Text>
         </View>
       </View>
-      <ScrollView style={{backgroundColor: '#f7f6fd', padding: 5}}>
+      <ScrollView style={{padding: 5}}>
         <TextInput
           placeholderTextColor="#757575"
           placeholder="Search by shop"
@@ -75,9 +117,9 @@ function AllShop() {
             paddingLeft: 15,
             backgroundColor: 'white',
             // marginBottom: 20,
-            fontFamily: 'Poppins-Regular',
-            letterSpacing: 1,
+            fontFamily: 'Montserrat-Regular',
             margin: 5,
+            elevation: 1,
           }}
         />
         <View
@@ -85,8 +127,9 @@ function AllShop() {
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
+            marginBottom: 15,
           }}>
-          {vendor.map((item, index) => (
+          {filterallshop.map((item, index) => (
             <View
               key={index}
               style={{
@@ -104,16 +147,16 @@ function AllShop() {
                 style={{
                   width: 100,
                   height: 100,
-                  resizeMode: 'center',
+                  resizeMode: 'cover',
                   borderRadius: 50,
                   alignSelf: 'center',
                   marginTop: 15,
                 }}
                 source={{
-                  uri: item.companyLogo,
+                  uri: `${apiUrl.IMAGEURL}${item.shop_image_or_logo}`,
                 }}
               />
-              {item.verifiedBadge && (
+              {/* {item.verifiedBadge && (
                 <MaterialIcons
                   name="verified-user"
                   size={20}
@@ -125,20 +168,20 @@ function AllShop() {
                     zIndex: 1,
                   }}
                 />
-              )}
+              )} */}
               <View style={{paddingLeft: 5, paddingRight: 5, marginTop: 15}}>
                 <Text
                   style={{
-                    fontSize: 14,
+                    fontSize: 13,
                     color: 'black',
-                    fontFamily: 'Poppins-Medium',
-                    letterSpacing: 1,
+                    fontFamily: 'Montserrat-SemiBold',
+                    // letterSpacing: 1,
                     marginBottom: 5,
                     textAlign: 'center',
                   }}>
-                  {item.shopName.length < 15
-                    ? item.shopName
-                    : item.shopName.substring(0, 15) + '...'}
+                  {item.shop_name?.length < 15
+                    ? item.shop_name
+                    : item.shop_name?.substring(0, 15) + '...'}
                 </Text>
                 <TouchableOpacity
                   style={{
@@ -152,15 +195,16 @@ function AllShop() {
                   }}
                   onPress={() =>
                     navigation.navigate('Shop Details', {
-                      shop: item,
+                      shop: item?._id,
+                      shopname: item?.shop_name,
                     })
                   }>
                   <Text
                     style={{
                       color: THEMECOLOR.mainColor,
-                      fontFamily: 'Poppins-Medium',
-                      letterSpacing: 1,
-                      fontSize: 14,
+                      fontFamily: 'Montserrat-SemiBold',
+                      // letterSpacing: 1,
+                      fontSize: 13,
                       textAlign: 'center',
                     }}>
                     View Profile

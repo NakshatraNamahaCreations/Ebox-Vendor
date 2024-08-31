@@ -23,7 +23,7 @@ export default function OrderSummary({route}) {
   const {product, vendorData} = route.params;
   console.log('product in order summary>>>>>>>>>> ', product);
 
-  const [popularItems, setPopularItems] = useState([]);
+  const [relevantProduct, setRelevantProduct] = useState([]);
 
   useEffect(() => {
     // Only fetch data if vendor data is available
@@ -42,16 +42,17 @@ export default function OrderSummary({route}) {
         const filteredProducts = res.data.allSellProduct.filter(
           item => item.vendor_id !== vendorData?._id,
         );
-        setPopularItems(filteredProducts);
+        setRelevantProduct(filteredProducts);
         // setFlp(res.data.allSellProduct);
       }
     } catch (error) {
       console.log('Error:', error);
-    } finally {
-      setLoading(false);
     }
   };
-  // console.log('popularItems', popularItems);
+  const filteroutRelevant = relevantProduct.filter(
+    item => item.product_category === product.product_category,
+  );
+  console.log('filteroutRelevant', filteroutRelevant.length);
 
   const calculateTaxes = product => {
     if (product && product.totalPrice) {
@@ -584,6 +585,7 @@ export default function OrderSummary({route}) {
                   fontSize: 12,
                   color: '#3f3f3f',
                   fontFamily: 'Montserrat-SemiBold',
+                  marginTop: 5,
                 }}>
                 Phone Number: {product.delivery_address.mobileNumber}
               </Text>
@@ -614,9 +616,9 @@ export default function OrderSummary({route}) {
             flexWrap: 'wrap',
             // gap: 10,
           }}>
-          {popularItems.slice(0, 5).map(item => (
+          {filteroutRelevant.slice(0, 5).map((item, index) => (
             <TouchableOpacity
-              key={item._id}
+              key={index}
               style={{width: '33.33%', paddingHorizontal: 5, marginBottom: 10}}
               onPress={() =>
                 navigation.navigate('ProductDetails', {
@@ -668,23 +670,25 @@ export default function OrderSummary({route}) {
               </Text>
             </TouchableOpacity>
           ))}
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Product Filter', {
-                filterType: 'Browsing History',
-                allPopularItems: popularItems,
-              })
-            }>
-            <Text
-              style={{
-                fontSize: 14,
-                color: 'black',
-                fontFamily: 'Montserrat-SemiBold',
-                marginLeft: 15,
-              }}>
-              View All
-            </Text>
-          </TouchableOpacity>
+          {filteroutRelevant.length > 6 ? (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Product Filter', {
+                  filterType: 'Browsing History',
+                  allPopularItems: relevantProduct,
+                })
+              }>
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: 'black',
+                  fontFamily: 'Montserrat-SemiBold',
+                  marginLeft: 15,
+                }}>
+                View All
+              </Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
       </ScrollView>
       <View
@@ -701,13 +705,13 @@ export default function OrderSummary({route}) {
             padding: 10,
             borderRadius: 7,
           }}
-          onPress={downloadInvoice}
-          // onPress={() => {
-          //   navigation.navigate(
-          //     'Add Address',
-          //   );
-          // }}
-        >
+          // onPress={downloadInvoice}
+          onPress={() =>
+            navigation.navigate('Invoice', {
+              order: product,
+              vendorData: vendorData,
+            })
+          }>
           <Text
             style={{
               color: 'white',

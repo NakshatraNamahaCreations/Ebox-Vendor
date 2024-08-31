@@ -280,10 +280,7 @@ export default function Home() {
               </TouchableOpacity>
             </View>
             {/* new products */}
-            <PopularItems
-              refreshing={refreshing}
-              allProducts={popularItems.reverse()}
-            />
+            <PopularItems refreshing={refreshing} allProducts={popularItems} />
           </View>
           <View style={{marginBottom: 20}}>
             <Text

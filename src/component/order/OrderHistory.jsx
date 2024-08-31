@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   StyleSheet,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,7 +23,11 @@ export default function OrderHistory({vendorData}) {
   // console.log('vendorData in order history page>>>', vendorData);
   const navigation = useNavigation();
   const [orderHistory, setOrderHistory] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const fetchData = async () => {
+    setLoading(true);
     try {
       let res = await axios.get(
         `${apiUrl.BASEURL}${apiUrl.GET_ORDER_BY_VENDOR_ID}${vendorData._id}`,
@@ -32,12 +37,35 @@ export default function OrderHistory({vendorData}) {
       }
     } catch (error) {
       console.log('Error:', error);
+    } finally {
+      setRefreshing(false);
+      setLoading(false);
     }
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetchData();
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+        }}>
+        <ActivityIndicator size="large" color="#0a6fe8" />
+      </View>
+    );
+  }
+
   // console.log('vendor Orders in order history ', orderHistory);
   // const formattedProducts = orderHistory.flatMap(order =>
   //   order.product.map(product => ({
@@ -58,14 +86,10 @@ export default function OrderHistory({vendorData}) {
           padding: 20,
           backgroundColor: 'white',
           elevation: 4,
-          //   paddingBottom: 10,
-          //   borderBottomColor: '#e5e5e5',
-          //   borderBottomWidth: 1,
         }}>
         <Text
           style={{
             fontFamily: 'Montserrat-Medium',
-            // letterSpacing: 1,
             color: 'black',
             fontSize: 20,
             textAlign: 'left',
@@ -143,7 +167,14 @@ export default function OrderHistory({vendorData}) {
           </View>
         </View>
       ) : (
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={[THEMECOLOR.mainColor]} // Customize the color of the refresh indicator
+            />
+          }>
           <View style={{padding: 10}}>
             {orderHistory.length > 0 ? (
               <>
@@ -200,7 +231,7 @@ export default function OrderHistory({vendorData}) {
                       <View style={{flex: 0.7, marginLeft: 13}}>
                         <Text
                           style={{
-                            fontSize: 15,
+                            fontSize: 13,
                             color: 'black',
                             // letterSpacing: 1,
                             fontFamily: 'Montserrat-SemiBold',
@@ -212,7 +243,7 @@ export default function OrderHistory({vendorData}) {
                         </Text>
                         <Text
                           style={{
-                            fontSize: 13,
+                            fontSize: 12,
                             color: 'black',
                             // letterSpacing: 1,
                             marginVertical: 2,

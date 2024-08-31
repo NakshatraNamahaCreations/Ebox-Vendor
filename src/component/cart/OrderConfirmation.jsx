@@ -15,6 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {clearCart} from '../../state_management/cartSlice';
 import {apiUrl} from '../../api-services/api-constants';
+import moment from 'moment';
 
 export default function OrderConfirmation({route}) {
   const userAddress = route.params.address;
@@ -49,12 +50,14 @@ export default function OrderConfirmation({route}) {
     product_id: item.id,
     product_image: item.imageUrl,
     product_name: item.productName,
+    product_category: item.productCategory,
     store_or_seller: item.store,
     product_price: item.productPrice,
     applied_quantity: item.quantity,
     totalPrice: item.totalPrice,
     product_mrp: item.mrpPrice,
 
+    ordered_date: moment().format('LLL'),
     delivery_address: userAddress,
     // cart_value: subtotal,
     gst_applied_value: gst,
@@ -64,6 +67,8 @@ export default function OrderConfirmation({route}) {
     order_status: 'Order Placed',
     vendor_id: vendorData._id,
     vendor_name: vendorData.vendor_name,
+    seller_name: item.sellerName,
+    seller_id: item.sellerId,
   }));
 
   console.log('constructingCart', constructingCart);

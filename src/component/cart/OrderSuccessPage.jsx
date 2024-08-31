@@ -1,19 +1,31 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import React from 'react';
 import THEMECOLOR from '../../utilities/color';
+import LottieView from 'lottie-react-native';
+// import * as Animatable from 'react-native-animatable';
 
 export default function OrderSuccessPage({navigation}) {
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
-      <Image
-        source={require('../../../assets/02-lottie-tick-01-instant-2-3.gif')}
+      {/* <Animatable.Image
+        animation="bounceIn"
+        duration={2000}
+        iterationCount={1}
+        source={require('../../../assets/success-box.gif')}
         style={{
-          width: 390,
-          height: 350,
-          resizeMode: 'contain',
+          width: 200,
+          height: 200,
           alignSelf: 'center',
-          marginTop: 20,
+          marginTop: '20%',
         }}
+        onAnimationEnd={() => console.log('Animation Finished')}
+      /> */}
+      <LottieView
+        source={require('../../../assets/review.json')} // Your Lottie animation file
+        autoPlay
+        loop={false} // Set to false to play the animation only once
+        style={{width: 200, height: 200, alignSelf: 'center', marginTop: '20%'}}
+        onAnimationFinish={() => console.log('Animation Finished')}
       />
       <Text
         style={{

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -15,16 +15,22 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+// import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {useNavigation} from '@react-navigation/native';
 import THEMECOLOR from '../../utilities/color';
 import Video from 'react-native-video';
 import axios from 'axios';
 import moment from 'moment';
 import {useDispatch, useSelector} from 'react-redux';
-import {addToCart} from '../../state_management/cartSlice';
+import {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+  removeFromCart,
+} from '../../state_management/cartSlice';
 import {Badge} from 'react-native-paper';
 import {apiUrl} from '../../api-services/api-constants';
+import ProductTab from './ProductTab';
 
 // function ProductDetails({selectedProduct, closeModal}) {
 function ProductDetails({route}) {
@@ -34,12 +40,12 @@ function ProductDetails({route}) {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
   console.log('cart in product detailed >>>>>>', cart);
-  const [buttonText, setButtonText] = React.useState('ADD TO CART');
 
-  const [productSpecification, setProductSpecification] = useState(false);
-  const [productDetails, setProductDetails] = useState(true);
-  const [coutryOfOrgin, setCoutryOfOrgin] = useState(false);
-  const [manufacturer, setManufacturer] = useState(false);
+  const [buttonText, setButtonText] = React.useState('ADD TO CART');
+  // const [productSpecification, setProductSpecification] = useState(false);
+  // const [productDetails, setProductDetails] = useState(true);
+  // const [coutryOfOrgin, setCoutryOfOrgin] = useState(false);
+  // const [manufacturer, setManufacturer] = useState(false);
   const [mainMedia, setMainMedia] = useState(product.product_image[0] || '');
   const [loading, setLoading] = useState(false);
   const [relevantProducts, setRelevantProducts] = useState([]);
@@ -52,6 +58,18 @@ function ProductDetails({route}) {
   useEffect(() => {
     fetchData();
   }, [route.params.item]);
+
+  useEffect(() => {
+    refreshReviews();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0a6fe8" style={styles.loader} />
+      </View>
+    );
+  }
 
   const fetchData = async () => {
     setLoading(true);
@@ -82,9 +100,6 @@ function ProductDetails({route}) {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    refreshReviews();
-  }, []);
 
   const refreshReviews = async () => {
     try {
@@ -98,14 +113,6 @@ function ProductDetails({route}) {
   };
 
   // console.log('reviews', reviews);
-
-  if (loading) {
-    return (
-      <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#0a6fe8" style={styles.loader} />
-      </View>
-    );
-  }
 
   // const handleProductClick = async productId => {
   //   try {
@@ -141,9 +148,39 @@ function ProductDetails({route}) {
         mrpPrice: product.mrp_rate,
         store: product.shop_name,
         imageUrl: product.product_image[0],
+        productCategory: product.product_category,
+        sellerName: product.vendor_name,
+        sellerId: product.vendor_id,
       }),
     );
     setButtonText('VIEW CART');
+  };
+
+  const AddToCartForRelevantProduct = product => {
+    dispatch(
+      addToCart({
+        id: product._id,
+        productName: product.product_name,
+        productPrice: product.product_price,
+        mrpPrice: product.mrp_rate,
+        store: product.shop_name,
+        imageUrl: product.product_image[0],
+        productCategory: product.product_category,
+        sellerName: product.vendor_name,
+        sellerId: product.vendor_id,
+      }),
+    );
+  };
+
+  const handleDecrementQuantity = productId => {
+    const productInCart = cart.find(item => item.id === productId);
+    if (productInCart.quantity === 1) {
+      // When the quantity is 1, dispatch an action to remove the item from the cart
+      dispatch(removeFromCart({id: productId}));
+    } else {
+      // Otherwise, just decrement the quantity
+      dispatch(decrementQuantity({id: productId}));
+    }
   };
 
   const handleButtonPress = () => {
@@ -154,32 +191,62 @@ function ProductDetails({route}) {
     }
   };
 
-  const renderItem = ({item}) => {
-    if (item.endsWith('.mp4')) {
-      return (
-        <Video
-          source={{
-            uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
-          }}
-          style={styles.mainMedia}
-          controls={true}
-          resizeMode="contain"
-        />
-      );
-    } else {
-      return (
-        <Image
-          source={{
-            uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
-          }}
-          style={styles.mainMedia}
-          resizeMode="cover"
-        />
-      );
-    }
-  };
+  // const MemoizedMedia = useMemo(() => {
+  //   if (mainMedia.endsWith('.mp4')) {
+  //     return (
+  //       <Video
+  //         source={{
+  //           uri: `http://192.168.1.103:9000/${mainMedia.replace(/\\/g, '/')}`,
+  //         }}
+  //         style={styles.mainMedia}
+  //         controls={true}
+  //         resizeMode="cover"
+  //       />
+  //     );
+  //   } else {
+  //     return (
+  //       <Image
+  //         source={{
+  //           uri: `http://192.168.1.103:9000/${mainMedia.replace(/\\/g, '/')}`,
+  //         }}
+  //         style={[styles.mainMedia, {marginTop: 20}]}
+  //         resizeMode="contain"
+  //       />
+  //     );
+  //   }
+  // }, [mainMedia]);
 
-  // console.log('mainMedia', mainMedia);
+  // const handleTabClick = tabName => {
+  //   setProductSpecification(tabName === 'specifications');
+  //   setProductDetails(tabName === 'details');
+  //   setCoutryOfOrgin(tabName === 'origin');
+  //   setManufacturer(tabName === 'manufacturer');
+  // };
+
+  // const renderItem = ({item}) => {
+  //   if (item.endsWith('.mp4')) {
+  //     return (
+  //       <Video
+  //         source={{
+  //           uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
+  //         }}
+  //         style={styles.mainMedia}
+  //         controls={true}
+  //         resizeMode="contain"
+  //       />
+  //     );
+  //   } else {
+  //     return (
+  //       <Image
+  //         source={{
+  //           uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
+  //         }}
+  //         style={styles.mainMedia}
+  //         resizeMode="cover"
+  //       />
+  //     );
+  //   }
+  // };
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -282,7 +349,7 @@ function ProductDetails({route}) {
             {product.product_name}
           </Text>
           {/* working below code for showing product frist image  */}
-          <View style={{width: '100%', height: 300, marginBottom: 10}}>
+          <View style={{width: '100%', height: 350, marginBottom: 10}}>
             {mainMedia.endsWith('.mp4') ? (
               <Video
                 source={{
@@ -293,7 +360,7 @@ function ProductDetails({route}) {
                 }}
                 style={styles.mainMedia}
                 controls={true}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             ) : (
               <Image
@@ -304,22 +371,11 @@ function ProductDetails({route}) {
                   )}?${new Date().getTime()}`,
                 }}
                 style={[styles.mainMedia, {marginTop: 20}]}
-                resizeMode="cover"
+                resizeMode="contain"
               />
             )}
           </View>
-          {/* not working */}
-          {/* <View>
-            <FlatList
-              data={[mainMedia]} // Render only the current main media
-              renderItem={renderItem}
-              keyExtractor={item => item}
-              horizontal
-              pagingEnabled
-              showsHorizontalScrollIndicator={false}
-              style={styles.mainMediaContainer}
-            />
-          </View> */}
+          {/* {MemoizedMedia} */}
           <ScrollView horizontal style={styles.thumbnailContainer}>
             {product.product_image.map((image, index) => (
               <TouchableOpacity key={index} onPress={() => setMainMedia(image)}>
@@ -475,8 +531,7 @@ function ProductDetails({route}) {
                 }}
               /> */}
             </View>
-
-            <ScrollView
+            {/* <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
               <View
@@ -485,13 +540,7 @@ function ProductDetails({route}) {
                   marginTop: 15,
                 }}>
                 <View style={{marginHorizontal: 10}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setProductSpecification(false);
-                      setCoutryOfOrgin(false);
-                      setProductDetails(true);
-                      setManufacturer(false);
-                    }}>
+                  <TouchableOpacity onPress={() => handleTabClick('details')}>
                     <Text
                       style={{
                         fontFamily: 'Montserrat-Medium',
@@ -516,12 +565,7 @@ function ProductDetails({route}) {
                 </View>
                 <View style={{marginHorizontal: 10}}>
                   <TouchableOpacity
-                    onPress={() => {
-                      setProductSpecification(true);
-                      setCoutryOfOrgin(false);
-                      setProductDetails(false);
-                      setManufacturer(false);
-                    }}>
+                    onPress={() => handleTabClick('specifications')}>
                     <Text
                       style={{
                         fontFamily: 'Montserrat-Medium',
@@ -546,13 +590,7 @@ function ProductDetails({route}) {
                 </View>
 
                 <View style={{marginHorizontal: 10}}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setProductSpecification(false);
-                      setCoutryOfOrgin(true);
-                      setProductDetails(false);
-                      setManufacturer(false);
-                    }}>
+                  <TouchableOpacity onPress={() => handleTabClick('origin')}>
                     <Text
                       style={{
                         fontFamily: 'Montserrat-Medium',
@@ -575,12 +613,7 @@ function ProductDetails({route}) {
                 </View>
                 <View style={{marginHorizontal: 10}}>
                   <TouchableOpacity
-                    onPress={() => {
-                      setProductSpecification(false);
-                      setCoutryOfOrgin(false);
-                      setProductDetails(false);
-                      setManufacturer(true);
-                    }}>
+                    onPress={() => handleTabClick('manufacturer')}>
                     <Text
                       style={{
                         fontFamily: 'Montserrat-Medium',
@@ -602,7 +635,8 @@ function ProductDetails({route}) {
                   </TouchableOpacity>
                 </View>
               </View>
-            </ScrollView>
+            </ScrollView> */}
+            {/* <>
             <View style={{marginTop: 10}}>
               {productSpecification ? (
                 <View>
@@ -617,7 +651,7 @@ function ProductDetails({route}) {
                           </View>
                           <View style={{flex: 0.5}}>
                             <Text style={styles.productsDetailsAns}>
-                              {/* JBL Store */}
+                               
                               {spe.value}
                             </Text>
                           </View>
@@ -762,6 +796,8 @@ function ProductDetails({route}) {
                 </>
               ) : null}
             </View>
+            </> */}
+            <ProductTab product={product} />
             <Text
               style={{
                 color: '#2c2c2c',
@@ -776,46 +812,52 @@ function ProductDetails({route}) {
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}>
-                {relevantProducts.map((items, index) => (
-                  <Pressable
-                    key={index}
-                    style={styles.addsOnView}
-                    onPress={() => handleProductClick(items)}>
-                    <View style={{padding: 3}}>
-                      {items.product_image && items.product_image.length > 0 ? (
-                        <Image
-                          style={styles.addsOnImage}
-                          source={{
-                            uri: `http://192.168.1.103:9000/${items.product_image[0].replace(
-                              /\\/g,
-                              '/',
-                            )}`,
-                          }}
-                          // source={{
-                          //   uri: 'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-eternal-lighting-echomate-247x247.jpg',
-                          // }}
-                        />
-                      ) : (
-                        <View
-                          style={{
-                            width: '100%',
-                            height: 100,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            backgroundColor: '#f3f3f3',
-                            borderRadius: 10,
-                          }}>
-                          <Text style={{color: '#ccc'}}>No Image</Text>
-                        </View>
-                      )}
-                    </View>
-                    <View style={{backgroundColor: 'transparent', padding: 5}}>
-                      <Text style={styles.addsOnText}>
-                        {items.product_name.length < 15
-                          ? items.product_name
-                          : items.product_name.substring(0, 14) + '...'}
-                      </Text>
-                      {/* <View
+                {relevantProducts.map((items, index) => {
+                  const productInCart = cart.find(
+                    item => item.id === items._id,
+                  );
+                  return (
+                    <Pressable
+                      key={index}
+                      style={styles.addsOnView}
+                      onPress={() => handleProductClick(items)}>
+                      <View style={{padding: 3}}>
+                        {items.product_image &&
+                        items.product_image.length > 0 ? (
+                          <Image
+                            style={styles.addsOnImage}
+                            source={{
+                              uri: `http://192.168.1.103:9000/${items.product_image[0].replace(
+                                /\\/g,
+                                '/',
+                              )}`,
+                            }}
+                            // source={{
+                            //   uri: 'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-eternal-lighting-echomate-247x247.jpg',
+                            // }}
+                          />
+                        ) : (
+                          <View
+                            style={{
+                              width: '100%',
+                              height: 100,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              backgroundColor: '#f3f3f3',
+                              borderRadius: 10,
+                            }}>
+                            <Text style={{color: '#ccc'}}>No Image</Text>
+                          </View>
+                        )}
+                      </View>
+                      <View
+                        style={{backgroundColor: 'transparent', padding: 5}}>
+                        <Text style={styles.addsOnText}>
+                          {items.product_name.length < 15
+                            ? items.product_name
+                            : items.product_name.substring(0, 14) + '...'}
+                        </Text>
+                        {/* <View
                           style={{
                             flexDirection: 'row',
                           }}>
@@ -842,54 +884,125 @@ function ProductDetails({route}) {
                             </Text>
                           </View>
                         </View> */}
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <View style={{flex: 0.6}}>
-                          <Text
-                            style={{
-                              fontSize: 13,
-                              color: 'black',
-                              fontFamily: 'Montserrat-Medium',
-                            }}>
-                            {/* <MaterialIcons
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <View style={{flex: 0.6}}>
+                            <Text
+                              style={{
+                                fontSize: 13,
+                                color: 'black',
+                                fontFamily: 'Montserrat-Medium',
+                              }}>
+                              {/* <MaterialIcons
                                 name="currency-rupee"
                                 size={13}
                                 color="black"
                               /> */}
-                            ₹ {items.product_price}
-                          </Text>
-                        </View>
-                        <View
-                          style={{
-                            flex: 0.4,
-                          }}>
-                          <TouchableOpacity
-                            style={{
-                              backgroundColor: THEMECOLOR.mainColor,
-                              borderRadius: 5,
-                              height: 30,
-                              // width: 60,
-                              paddingTop: 5,
-                            }}>
-                            <Text
-                              style={{
-                                fontSize: 13,
-                                color: THEMECOLOR.textColor,
-                                fontFamily: 'Montserrat-Medium',
-                                textAlign: 'center',
-                              }}>
-                              + Add
+                              ₹ {items.product_price}
                             </Text>
-                          </TouchableOpacity>
+                          </View>
+                          {productInCart ? (
+                            productInCart.quantity > 0 ? (
+                              <View
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  flex: 0.6,
+                                }}>
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    handleDecrementQuantity(items._id)
+                                  }>
+                                  <AntDesign
+                                    name="minus"
+                                    size={13}
+                                    color={THEMECOLOR.textColor}
+                                    style={{
+                                      backgroundColor: THEMECOLOR.mainColor,
+                                      padding: 5,
+                                      borderRadius: 50,
+                                    }}
+                                  />
+                                </TouchableOpacity>
+                                <Text
+                                  style={{
+                                    fontSize: 13,
+                                    color: 'black',
+                                    marginHorizontal: 10,
+                                    fontFamily: 'Montserrat-Medium',
+                                    textAlign: 'center',
+                                  }}>
+                                  {productInCart.quantity}
+                                </Text>
+                                <TouchableOpacity
+                                  onPress={() =>
+                                    dispatch(incrementQuantity({id: items._id}))
+                                  }>
+                                  <AntDesign
+                                    name="plus"
+                                    size={13}
+                                    color={THEMECOLOR.textColor}
+                                    style={{
+                                      backgroundColor: THEMECOLOR.mainColor,
+                                      padding: 5,
+                                      borderRadius: 50,
+                                    }}
+                                  />
+                                </TouchableOpacity>
+                              </View>
+                            ) : (
+                              <TouchableOpacity
+                                onPress={() =>
+                                  AddToCartForRelevantProduct(items)
+                                }
+                                style={{
+                                  flex: 0.6,
+                                  backgroundColor: THEMECOLOR.mainColor,
+                                  borderRadius: 5,
+                                  height: 30,
+                                  paddingTop: 5,
+                                }}>
+                                <Text
+                                  style={{
+                                    fontSize: 13,
+                                    color: THEMECOLOR.textColor,
+                                    fontFamily: 'Montserrat-Medium',
+                                    textAlign: 'center',
+                                  }}>
+                                  + Add
+                                </Text>
+                              </TouchableOpacity>
+                            )
+                          ) : (
+                            <TouchableOpacity
+                              onPress={() => AddToCartForRelevantProduct(items)}
+                              style={{
+                                flex: 0.6,
+                                backgroundColor: THEMECOLOR.mainColor,
+                                borderRadius: 5,
+                                height: 30,
+                                paddingTop: 5,
+                              }}>
+                              <Text
+                                style={{
+                                  fontSize: 13,
+                                  color: THEMECOLOR.textColor,
+                                  fontFamily: 'Montserrat-Medium',
+                                  textAlign: 'center',
+                                }}>
+                                + Add
+                              </Text>
+                            </TouchableOpacity>
+                          )}
                         </View>
                       </View>
-                    </View>
-                  </Pressable>
-                ))}
+                    </Pressable>
+                  );
+                })}
               </ScrollView>
             </View>
           </View>
@@ -1207,7 +1320,7 @@ const styles = StyleSheet.create({
   },
   mainMedia: {
     width: '100%',
-    height: '100%',
+    height: '80%',
   },
   thumbnailContainer: {
     flexDirection: 'row',

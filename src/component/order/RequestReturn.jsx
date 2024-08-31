@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -14,6 +15,8 @@ import {apiUrl} from '../../api-services/api-constants';
 import {RadioButton} from 'react-native-paper';
 import THEMECOLOR from '../../utilities/color';
 import moment from 'moment';
+import email from 'react-native-email';
+import axios from 'axios';
 
 function RequestReturn({route}) {
   const orderData = route.params.order;
@@ -34,6 +37,50 @@ function RequestReturn({route}) {
     setSelectedValue(item);
   };
   //   console.log('commandForReason', commandForReason);
+
+  const submiteRequest = async () => {
+    if (selectedValue === '') {
+      Alert.alert('Please select a reason');
+    } else {
+      try {
+        const config = {
+          url: `${apiUrl.RETURN_ORDER}${orderData.order_id}`,
+          method: 'put',
+          baseURL: apiUrl.BASEURL,
+          headers: {'Content-Type': 'application/json'},
+          data: {
+            return_reason: selectedValue.reason,
+            reason_command: commandForReason,
+            returned_date: moment().format('LLL'),
+          },
+        };
+        const response = await axios(config);
+        if (response.status === 200) {
+          navigation.navigate('BottomTab');
+          sendEmail();
+        }
+      } catch (error) {
+        console.log('Unknown error:', error);
+        if (error.response && error.response.data) {
+          Alert.alert('Error', error.response.data.message);
+        } else {
+          Alert.alert('Error', 'An unknown error occurred');
+        }
+      }
+    }
+  };
+
+  const sendEmail = () => {
+    const to = 'kiruthivalli@gmail.com';
+    email(to, {
+      cc: 'kiruthikamani0599@gmail.com',
+      bcc: 'kiruthikamani0599@gmail.com',
+      subject: `Return Request for Order ID - ${orderData?.order_id}`,
+      checkCanOpen: false,
+    }).catch(console.error);
+  };
+
+  console.log('selectedValue', selectedValue);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -75,6 +122,7 @@ function RequestReturn({route}) {
             fontSize: 14,
             color: 'green',
             fontFamily: 'Montserrat-Medium',
+            marginBottom: 10,
           }}>
           Order ID: {orderData.order_id}
         </Text>
@@ -115,12 +163,13 @@ function RequestReturn({route}) {
             borderColor: '#f7f6fd',
             borderWidth: 2,
             marginBottom: 5,
+            marginTop: 10,
           }}></View>
         <View style={{paddingHorizontal: 20}}>
           <Text
             style={{
               marginTop: 10,
-              fontSize: 18,
+              fontSize: 15,
               color: 'black',
               fontFamily: 'Montserrat-SemiBold',
             }}>
@@ -154,10 +203,10 @@ function RequestReturn({route}) {
                   <View style={{flex: 0.9}}>
                     <Text
                       style={{
-                        fontSize: 15,
+                        fontSize: 14,
                         color: 'black',
                         marginLeft: 2,
-                        fontFamily: 'Montserrat-SemiBold',
+                        fontFamily: 'Montserrat-Medium',
                       }}>
                       {item.reason}
                     </Text>
@@ -201,20 +250,15 @@ function RequestReturn({route}) {
                 borderRadius: 5,
                 paddingVertical: 15,
               }}
-              onPress={() =>
-                navigation.navigate('Email Summary', {
-                  vendorData: orderData,
-                  vendorData: vendorData,
-                })
-              }>
+              onPress={submiteRequest}>
               <Text
                 style={{
-                  fontSize: 15,
+                  fontSize: 14,
                   color: 'black',
                   fontFamily: 'Montserrat-SemiBold',
                   textAlign: 'center',
                 }}>
-                Continue
+                Submit
               </Text>
             </TouchableOpacity>
             <View

@@ -6,6 +6,7 @@ import {Picker} from '@react-native-picker/picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {apiUrl} from '../api-services/api-constants';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import axios from 'axios';
 
@@ -52,9 +53,9 @@ export default function Register({navigation}) {
     // alert('Registration successful! Please login');
     try {
       const config = {
-        url: 'vendor/register',
+        url: apiUrl.VENDOR_REGISTER,
         method: 'post',
-        baseURL: 'http://192.168.1.103:9000/api/',
+        baseURL: apiUrl.BASEURL,
         headers: {'Content-Type': 'application/json'},
         data: {
           vendor_name: name,

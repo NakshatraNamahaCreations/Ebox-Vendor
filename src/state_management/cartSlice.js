@@ -31,7 +31,10 @@ const cartSlice = createSlice({
           store: action.payload.store,
           imageUrl: action.payload.imageUrl,
           totalPrice: action.payload.productPrice,
+          productCategory: action.payload.productCategory,
           quantity: 1,
+          sellerName: action.payload.sellerName,
+          sellerId: action.payload.sellerId,
           //all woring
         });
       }

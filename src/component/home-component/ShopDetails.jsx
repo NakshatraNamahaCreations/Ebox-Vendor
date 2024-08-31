@@ -6,8 +6,9 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -16,20 +17,95 @@ import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import THEMECOLOR from '../../utilities/color';
+import axios from 'axios';
+import {apiUrl} from '../../api-services/api-constants';
+import {Badge, RadioButton} from 'react-native-paper';
+import {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+  removeFromCart,
+} from '../../state_management/cartSlice';
+import {useDispatch, useSelector} from 'react-redux';
+
 function ShopDetails({route}) {
   const navigation = useNavigation();
   const shop = route.params.shop || '';
-  // console.log('shop>>>>>>', shop);
+  const shopname = route.params.shopname || '';
+  const dispatch = useDispatch();
+  const cart = useSelector(state => state.cart);
+  console.log('cart in shop details>>>>>>', cart);
   const [isModalVisible, setModalVisible] = useState(false);
   const [showItems, setShowItems] = useState({});
+  const [allvendorproduct, setallvendorproduct] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  // console.log('vendir id in sgop detyails', shopname);
+
+  useEffect(() => {
+    getallvendor();
+  }, []);
+
+  const getallvendor = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${apiUrl.BASEURL}${apiUrl.GET_VENDOR_PRODUCT}${shop}`,
+      );
+      if (res.status === 200) {
+        const filteredProducts = res.data.products.reverse();
+
+        setallvendorproduct(filteredProducts);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#0a6fe8" style={styles.loader} />
+      </View>
+    );
+  }
+  // console.log('allvendorproduct', allvendorproduct);
   const toggleModal = item => {
     setShowItems(item);
     setModalVisible(!isModalVisible);
   };
 
+  const handleAddToCart = product => {
+    dispatch(
+      addToCart({
+        id: product._id,
+        productName: product.product_name,
+        productPrice: product.product_price,
+        mrpPrice: product.mrp_rate,
+        store: product.shop_name,
+        imageUrl: product.product_image[0],
+        productCategory: product.product_category,
+        sellerName: product.vendor_name,
+        sellerId: product.vendor_id,
+      }),
+    );
+  };
+
+  const handleDecrementQuantity = productId => {
+    const productInCart = cart.find(item => item.id === productId);
+    if (productInCart.quantity === 1) {
+      // When the quantity is 1, dispatch an action to remove the item from the cart
+      dispatch(removeFromCart({id: productId}));
+    } else {
+      // Otherwise, just decrement the quantity
+      dispatch(decrementQuantity({id: productId}));
+    }
+  };
+
   return (
-    <View>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <View
         style={{
           flexDirection: 'row',
@@ -65,144 +141,253 @@ function ShopDetails({route}) {
           <Text
             style={{
               fontFamily: 'Montserrat-Medium',
-              // letterSpacing: 1,
               color: 'black',
-              fontSize: 18,
+              fontSize: 15,
             }}>
-            {shop.shopName}
+            {shopname}
           </Text>
         </View>
       </View>
-      <ScrollView style={{backgroundColor: '#f7f6fd', padding: 10}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            // marginTop: 20,
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            paddingBottom: '25%',
-          }}>
-          {allProducts.map((ele, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() =>
-                navigation.navigate('ProductDetails', {
-                  item: ele,
-                })
-              }
-              // onPress={() => toggleModal(ele)}
-              style={{
-                marginVertical: 5,
-                // marginHorizontal: 2,
-                borderWidth: 1,
-                borderColor: '#f3f3f3',
-                backgroundColor: 'white',
-                width: '49%',
-                padding: 5,
-                borderRadius: 10,
-                elevation: 2,
-              }}>
-              <Image
-                style={{
-                  width: '100%',
-                  height: 150,
-                  resizeMode: 'cover',
-                  borderRadius: 10,
-                }}
-                // source={{
-                //   uri: 'https://rukminim2.flixcart.com/image/612/612/xif0q/speaker/m/y/y/-original-imahfcgwza6fty8w.jpeg?q=70',
-                // }}
-                source={{
-                  uri: ele.imageUrl,
-                }}
-              />
-              <View style={{marginTop: 5, padding: 5}}>
-                <Text
+      <TouchableOpacity
+        style={{
+          marginHorizontal: 5,
+          position: 'absolute',
+          right: 20,
+          top: 12,
+        }}
+        onPress={() => navigation.navigate('Cart')}>
+        <AntDesign name="shoppingcart" size={23} color={THEMECOLOR.textColor} />
+        <Badge
+          theme={{colors: {primary: 'green'}}}
+          style={{position: 'absolute', top: -5, right: -12}}>
+          {cart.length}
+        </Badge>
+      </TouchableOpacity>
+
+      {allvendorproduct.length === 0 ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text
+            style={{
+              textAlign: 'center',
+              color: 'gray',
+              fontSize: 16,
+              fontFamily: 'Montserrat-Medium',
+            }}>
+            No products found.
+          </Text>
+        </View>
+      ) : (
+        <ScrollView style={{padding: 10}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              paddingBottom: '25%',
+            }}>
+            {allvendorproduct.map((ele, index) => {
+              const averageRating =
+                ele.Reviews.length > 0
+                  ? ele.Reviews.reduce(
+                      (sum, review) => sum + review.ratings,
+                      0,
+                    ) / ele.Reviews.length
+                  : 0;
+              const productInCart = cart.find(item => item.id === ele._id);
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate('ProductDetails', {
+                      item: ele,
+                    })
+                  }
                   style={{
-                    fontSize: 14,
-                    // width: '100%',
-                    // overflow: 'hidden',
-                    fontFamily: 'Montserrat-Medium',
-                    // letterSpacing: 1,
-                    color: 'black',
-                    marginBottom: 5,
+                    marginVertical: 5,
+                    borderWidth: 1,
+                    borderColor: '#f3f3f3',
+                    backgroundColor: 'white',
+                    width: '49%',
+                    padding: 5,
+                    borderRadius: 10,
+                    elevation: 2,
                   }}>
-                  {/* {`Aputure LS 300X BI - Color LED Moonlight`} */}
-                  {ele.productName.length < 15
-                    ? ele.productName
-                    : ele.productName.substring(0, 15) + '...'}
-                </Text>
-                <View style={{flexDirection: 'row', marginBottom: 2}}>
-                  {Array.from({length: 5}).map((_, index) => (
-                    <AntDesign
-                      key={index}
-                      name="star"
-                      size={12}
-                      color="#fdd663"
-                    />
-                  ))}
-                  <View style={{marginLeft: 9, marginTop: -2}}>
-                    <Text
-                      style={{
-                        color: 'black',
-                        fontSize: 12,
-                        fontFamily: 'Montserrat-Medium',
-                        // letterSpacing: 1,
-                      }}>
-                      28
-                    </Text>
-                  </View>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingTop: 5,
-                  }}>
-                  <Text
+                  <Image
                     style={{
-                      flex: 0.6,
-                      fontSize: 13,
-                      color: 'black',
-                      fontFamily: 'Montserrat-SemiBold',
-                      // letterSpacing: 1,
-                    }}>
-                    ₹ {ele.productPrice}
-                  </Text>
-                  <TouchableOpacity
-                    style={{
-                      flex: 0.6,
-                      backgroundColor: THEMECOLOR.mainColor,
-                      borderRadius: 5,
-                      height: 30,
-                      paddingTop: 5,
-                    }}>
+                      width: '100%',
+                      height: 150,
+                      resizeMode: 'cover',
+                      borderRadius: 10,
+                    }}
+                    source={{
+                      uri: `${apiUrl.IMAGEURL}${ele.product_image[0]}`,
+                    }}
+                  />
+                  <View style={{marginTop: 5, padding: 5}}>
                     <Text
                       style={{
                         fontSize: 13,
-                        color: 'black',
                         fontFamily: 'Montserrat-Medium',
-                        textAlign: 'center',
+                        color: 'black',
+                        marginBottom: 5,
                       }}>
-                      + Add
+                      {ele.product_name.length < 15
+                        ? ele.product_name
+                        : ele.product_name.substring(0, 15) + '...'}
                     </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
-      <Text
-        style={{
-          fontFamily: 'Montserrat-Medium',
-          // letterSpacing: 1,
-          color: '#a9a9a9',
-          fontSize: 20,
-        }}>
-        Event Host
-      </Text>
-      {/* show short details */}
+                    <View style={{flexDirection: 'row', marginBottom: 2}}>
+                      {Array.from({length: 5}).map((_, index) => (
+                        <AntDesign
+                          key={index}
+                          name="star"
+                          size={12}
+                          color={index < averageRating ? '#fdd663' : '#d3d3d3'}
+                        />
+                      ))}
+                      <View style={{marginLeft: 9, marginTop: -2}}>
+                        <Text
+                          style={{
+                            color: 'black',
+                            fontSize: 12,
+                            fontFamily: 'Montserrat-Medium',
+                          }}>
+                          {Math.round(averageRating)}{' '}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          flex: 0.6,
+                          fontSize: 11,
+                          color: 'black',
+                          fontFamily: 'Montserrat-SemiBold',
+                        }}>
+                        ₹ {ele.product_price}
+                      </Text>
+                      {/* <TouchableOpacity
+                      style={{
+                        flex: 0.6,
+                        backgroundColor: THEMECOLOR.mainColor,
+                        borderRadius: 5,
+                        height: 30,
+                        paddingTop: 5,
+                      }}>
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: 'black',
+                          fontFamily: 'Montserrat-Medium',
+                          textAlign: 'center',
+                        }}>
+                        + Add
+                      </Text>
+                    </TouchableOpacity> */}
+                      {productInCart ? (
+                        productInCart.quantity > 0 ? (
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              flex: 0.6,
+                            }}>
+                            <TouchableOpacity
+                              onPress={() => handleDecrementQuantity(ele._id)}>
+                              <AntDesign
+                                name="minus"
+                                size={13}
+                                color={THEMECOLOR.textColor}
+                                style={{
+                                  backgroundColor: THEMECOLOR.mainColor,
+                                  padding: 5,
+                                  borderRadius: 50,
+                                }}
+                              />
+                            </TouchableOpacity>
+                            <Text
+                              style={{
+                                fontSize: 13,
+                                color: 'black',
+                                marginHorizontal: 10,
+                                fontFamily: 'Montserrat-Medium',
+                                textAlign: 'center',
+                              }}>
+                              {productInCart.quantity}
+                            </Text>
+                            <TouchableOpacity
+                              onPress={() =>
+                                dispatch(incrementQuantity({id: ele._id}))
+                              }>
+                              <AntDesign
+                                name="plus"
+                                size={13}
+                                color={THEMECOLOR.textColor}
+                                style={{
+                                  backgroundColor: THEMECOLOR.mainColor,
+                                  padding: 5,
+                                  borderRadius: 50,
+                                }}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        ) : (
+                          <TouchableOpacity
+                            onPress={() => handleAddToCart(ele)}
+                            style={{
+                              flex: 0.6,
+                              backgroundColor: THEMECOLOR.mainColor,
+                              borderRadius: 5,
+                              height: 30,
+                              paddingTop: 5,
+                            }}>
+                            <Text
+                              style={{
+                                fontSize: 13,
+                                color: THEMECOLOR.textColor,
+                                fontFamily: 'Montserrat-Medium',
+                                textAlign: 'center',
+                              }}>
+                              + Add
+                            </Text>
+                          </TouchableOpacity>
+                        )
+                      ) : (
+                        <TouchableOpacity
+                          onPress={() => handleAddToCart(ele)}
+                          style={{
+                            flex: 0.6,
+                            backgroundColor: THEMECOLOR.mainColor,
+                            borderRadius: 5,
+                            height: 30,
+                            paddingTop: 5,
+                          }}>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              color: THEMECOLOR.textColor,
+                              fontFamily: 'Montserrat-Medium',
+                              textAlign: 'center',
+                            }}>
+                            + Add
+                          </Text>
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </ScrollView>
+      )}
+
+      {/* Modal for displaying item details */}
       <Modal
         isVisible={isModalVisible}
         animationIn="slideInUp"
@@ -264,7 +449,6 @@ function ShopDetails({route}) {
                     fontSize: 18,
                     marginBottom: 1,
                     marginTop: 10,
-                    // letterSpacing: 1,
                     fontFamily: 'Montserrat-SemiBold',
                   }}>
                   {showItems.productName}
@@ -301,8 +485,6 @@ function ShopDetails({route}) {
                         fontSize: 12,
                         color: 'black',
                         fontFamily: 'Montserrat-Medium',
-                        marginTop: 0,
-                        // letterSpacing: 1,
                         marginTop: 2,
                       }}>
                       {' '}
@@ -314,83 +496,11 @@ function ShopDetails({route}) {
                   style={{
                     fontSize: 14,
                     marginTop: 6,
-                    // letterSpacing: 1,
                     color: '#696969',
                     fontFamily: 'Montserrat-Medium',
                   }}>
                   {showItems.productDescription}
                 </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                backgroundColor: 'white',
-                marginBottom: 10,
-                borderRadius: 10,
-                padding: 6,
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  marginTop: 5,
-                  borderColor: '#ea5362',
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  padding: 5,
-                  backgroundColor: '#ea53621a',
-                  flex: 0.3,
-                }}>
-                <TouchableOpacity
-                  style={{
-                    padding: 9,
-                    marginTop: 3,
-                  }}>
-                  <FontAwesome5
-                    name="minus"
-                    size={14}
-                    color="#ea5362"
-                    style={{fontWeight: '500'}}
-                  />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    color: 'black',
-                    padding: 9,
-                    fontFamily: 'Montserrat-SemiBold',
-                    // letterSpacing: 1,
-                    fontSize: 15,
-                  }}>
-                  1
-                </Text>
-                <TouchableOpacity
-                  style={{
-                    padding: 9,
-                    marginTop: 3,
-                  }}>
-                  <FontAwesome5 name="plus" size={14} color="#ea5362" />
-                </TouchableOpacity>
-              </View>
-              <View style={{flex: 0.1}}></View>
-              <View style={{flex: 0.6}}>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: '#ea5362',
-                    padding: 15,
-                    borderRadius: 7,
-                  }}>
-                  <Text
-                    style={{
-                      color: 'white',
-                      fontSize: 16,
-                      fontFamily: 'Montserrat-Medium',
-                      textAlign: 'center',
-                      // letterSpacing: 1,
-                    }}>
-                    Add item ₹ {showItems.productPrice}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
           </ScrollView>
@@ -402,4 +512,11 @@ function ShopDetails({route}) {
 
 export default ShopDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+});

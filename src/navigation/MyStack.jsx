@@ -21,6 +21,7 @@ import ProductReview from '../component/product/ProductReview';
 import ShopAddress from '../Screens/ShopAddress';
 import RequestReturn from '../component/order/RequestReturn';
 import EmailSummary from '../component/order/EmailSummary';
+import Invoice from '../component/order/Invoice';
 
 const Stack = createStackNavigator();
 
@@ -129,6 +130,13 @@ function MyStack() {
       <Stack.Screen
         name="Order Summary"
         component={OrderSummary}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Invoice"
+        component={Invoice}
         options={{
           headerShown: false,
         }}

@@ -1,13 +1,13 @@
 import {
   Image,
-  Pressable,
+  Animated,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -22,10 +22,9 @@ import {
   removeFromCart,
 } from '../../state_management/cartSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {Badge, RadioButton} from 'react-native-paper';
+import {Badge} from 'react-native-paper';
 import Modal from 'react-native-modal';
 import {apiUrl} from '../../api-services/api-constants';
-import moment from 'moment';
 
 const Productfilter = ({route}) => {
   const filterType = route.params.filterType;
@@ -34,7 +33,8 @@ const Productfilter = ({route}) => {
   const dispatch = useDispatch();
   const cart = useSelector(state => state.cart);
   const [filteredProducts, setFilteredProducts] = useState(allProducts);
-  // console.log('cart in product filtereds page >>>>>>', cart);
+  console.log('cart in product filtereds page >>>>>>', cart);
+  console.log('all products in product filter page >>>>>>', allProducts.length);
   // const [productObject, setProductObject] = useState(allProducts[0]);
   const [categoryObject, setCategoryObject] = useState(null);
   const [brandObject, setBrandObject] = useState(null);
@@ -73,6 +73,9 @@ const Productfilter = ({route}) => {
         mrpPrice: product.mrp_rate,
         store: product.shop_name,
         imageUrl: product.product_image[0],
+        productCategory: product.product_category,
+        sellerName: product.vendor_name,
+        sellerId: product.vendor_id,
       }),
     );
   };
@@ -101,13 +104,12 @@ const Productfilter = ({route}) => {
     setShowFilter(false);
   };
   const categories = [
-    {id: 1, name: 'All'},
-    {id: 2, name: 'Sound'},
-    {id: 3, name: 'Lighting'},
-    {id: 4, name: 'Video'},
-    {id: 5, name: 'Fabrication'},
-    {id: 6, name: 'Genset'},
-    {id: 7, name: 'shamiana'},
+    {id: 1, name: 'Sound'},
+    {id: 2, name: 'Lighting'},
+    {id: 3, name: 'Video'},
+    {id: 4, name: 'Fabrication'},
+    {id: 5, name: 'Genset'},
+    {id: 6, name: 'shamiana'},
   ];
 
   const calculateAverageRating = reviews => {
@@ -239,8 +241,8 @@ const Productfilter = ({route}) => {
     closeFilterModal();
   };
 
-  console.log('filterProduct', filteredProducts.length);
-  console.log('sortedProducts', sortedProducts.length);
+  // console.log('filterProduct', filteredProducts.length);
+  // console.log('sortedProducts', sortedProducts);
 
   return (
     <View
@@ -315,7 +317,18 @@ const Productfilter = ({route}) => {
             justifyContent: 'space-between',
             // marginTop: 20,
           }}>
-          {sortedProducts.reverse().map((ele, index) => {
+          {sortedProducts.map((ele, index) => {
+            // const slideAnim = useRef(new Animated.Value(300)).current; // Start off-screen (300 is the offset)
+
+            // useEffect(() => {
+            //   Animated.timing(slideAnim, {
+            //     toValue: 0, // Final position
+            //     duration: 400, // Animation duration in ms
+            //     delay: index * 100, // Delay the animation for each item
+            //     useNativeDriver: true,
+            //   }).start();
+            // }, []);
+
             // Calculate average rating if reviews are present
             const averageRating =
               ele.Reviews.length > 0
@@ -324,6 +337,19 @@ const Productfilter = ({route}) => {
                 : 0;
             const productInCart = cart.find(item => item.id === ele._id);
             return (
+              // <Animated.View
+              //   key={index}
+              //   style={{
+              //     transform: [{translateX: slideAnim}],
+              //     marginVertical: 5,
+              //     borderWidth: 1,
+              //     borderColor: '#f3f3f3',
+              //     backgroundColor: 'white',
+              //     width: '49%',
+              //     // padding: 5,
+              //     borderRadius: 10,
+              //     elevation: 2,
+              //   }}>
               <TouchableOpacity
                 key={index}
                 onPress={() =>
@@ -331,7 +357,6 @@ const Productfilter = ({route}) => {
                     item: ele,
                   })
                 }
-                // onPress={() => toggleModal(ele)}
                 style={{
                   marginVertical: 5,
                   // marginHorizontal: 2,
@@ -369,9 +394,11 @@ const Productfilter = ({route}) => {
                   <Image
                     style={{
                       width: '100%',
-                      height: 100,
-                      resizeMode: 'center',
-                      borderRadius: 10,
+                      height: 120,
+                      borderTopLeftRadius: 10,
+                      borderTopRightRadius: 10,
+                      resizeMode: 'cover',
+                      // borderRadius: 10,
                     }}
                     source={{
                       uri: `${apiUrl.IMAGEURL}${ele.product_image[0].replace(
@@ -451,16 +478,16 @@ const Productfilter = ({route}) => {
                       alignItems: 'center',
                       paddingTop: 5,
                     }}>
-                    <Text
-                      style={{
-                        flex: 0.6,
-                        fontSize: 11,
-                        color: 'black',
-                        fontFamily: 'Montserrat-SemiBold',
-                        // letterSpacing: 1,
-                      }}>
-                      ₹ {ele.product_price}
-                    </Text>
+                    <View style={{flex: 0.6}}>
+                      <Text
+                        style={{
+                          fontSize: 13,
+                          color: 'black',
+                          fontFamily: 'Montserrat-SemiBold',
+                        }}>
+                        ₹ {ele.product_price}
+                      </Text>
+                    </View>
 
                     {productInCart ? (
                       productInCart.quantity > 0 ? (
@@ -554,6 +581,7 @@ const Productfilter = ({route}) => {
                   </View>
                 </View>
               </TouchableOpacity>
+              // </Animated.View>
             );
           })}
         </View>
@@ -564,7 +592,7 @@ const Productfilter = ({route}) => {
             backgroundColor: '#3b3026',
             position: 'absolute',
             width: '40%',
-            bottom: 30,
+            bottom: 50,
             padding: 10,
             borderRadius: 10,
             elevation: 2,
