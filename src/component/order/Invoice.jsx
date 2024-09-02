@@ -45,6 +45,8 @@ export default function Invoice({route}) {
       setLoading(false);
     }
   };
+  console.log('sellerAddress', sellerAddress?.gst_number);
+
   const defultId = order._id.slice(-4);
   const vendorId = vendorData._id.slice(-4);
   const invoiceNumber = String(vendorId + defultId);
@@ -128,7 +130,7 @@ export default function Invoice({route}) {
       return;
     }
 
-    const downloadsPath = `${RNFS.DownloadDirectoryPath}/eb-invoice.pdf`;
+    const downloadsPath = `${RNFS.DownloadDirectoryPath}/Invoice.pdf`;
 
     try {
       await RNFS.copyFile(filePath, downloadsPath);
@@ -183,10 +185,10 @@ export default function Invoice({route}) {
   }
 
   return (
-    <View style={{backgroundColor: 'white', height: '100%'}}>
+    <ScrollView style={{backgroundColor: 'white', height: '100%', flex: 1}}>
       <View style={{margin: 5, borderColor: 'black', borderWidth: 1}}>
         <View style={{padding: 10}}>
-          <ScrollView>
+          <View>
             <View
               style={{
                 flexDirection: 'row',
@@ -513,16 +515,16 @@ export default function Invoice({route}) {
                 </Text>
               </View>
             </View>
-          </ScrollView>
+          </View>
         </View>
       </View>
       <TouchableOpacity
         onPress={handleGeneratePdf}
         style={{
-          marginTop: 20,
+          marginVertical: 20,
+          marginRight: 20,
           flexDirection: 'row',
           justifyContent: 'flex-end',
-          marginRight: 20,
         }}>
         <Text
           style={{
@@ -533,7 +535,7 @@ export default function Invoice({route}) {
           Download
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

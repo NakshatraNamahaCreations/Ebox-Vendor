@@ -13,6 +13,7 @@ export const useGenerateInvoice = () => {
     sellerAddress,
     taxes,
     finalAmountWithIncludingTax,
+    NumberToWord,
   ) => {
     try {
       const path = `${RNFS.DocumentDirectoryPath}/Invoice.pdf`; // or use another directory
@@ -24,6 +25,7 @@ export const useGenerateInvoice = () => {
         sellerAddress,
         taxes,
         finalAmountWithIncludingTax,
+        NumberToWord,
       );
 
       const options = {
