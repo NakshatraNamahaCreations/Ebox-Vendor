@@ -117,7 +117,7 @@ function ProductDetails({route}) {
   // const handleProductClick = async productId => {
   //   try {
   //     let res = await axios.get(
-  //       `http://192.168.1.103:9000/api/product/getproduct/${productId}`,
+  //       `https://eventbox.nakshatranamahacreations.in/api/product/getproduct/${productId}`,
   //     );
   //     if (res.status === 200) {
   //       setSelectedProduct(res.data.product);
@@ -196,7 +196,7 @@ function ProductDetails({route}) {
   //     return (
   //       <Video
   //         source={{
-  //           uri: `http://192.168.1.103:9000/${mainMedia.replace(/\\/g, '/')}`,
+  //           uri: `https://eventbox.nakshatranamahacreations.in/${mainMedia.replace(/\\/g, '/')}`,
   //         }}
   //         style={styles.mainMedia}
   //         controls={true}
@@ -207,7 +207,7 @@ function ProductDetails({route}) {
   //     return (
   //       <Image
   //         source={{
-  //           uri: `http://192.168.1.103:9000/${mainMedia.replace(/\\/g, '/')}`,
+  //           uri: `https://eventbox.nakshatranamahacreations.in/${mainMedia.replace(/\\/g, '/')}`,
   //         }}
   //         style={[styles.mainMedia, {marginTop: 20}]}
   //         resizeMode="contain"
@@ -228,7 +228,7 @@ function ProductDetails({route}) {
   //     return (
   //       <Video
   //         source={{
-  //           uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
+  //           uri: `https://eventbox.nakshatranamahacreations.in/${item.replace(/\\/g, '/')}`,
   //         }}
   //         style={styles.mainMedia}
   //         controls={true}
@@ -239,7 +239,7 @@ function ProductDetails({route}) {
   //     return (
   //       <Image
   //         source={{
-  //           uri: `http://192.168.1.103:9000/${item.replace(/\\/g, '/')}`,
+  //           uri: `https://eventbox.nakshatranamahacreations.in/${item.replace(/\\/g, '/')}`,
   //         }}
   //         style={styles.mainMedia}
   //         resizeMode="cover"
@@ -353,7 +353,7 @@ function ProductDetails({route}) {
             {mainMedia.endsWith('.mp4') ? (
               <Video
                 source={{
-                  uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                  uri: `${apiUrl.IMAGEURL}${mainMedia.replace(
                     /\\/g,
                     '/',
                   )}?${new Date().getTime()}`,
@@ -365,7 +365,7 @@ function ProductDetails({route}) {
             ) : (
               <Image
                 source={{
-                  uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                  uri: `${apiUrl.IMAGEURL}${mainMedia.replace(
                     /\\/g,
                     '/',
                   )}?${new Date().getTime()}`,
@@ -381,10 +381,7 @@ function ProductDetails({route}) {
               <TouchableOpacity key={index} onPress={() => setMainMedia(image)}>
                 <Image
                   source={{
-                    uri: `http://192.168.1.103:9000/${image.replace(
-                      /\\/g,
-                      '/',
-                    )}`,
+                    uri: `${apiUrl.IMAGEURL}${image.replace(/\\/g, '/')}`,
                   }}
                   style={[
                     styles.thumbnail,
@@ -827,10 +824,9 @@ function ProductDetails({route}) {
                           <Image
                             style={styles.addsOnImage}
                             source={{
-                              uri: `http://192.168.1.103:9000/${items.product_image[0].replace(
-                                /\\/g,
-                                '/',
-                              )}`,
+                              uri: `${
+                                apiUrl.IMAGEURL
+                              }${items.product_image[0].replace(/\\/g, '/')}`,
                             }}
                             // source={{
                             //   uri: 'https://playeventrentals.com/wp-content/uploads/2022/03/play-rental-item-eternal-lighting-echomate-247x247.jpg',

@@ -12,6 +12,7 @@ import {
   removeFromCart,
 } from '../../state_management/cartSlice';
 import Octicons from 'react-native-vector-icons/Octicons';
+import {apiUrl} from '../../api-services/api-constants';
 
 export default function MyCart({vendorData}) {
   console.log('vendorData in cart', vendorData);
@@ -88,7 +89,7 @@ export default function MyCart({vendorData}) {
                         // marginBottom: 10,
                       }}
                       source={{
-                        uri: `http://192.168.1.103:9000/${item.imageUrl.replace(
+                        uri: `${apiUrl.IMAGEURL}${item.imageUrl.replace(
                           /\\/g,
                           '/',
                         )}`,

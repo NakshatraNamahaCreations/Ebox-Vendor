@@ -22,6 +22,8 @@ import ShopAddress from '../Screens/ShopAddress';
 import RequestReturn from '../component/order/RequestReturn';
 import EmailSummary from '../component/order/EmailSummary';
 import Invoice from '../component/order/Invoice';
+import MyAddress from '../component/profile-component/MyAddress';
+import MyProducts from '../component/profile-component/MyProducts';
 
 const Stack = createStackNavigator();
 
@@ -172,6 +174,21 @@ function MyStack() {
       <Stack.Screen
         name="Success"
         component={OrderSuccessPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      {/* Profile */}
+      <Stack.Screen
+        name="My Address"
+        component={MyAddress}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="My Products"
+        component={MyProducts}
         options={{
           headerShown: false,
         }}

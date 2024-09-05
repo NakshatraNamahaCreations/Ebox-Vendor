@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
 
 export default function Profile({vendorData}) {
-  console.log('vendorData in profile page', vendorData);
+  // console.log('vendorData in profile page', vendorData);
   const navigation = useNavigation();
   const removeItemValue = async () => {
     try {
@@ -83,7 +83,13 @@ export default function Profile({vendorData}) {
             borderBottomWidth: 1,
             marginVertical: 15,
           }}></View>
-        <View style={{marginVertical: 2}}>
+        <TouchableOpacity
+          style={{marginVertical: 2}}
+          onPress={() =>
+            navigation.navigate('My Address', {
+              vendorId: vendorData._id,
+            })
+          }>
           <Text style={styles.profileLable}>
             <MaterialIcons name="location-pin" size={14} color="#f44336" />
             Address
@@ -98,18 +104,22 @@ export default function Profile({vendorData}) {
               }}>
               Edit & Add new addresses
             </Text>
-            <TouchableOpacity>
-              <Entypo name="chevron-thin-right" size={15} color="black" />
-            </TouchableOpacity>
+            <Entypo name="chevron-thin-right" size={15} color="black" />
           </View>
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             borderBottomColor: '#9d9d9d',
             borderBottomWidth: 1,
             marginVertical: 15,
           }}></View>
-        <View style={{marginVertical: 2}}>
+        <TouchableOpacity
+          style={{marginVertical: 2}}
+          onPress={() =>
+            navigation.navigate('My Products', {
+              vendorId: vendorData._id,
+            })
+          }>
           <Text style={styles.profileLable}>
             <Feather name="box" size={14} color="#f44336" /> My products
           </Text>
@@ -123,11 +133,9 @@ export default function Profile({vendorData}) {
               }}>
               View & Edit product listings
             </Text>
-            <TouchableOpacity>
-              <Entypo name="chevron-thin-right" size={15} color="black" />
-            </TouchableOpacity>
+            <Entypo name="chevron-thin-right" size={15} color="black" />
           </View>
-        </View>
+        </TouchableOpacity>
         <View
           style={{
             borderBottomColor: '#9d9d9d',
@@ -158,7 +166,7 @@ export default function Profile({vendorData}) {
             </TouchableOpacity>
           </View>
         </View>
-        <View
+        {/* <View
           style={{
             borderBottomColor: '#9d9d9d',
             borderBottomWidth: 1,
@@ -187,8 +195,8 @@ export default function Profile({vendorData}) {
               <Entypo name="chevron-thin-right" size={15} color="black" />
             </TouchableOpacity>
           </View>
-        </View>
-        <View
+        </View> */}
+        {/* <View
           style={{
             borderBottomColor: '#9d9d9d',
             borderBottomWidth: 1,
@@ -217,7 +225,7 @@ export default function Profile({vendorData}) {
               <Entypo name="chevron-thin-right" size={15} color="black" />
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
         <View
           style={{
             borderBottomColor: '#9d9d9d',

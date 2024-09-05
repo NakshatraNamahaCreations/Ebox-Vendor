@@ -258,7 +258,7 @@ export default function OrderConfirmation({route}) {
                       borderRadius: 10,
                     }}
                     source={{
-                      uri: `http://192.168.1.103:9000/${item.imageUrl.replace(
+                      uri: `${apiUrl.IMAGEURL}${item.imageUrl.replace(
                         /\\/g,
                         '/',
                       )}`,

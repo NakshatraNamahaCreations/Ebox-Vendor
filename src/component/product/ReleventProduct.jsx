@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import THEMECOLOR from '../../utilities/color';
+import {apiUrl} from '../../api-services/api-constants';
 
 export default function ReleventProduct({relevantProducts}) {
   return (
@@ -28,7 +29,7 @@ export default function ReleventProduct({relevantProducts}) {
                 <Image
                   style={styles.addsOnImage}
                   source={{
-                    uri: `http://192.168.1.103:9000/${items.product_image[0].replace(
+                    uri: `${apiUrl.IMAGEURL}${items.product_image[0].replace(
                       /\\/g,
                       '/',
                     )}`,
