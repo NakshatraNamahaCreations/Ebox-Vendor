@@ -26,7 +26,7 @@ export default function TopRated() {
   const fetchData = async () => {
     try {
       let res = await axios.get(
-        'http://192.168.1.103:9000/api/product/getsellproduct',
+        'https://eventbox.nakshatranamahacreations.in/api/product/getsellproduct',
       );
       if (res.status === 200) {
         setAllProducts(res.data.allSellProduct);
@@ -73,7 +73,7 @@ export default function TopRated() {
                     borderRadius: 10,
                   }}
                   source={{
-                    uri: `http://192.168.1.103:9000/${item.product_image[0].replace(
+                    uri: `https://eventbox.nakshatranamahacreations.in/${item.product_image[0].replace(
                       /\\/g,
                       '/',
                     )}`,

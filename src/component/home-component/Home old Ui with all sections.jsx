@@ -72,7 +72,7 @@ export default function Home() {
     try {
       setLoading(true);
       const res = await axios.get(
-        'http://192.168.1.103:9000/api/product/getsellproduct',
+        'https://eventbox.nakshatranamahacreations.in/api/product/getsellproduct',
       );
       if (res.status === 200) {
         const filteredProducts = res.data.allSellProduct.filter(
@@ -90,7 +90,7 @@ export default function Home() {
         setFlp(res.data.allSellProduct);
       }
       // const filterRes = await axios.get(
-      //   `http://192.168.1.103:9000/api/product/getfilteroutproducts/${vendor?._id}`,
+      //   `https://eventbox.nakshatranamahacreations.in/api/product/getfilteroutproducts/${vendor?._id}`,
       // );
       // if (filterRes.status === 200) {
       //   const resultData = filterRes.data.products;
@@ -114,7 +114,7 @@ export default function Home() {
       setLoading(true);
 
       const filterRes = await axios.get(
-        `http://192.168.1.103:9000/api/product/getfilteroutproducts/${vendor?._id}`,
+        `https://eventbox.nakshatranamahacreations.in/api/product/getfilteroutproducts/${vendor?._id}`,
       );
       if (filterRes.status === 200) {
         // const resultData = filterRes.data.products;

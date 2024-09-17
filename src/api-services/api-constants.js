@@ -1,6 +1,6 @@
 const apiUrl = {
-  BASEURL: 'http://192.168.1.103:9000/api',
-  IMAGEURL: 'http://192.168.1.103:9000/',
+  BASEURL: 'https://eventbox.nakshatranamahacreations.in/api',
+  IMAGEURL: 'https://eventbox.nakshatranamahacreations.in/',
 
   // VENDOR
   VENDOR_REGISTER: '/vendor/register',
@@ -12,7 +12,6 @@ const apiUrl = {
   ADD_SHIPPING_ADDRESS: '/vendor/add-address/',
   VENDOR_LOGOUT: '/vendor/delete-vendor-profile/',
   GET_ALL_VENDOR: '/vendor/getallvendor',
-  GET_VENDOR: '/vendor/getallvendor',
 
   // PRODUCT
   ADD_PRODUCT: '/product/addproduct',

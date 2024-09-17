@@ -239,9 +239,8 @@ export default function Register({navigation}) {
         placeholderTextColor="#757575"
         placeholder="Enter email id"
         value={email}
-        // maxLength={10}
-        onChangeText={val => setEmail(val)}
-        // keyboardType="number-pad"
+        onChangeText={val => setEmail(val.toLowerCase())}
+        keyboardType="email-address"
         style={{
           borderWidth: 1,
           borderColor: '#d5d5d5',
@@ -252,7 +251,6 @@ export default function Register({navigation}) {
           backgroundColor: 'white',
           marginBottom: 15,
           fontFamily: 'Montserrat-Medium',
-          // letterSpacing: 1,
         }}
       />
       <Text

@@ -65,7 +65,7 @@ function PopularItems({allProducts}) {
   //   setLoading(true);
   //   try {
   //     const res = await axios.get(
-  //       'http://192.168.1.103:9000/api/product/getsellproduct',
+  //       'https://eventbox.nakshatranamahacreations.in/api/product/getsellproduct',
   //     );
   //     if (res.status === 200) {
   //       setAllProducts(res.data.allSellProduct);

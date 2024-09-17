@@ -66,7 +66,7 @@ export default function OrderHistory({vendorData}) {
     );
   }
 
-  // console.log('vendor Orders in order history ', orderHistory);
+  console.log('vendor Orders in order history ', orderHistory);
   // const formattedProducts = orderHistory.flatMap(order =>
   //   order.product.map(product => ({
   //     ...product,

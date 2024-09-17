@@ -167,8 +167,8 @@ export default function AddProduct({ProductType, vendorData}) {
             asset => asset.type === 'video/mp4',
           );
 
-          if (selectedVideos.length > 3) {
-            Alert.alert('You can only select up to 3 videos');
+          if (selectedVideos.length > 1) {
+            Alert.alert('You can only select up to 1 videos');
           } else {
             const videoUris = selectedVideos.map(asset => asset.uri);
             console.log('Selected Videos', videoUris);
@@ -230,6 +230,7 @@ export default function AddProduct({ProductType, vendorData}) {
       formData.append('country_of_orgin', coutryOfOrgin);
       formData.append('manufacturer_name', manufactureName);
       formData.append('product_color', color);
+      formData.append('warranty', warranty);
       formData.append('shop_name', "Jimmy's Store");
       formData.append(
         'Specifications',
@@ -337,7 +338,7 @@ export default function AddProduct({ProductType, vendorData}) {
   //       const config = {
   //         url: 'product/addproduct',
   //         method: 'post',
-  //         baseURL: 'http://192.168.1.103:9000/api/',
+  //         baseURL: 'https://eventbox.nakshatranamahacreations.in/api/',
   //         headers: {'Content-Type': 'application/json'},
   //         data: {
   //           product_type: ProductType,
@@ -750,7 +751,7 @@ export default function AddProduct({ProductType, vendorData}) {
           <Text style={styles.productLable}>Manufacturer {asterisk()}</Text>
           <TextInput
             placeholderTextColor="#757575"
-            placeholder="Manufacture name"
+            placeholder="Manufacture"
             value={manufactureName}
             onChangeText={pprice => setManufactureName(pprice)}
             style={styles.productInput}

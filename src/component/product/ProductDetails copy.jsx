@@ -203,7 +203,7 @@ function ProductDetails({route}) {
             {mainMedia.endsWith('.mp4') ? (
               <Video
                 source={{
-                  uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                  uri: `https://eventbox.nakshatranamahacreations.in/${mainMedia.replace(
                     /\\/g,
                     '/',
                   )}`,
@@ -215,7 +215,7 @@ function ProductDetails({route}) {
             ) : (
               <Image
                 source={{
-                  uri: `http://192.168.1.103:9000/${mainMedia.replace(
+                  uri: `https://eventbox.nakshatranamahacreations.in/${mainMedia.replace(
                     /\\/g,
                     '/',
                   )}`,
@@ -230,7 +230,7 @@ function ProductDetails({route}) {
               <TouchableOpacity key={index} onPress={() => setMainMedia(image)}>
                 <Image
                   source={{
-                    uri: `http://192.168.1.103:9000/${image.replace(
+                    uri: `https://eventbox.nakshatranamahacreations.in/${image.replace(
                       /\\/g,
                       '/',
                     )}`,

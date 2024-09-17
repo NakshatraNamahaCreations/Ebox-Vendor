@@ -26,7 +26,7 @@ export default function NewArrivals({filterOut}) {
   //     setLoading(true);
 
   //     const filterRes = await axios.get(
-  //       `http://192.168.1.103:9000/api/product/getfilteroutproducts/${vendor?._id}`,
+  //       `https://eventbox.nakshatranamahacreations.in/api/product/getfilteroutproducts/${vendor?._id}`,
   //     );
   //     if (filterRes.status === 200) {
   //       // const resultData = filterRes.data.products;
@@ -221,7 +221,7 @@ export default function NewArrivals({filterOut}) {
                     borderRadius: 10,
                   }}
                   source={{
-                    uri: `http://192.168.1.103:9000/${item.product_image[0].replace(
+                    uri: `https://eventbox.nakshatranamahacreations.in/${item.product_image[0].replace(
                       /\\/g,
                       '/',
                     )}`,

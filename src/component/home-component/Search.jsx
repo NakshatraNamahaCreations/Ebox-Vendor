@@ -22,7 +22,7 @@ export default function Search() {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        'http://192.168.1.103:9000/api/product/getsellproduct',
+        'https://eventbox.nakshatranamahacreations.in/api/product/getsellproduct',
       );
       if (res.status === 200) {
         setProductList(res.data.allSellProduct);
@@ -128,7 +128,7 @@ export default function Search() {
                         borderRadius: 10,
                       }}
                       source={{
-                        uri: `http://192.168.1.103:9000/${item.product_image[0].replace(
+                        uri: `https://eventbox.nakshatranamahacreations.in/${item.product_image[0].replace(
                           /\\/g,
                           '/',
                         )}`,

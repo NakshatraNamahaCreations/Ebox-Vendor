@@ -486,7 +486,6 @@ export default function Invoice({route}) {
                     }}>
                     Amount in Words:
                   </Text>
-
                   <NumberToWord
                     numberWord={finalAmountWithIncludingTax.toFixed(2)}
                   />
