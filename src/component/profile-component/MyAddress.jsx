@@ -24,7 +24,6 @@ function MyAddress({route}) {
     try {
       let res = await axios.get(
         `${apiUrl.BASEURL}${apiUrl.GET_VENDOR_PROFILE}${vendorId}`,
-        // `http://192.168.1.103:9000/api/vendor/getprofile/${vendorId}`,
       );
       if (res.status === 200) {
         setVendor(res.data);

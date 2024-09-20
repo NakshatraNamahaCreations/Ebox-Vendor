@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import THEMECOLOR from '../utilities/color';
@@ -13,6 +14,7 @@ import {TouchableOpacity} from 'react-native';
 import ProductType from '../component/product/ProductType';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Schedules from '../component/service/Schedules';
 
 const Tab = createBottomTabNavigator();
 
@@ -88,18 +90,34 @@ export default function BottomTab() {
         }}>
         {() => <OrderHistory vendorData={vendor} />}
       </Tab.Screen>
-      <Tab.Screen
-        name="Add"
-        // component={ProductType}
-        options={{
-          tabBarLabel: 'Add Product',
-          headerShown: false,
-          tabBarIcon: ({color, size}) => (
-            <AntDesign name="pluscircle" color={color} size={size} />
-          ),
-        }}>
-        {() => <ProductType vendorData={vendor} />}
-      </Tab.Screen>
+      {vendor?.profession && vendor?.profession === 'Vendor & Seller' ? (
+        <Tab.Screen
+          name="Add"
+          // component={ProductType}
+          options={{
+            tabBarLabel: 'Add Product',
+            headerShown: false,
+            tabBarIcon: ({color, size}) => (
+              <AntDesign name="pluscircle" color={color} size={size} />
+            ),
+          }}>
+          {() => <ProductType vendorData={vendor} />}
+        </Tab.Screen>
+      ) : (
+        <Tab.Screen
+          name="Schedule"
+          // component={ProductType}
+          options={{
+            tabBarLabel: 'Schedule',
+            headerShown: false,
+            // title: 'Schedule',
+            tabBarIcon: ({color, size}) => (
+              <MaterialIcons name="schedule" color={color} size={size} />
+            ),
+          }}>
+          {() => <Schedules vendorData={vendor} />}
+        </Tab.Screen>
+      )}
       <Tab.Screen
         name="Cart"
         // component={() => <MyCart vendorId={vendor?._id} />}

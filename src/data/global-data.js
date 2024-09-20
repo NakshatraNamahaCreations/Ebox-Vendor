@@ -632,6 +632,29 @@ const categoryGenSet = [
   {label: 'Colour', value: 'Colour'},
 ];
 
+const taskList = [
+  {
+    _id: 'b2383yfg37822',
+    company_name: 'Zagreb',
+    ordered_date: '2024-09-19T04:47:54.318+00:00',
+    delivery_address:
+      'Akshya Nagar 1st Block 1st Cross, Rammurthy nagar, Bangalore-560016',
+    event_name: 'Business Meeting',
+    user_name: 'NNC',
+    receiver_mobilenumber: '1234567890',
+  },
+  {
+    _id: '8dy490t843y89',
+    company_name: 'Unska',
+    ordered_date: '2024-09-21T12:07:43.002+00:00',
+    delivery_address:
+      'No.31, 2nd Floor, HRG Arcade, Outer Ring Road Above Cafe Coffee Day, Diagonally Opposite Bangalore Central Mall, Bellandur, Bengaluru, Karnataka 560103, India',
+    event_name: 'Conference',
+    user_name: 'NNC',
+    receiver_mobilenumber: '34985634956',
+  },
+];
+
 export {
   productList,
   vendor,
@@ -644,4 +667,5 @@ export {
   categoryLightings,
   categoryVideo,
   categoryGenSet,
+  taskList,
 };

@@ -17,10 +17,16 @@ import ImageResizer from 'react-native-image-resizer';
 import {RadioButton} from 'react-native-paper';
 import {apiUrl} from '../api-services/api-constants';
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-export default function AddShopDetails({navigation}) {
-  const [vendorAsync, setVendorAsync] = useState(null);
+export default function AddShopDetails() {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const vendor = route.params?.vendorData || {};
+  console.log('vendor in addshopdetails page for vendor&seller', vendor);
+  const [hasNavigated, setHasNavigated] = useState(false);
+
   const [businessName, setBusinessName] = useState('');
   const [godownName, setGodownName] = useState('');
   const [godownLink, setGodownLink] = useState('');
@@ -35,21 +41,6 @@ export default function AddShopDetails({navigation}) {
   const [vehicleUri, setVehicleUri] = useState('');
   const [vehicleFileName, venhicleFileName] = useState('');
   const [checked, setChecked] = useState('');
-  // console.log('checked', checked);
-
-  useEffect(() => {
-    const getVendorData = async () => {
-      try {
-        const vendorData = await AsyncStorage.getItem('vendor');
-        setVendorAsync(vendorData ? JSON.parse(vendorData) : null);
-      } catch (error) {
-        console.error('Failed to load vendor data', error);
-      }
-    };
-
-    getVendorData();
-  }, []);
-  console.log('vendorAsync in shop details', vendorAsync);
 
   const resizeImage = async imageUri => {
     const resizedImage = await ImageResizer.createResizedImage(
@@ -120,7 +111,7 @@ export default function AddShopDetails({navigation}) {
 
       try {
         const response = await axios.put(
-          `${apiUrl.BASEURL}${apiUrl.UPDATE_VENDOR_PROFILE}${vendorAsync._id}`,
+          `${apiUrl.BASEURL}${apiUrl.UPDATE_VENDOR_PROFILE}${vendor._id}`,
           formData,
           {
             headers: {'Content-Type': 'multipart/form-data'},
@@ -129,9 +120,19 @@ export default function AddShopDetails({navigation}) {
         console.log('response', response.data);
 
         if (response.status === 200) {
-          Alert.alert('Success', response.data.message);
-          console.log('AsyncStorage', response.data.vendorShop);
-          navigation.navigate('AddShopAddress');
+          // Alert.alert('Success', response.data.message);
+          // console.log('AsyncStorage', response.data.vendorShop);
+          // navigation.navigate('AddShopAddress', {
+          //   vendorData: response.data.vendorShop,
+          // });
+          if (!hasNavigated) {
+            // Only navigate if not already navigated
+            setHasNavigated(true);
+            Alert.alert('Success', response.data.message);
+            navigation.navigate('AddShopAddress', {
+              vendorData: response.data.vendorShop,
+            });
+          }
         }
       } catch (error) {
         console.log('Unknown error:', error);
@@ -143,7 +144,12 @@ export default function AddShopDetails({navigation}) {
       }
     }
   };
-
+  useEffect(() => {
+    if (!hasNavigated) {
+      // Add further logic here if needed
+      setHasNavigated(false);
+    }
+  }, []);
   return (
     <View
       style={{

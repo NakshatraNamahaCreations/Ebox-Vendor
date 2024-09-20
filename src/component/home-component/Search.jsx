@@ -10,6 +10,7 @@ import React, {useEffect, useState} from 'react';
 import Feather from 'react-native-vector-icons/Feather';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import {apiUrl} from '../../api-services/api-constants';
 // import AntDesign from 'react-native-vector-icons/AntDesign';
 // import {productList} from '../../data/global-data';
 
@@ -22,7 +23,7 @@ export default function Search() {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        'https://eventbox.nakshatranamahacreations.in/api/product/getsellproduct',
+        `${apiUrl.BASEURL}${apiUrl.GET_SELLING_PRODUCTS}`,
       );
       if (res.status === 200) {
         setProductList(res.data.allSellProduct);
@@ -128,10 +129,9 @@ export default function Search() {
                         borderRadius: 10,
                       }}
                       source={{
-                        uri: `https://eventbox.nakshatranamahacreations.in/${item.product_image[0].replace(
-                          /\\/g,
-                          '/',
-                        )}`,
+                        uri: `${
+                          apiUrl.IMAGEURL
+                        }/${item.product_image[0].replace(/\\/g, '/')}`,
                       }}
                     />
                   ) : (

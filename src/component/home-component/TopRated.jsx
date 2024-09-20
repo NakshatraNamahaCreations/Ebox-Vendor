@@ -6,6 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 // import ProductDetails from '../product/ProductDetails';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import {apiUrl} from '../../api-services/api-constants';
 
 export default function TopRated() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function TopRated() {
   const fetchData = async () => {
     try {
       let res = await axios.get(
-        'https://eventbox.nakshatranamahacreations.in/api/product/getsellproduct',
+        `${apiUrl.BASEURL}${apiUrl.GET_SELLING_PRODUCTS}`,
       );
       if (res.status === 200) {
         setAllProducts(res.data.allSellProduct);
@@ -73,7 +74,7 @@ export default function TopRated() {
                     borderRadius: 10,
                   }}
                   source={{
-                    uri: `https://eventbox.nakshatranamahacreations.in/${item.product_image[0].replace(
+                    uri: `${apiUrl.IMAGEURL}/${item.product_image[0].replace(
                       /\\/g,
                       '/',
                     )}`,

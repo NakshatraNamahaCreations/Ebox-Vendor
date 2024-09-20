@@ -1,12 +1,16 @@
 const apiUrl = {
-  BASEURL: 'https://eventbox.nakshatranamahacreations.in/api',
+  // BASEURL: 'https://eventbox.nakshatranamahacreations.in/api',
+  BASEURL: 'http://192.168.1.103:9000/api',
   IMAGEURL: 'https://eventbox.nakshatranamahacreations.in/',
+  LOCALURL: 'https://eventbox.nakshatranamahacreations.in/api',
 
   // VENDOR
   VENDOR_REGISTER: '/vendor/register',
   VENDOR_LOGIN: '/vendor/login',
   LOGIN_WITH_MOBILE: '/vendor/loginwithmobilenumber',
   UPDATE_VENDOR_PROFILE: '/vendor/add-shop-details/',
+  SERVICE_USER_BUSINESS: '/vendor/save-vendor-details',
+  SERVICE_ADDITIONAL_DETAILS: '/vendor/add-service-additional-details',
   GET_VENDOR_PROFILE: '/vendor/getprofile/',
   FILTEROUT_VENDOR: '/vendor/filterout-vendors/',
   ADD_SHIPPING_ADDRESS: '/vendor/add-address/',
@@ -27,6 +31,11 @@ const apiUrl = {
   CREATE_ORDER: '/order/create-order',
   GET_ORDER_BY_VENDOR_ID: '/order/get-vendor-order/',
   RETURN_ORDER: '/order/return-order/',
+
+  // SERVICE
+  GET_ALL_SERVICE: '/service/get-all-service',
+  GET_SERVICE_BY_SERVICENAME: '/service/get-service-by-servicename',
+  GET_ALL_SUB_SERVICE: '/sub-service/get-all-sub-service',
 };
 
 export {apiUrl};

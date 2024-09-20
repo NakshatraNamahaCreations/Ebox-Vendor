@@ -21,7 +21,7 @@ export default function Profile({vendorData}) {
   const navigation = useNavigation();
   const removeItemValue = async () => {
     try {
-      await AsyncStorage.removeItem('vendor');
+      await AsyncStorage.clear();
       console.log('User removed from AsyncStorage');
       Alert.alert('Logout successful');
       navigation.navigate('Login');
@@ -113,35 +113,44 @@ export default function Profile({vendorData}) {
             borderBottomWidth: 1,
             marginVertical: 15,
           }}></View>
-        <TouchableOpacity
-          style={{marginVertical: 2}}
-          onPress={() =>
-            navigation.navigate('My Products', {
-              vendorId: vendorData._id,
-            })
-          }>
-          <Text style={styles.profileLable}>
-            <Feather name="box" size={14} color="#f44336" /> My products
-          </Text>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text
-              style={{
-                fontSize: 13,
-                color: 'black',
-                // letterSpacing: 1,
-                fontFamily: 'Montserrat-Light',
-              }}>
-              View & Edit product listings
-            </Text>
-            <Entypo name="chevron-thin-right" size={15} color="black" />
-          </View>
-        </TouchableOpacity>
-        <View
-          style={{
-            borderBottomColor: '#9d9d9d',
-            borderBottomWidth: 1,
-            marginVertical: 15,
-          }}></View>
+        {vendorData?.profession &&
+          vendorData?.profession === 'Vendor & Seller' && (
+            <>
+              <TouchableOpacity
+                style={{marginVertical: 2}}
+                onPress={() =>
+                  navigation.navigate('My Products', {
+                    vendorId: vendorData._id,
+                  })
+                }>
+                <Text style={styles.profileLable}>
+                  <Feather name="box" size={14} color="#f44336" /> My products
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: 'black',
+                      // letterSpacing: 1,
+                      fontFamily: 'Montserrat-Light',
+                    }}>
+                    View & Edit product listings
+                  </Text>
+                  <Entypo name="chevron-thin-right" size={15} color="black" />
+                </View>
+              </TouchableOpacity>
+              <View
+                style={{
+                  borderBottomColor: '#9d9d9d',
+                  borderBottomWidth: 1,
+                  marginVertical: 15,
+                }}></View>
+            </>
+          )}
         <View style={{marginVertical: 2}}>
           <Text style={styles.profileLable}>
             <MaterialCommunityIcons

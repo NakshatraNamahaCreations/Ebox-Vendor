@@ -13,24 +13,12 @@ import {apiUrl} from '../api-services/api-constants';
 import THEMECOLOR from '../utilities/color';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-function ShopAddress({navigation}) {
-  // console.log('add shop address details>>', vendor);
-  const [vendorAsync, setVendorAsync] = useState(null);
-
-  useEffect(() => {
-    const getVendorData = async () => {
-      try {
-        const vendorData = await AsyncStorage.getItem('vendor');
-        setVendorAsync(vendorData ? JSON.parse(vendorData) : null);
-      } catch (error) {
-        console.error('Failed to load vendor data', error);
-      }
-    };
-
-    getVendorData();
-  }, []);
-  console.log('vendorAsync in shop address', vendorAsync);
+function ShopAddress() {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const vendor = route.params?.vendorData || {};
 
   const [directions, setDirections] = useState('');
   const [houseFlatBlock, setHouseFlatBlock] = useState('');
@@ -113,14 +101,14 @@ function ShopAddress({navigation}) {
     }
     try {
       const config = {
-        url: `${apiUrl.ADD_SHIPPING_ADDRESS}${vendorAsync._id}`,
+        url: `${apiUrl.ADD_SHIPPING_ADDRESS}${vendor._id}`,
         method: 'put',
         baseURL: apiUrl.BASEURL,
         headers: {'Content-Type': 'application/json'},
         data: {
           address: {
-            fullName: vendorAsync.vendor_name,
-            mobileNumber: vendorAsync.mobile_number,
+            fullName: vendor.vendor_name,
+            mobileNumber: vendor.mobile_number,
             houseFlatBlock,
             roadArea,
             cityDownVillage,
@@ -133,6 +121,7 @@ function ShopAddress({navigation}) {
       };
       const response = await axios(config);
       if (response.status === 200) {
+        await AsyncStorage.setItem('vendor', JSON.stringify(vendor));
         navigation.navigate('Waiting');
       }
     } catch (error) {

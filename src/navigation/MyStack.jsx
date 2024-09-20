@@ -24,6 +24,8 @@ import EmailSummary from '../component/order/EmailSummary';
 import Invoice from '../component/order/Invoice';
 import MyAddress from '../component/profile-component/MyAddress';
 import MyProducts from '../component/profile-component/MyProducts';
+import ServicePeople from '../Screens/ServicePeople';
+import AdditionalDetails from '../Screens/AdditionalDetails';
 
 const Stack = createStackNavigator();
 
@@ -33,22 +35,32 @@ function MyStack() {
       <Stack.Screen
         name="SplashScreen"
         component={SplashScreen}
-        options={{title: 'Welcome', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{title: 'Login', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Register"
         component={Register}
-        options={{title: 'Register', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="AddShopDetails"
         component={AddShopDetails}
-        options={{title: 'ShopDetails', headerShown: false}}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Service People"
+        component={ServicePeople}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="AdditionalDetails"
+        component={AdditionalDetails}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="AddShopAddress"
@@ -60,22 +72,22 @@ function MyStack() {
       <Stack.Screen
         name="Waiting"
         component={WaitingScreen}
-        options={{title: 'WaitingScreen', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="OTP"
         component={OtpScreen}
-        options={{title: 'OTP', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Otp Success"
         component={OtpSuccess}
-        options={{title: 'Otp Success', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="BottomTab"
         component={BottomTab}
-        options={{title: 'BottomTab', headerShown: false}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="Notification"

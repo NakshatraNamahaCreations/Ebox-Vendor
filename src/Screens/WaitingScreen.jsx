@@ -15,6 +15,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function WaitingScreen({navigation}) {
   const [isApproved, setIsApproved] = useState(false);
+  const [vendor, setVendor] = useState(null);
+
+  useEffect(() => {
+    const retrieveData = async () => {
+      try {
+        const value = await AsyncStorage.getItem('vendor');
+        if (value !== null) {
+          setVendor(JSON.parse(value));
+        } else {
+          navigation.navigate('Login');
+        }
+      } catch (error) {
+        console.log('error', error);
+      }
+    };
+
+    retrieveData();
+  }, []);
+  console.log('vendor on asyncstorage in waiting screen', vendor);
 
   useEffect(() => {
     const checkApprovalStatus = async () => {
@@ -53,6 +72,17 @@ export default function WaitingScreen({navigation}) {
     const interval = setInterval(checkApprovalStatus, 5000); // every 5 seconds
     return () => clearInterval(interval);
   }, []);
+
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+      Alert.alert('Success', 'AsyncStorage successfully cleared!');
+      navigation.navigate('Login');
+    } catch (e) {
+      Alert.alert('Error', 'Failed to clear AsyncStorage');
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
     // Disable back button
@@ -136,6 +166,7 @@ export default function WaitingScreen({navigation}) {
           onPress={() => navigation.navigate('BottomTab')}
           disabled={!isApproved}
         />
+        <Button title="Clear AsyncStorage" onPress={clearAsyncStorage} />
       </View>
     </View>
   );
