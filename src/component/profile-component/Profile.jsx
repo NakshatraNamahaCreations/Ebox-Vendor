@@ -91,7 +91,7 @@ export default function Profile({vendorData}) {
             })
           }>
           <Text style={styles.profileLable}>
-            <MaterialIcons name="location-pin" size={14} color="#f44336" />
+            <MaterialIcons name="location-pin" size={14} color="#f44336" />{' '}
             Address
           </Text>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -107,6 +107,49 @@ export default function Profile({vendorData}) {
             <Entypo name="chevron-thin-right" size={15} color="black" />
           </View>
         </TouchableOpacity>
+        {vendorData?.profession &&
+          vendorData?.profession !== 'Vendor & Seller' && (
+            <>
+              <View
+                style={{
+                  borderBottomColor: '#5d5d5d',
+                  borderBottomWidth: 1,
+                  marginVertical: 15,
+                }}></View>
+              <TouchableOpacity
+                style={{marginVertical: 2}}
+                onPress={() =>
+                  navigation.navigate('My Address', {
+                    vendorId: vendorData._id,
+                  })
+                }>
+                <Text style={styles.profileLable}>
+                  <MaterialIcons
+                    name="shopping-cart"
+                    size={14}
+                    color="#f44336"
+                  />{' '}
+                  Orders
+                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      color: 'black',
+                      // letterSpacing: 1,
+                      fontFamily: 'Montserrat-Light',
+                    }}>
+                    Order History
+                  </Text>
+                  <Entypo name="chevron-thin-right" size={15} color="black" />
+                </View>
+              </TouchableOpacity>
+            </>
+          )}
         <View
           style={{
             borderBottomColor: '#9d9d9d',

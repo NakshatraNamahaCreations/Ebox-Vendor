@@ -5,8 +5,11 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  Image,
+  ActivityIndicator,
+  BackHandler,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {apiUrl} from '../api-services/api-constants';
 import axios from 'axios';
@@ -21,8 +24,9 @@ const AdditionalDetails = () => {
   const route = useRoute();
   const vendorData = route.params?.vendorData || {};
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
   console.log('vendor in ADD IMAGE SCREEN', vendorData);
-  const [logoOrImageFileName, setLogoOrImageFileName] = useState('');
+  const [logoOrImageFileName, setLogoOrImageFileName] = useState([]);
   const [gstNumber, setGstNumber] = useState('');
   const [panNumber, setPanNumber] = useState('');
   const [showInfo, setShowInfo] = useState(false);
@@ -34,7 +38,7 @@ const AdditionalDetails = () => {
     ImagePicker.launchImageLibrary(
       {
         mediaType: 'photo',
-        selectionLimit: 5, // Set selection limit to 3
+        selectionLimit: 5,
         includeBase64: false,
       },
       response => {
@@ -45,7 +49,16 @@ const AdditionalDetails = () => {
         } else if (response.customButton) {
           console.log('User tapped custom button: ', response.customButton);
         } else if (response.assets) {
-          if (response.assets.length > 6) {
+          const MAX_IMAGE_SIZE = 1 * 1024 * 1024;
+          const oversizedImages = response.assets.filter(
+            asset => asset.fileSize > MAX_IMAGE_SIZE,
+          );
+          if (oversizedImages.length > 0) {
+            Alert.alert(
+              'File Size Too Large',
+              'Please select images smaller than 1MB.',
+            );
+          } else if (response.assets.length > 6) {
             Alert.alert('You can only select 5 images');
           } else {
             const selectedImages = response.assets.map(asset => asset.uri);
@@ -58,6 +71,7 @@ const AdditionalDetails = () => {
   };
 
   const handleAdditionalDetails = async () => {
+    setLoading(true);
     const formData = new FormData();
     formData.append('gst_number', gstNumber);
     formData.append('pan_number', panNumber);
@@ -91,12 +105,45 @@ const AdditionalDetails = () => {
     } catch (error) {
       console.log('Unknown error:', error);
       if (error.response && error.response.data) {
-        Alert.alert('Error', error.response.data.message);
+        // const statusCode = error.response.status;
+        // const errorMessage = error.response.data.message;
+        // console.log('Error details:', error.response.data);
+        // Alert.alert(
+        //   'Error',
+        //   `Status Code: ${statusCode}\nMessage: ${errorMessage}\nDetails: ${JSON.stringify(
+        //     error.response.data,
+        //   )}`,
+        // );
+        // Alert.alert('Error', error.response.data.message);
+        Alert.alert('Error', 'Something went wrong');
       } else {
         Alert.alert('Error', 'An unknown error occurred');
       }
+    } finally {
+      setLoading(false); // Re-enable the button after the API call completes
     }
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {text: 'Cancel', onPress: () => null, style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: false},
+        );
+        return true;
+      },
+    );
+
+    // Clean up the event listener
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View
@@ -145,7 +192,7 @@ const AdditionalDetails = () => {
               style={{
                 color: 'blue',
                 fontFamily: 'Montserrat-Medium',
-                fontSize: 9,
+                fontSize: 11,
                 position: 'relative',
                 // top: -17,
               }}>
@@ -161,15 +208,32 @@ const AdditionalDetails = () => {
                 fontFamily: 'Montserrat-Medium',
                 marginTop: 10,
               }}>
-              {logoOrImageFileName ? (
-                logoOrImageFileName
-              ) : (
-                <>
-                  <Feather name="upload" size={17} color="black" /> Upload
-                </>
-              )}
+              <Feather name="upload" size={17} color="black" /> Upload
             </Text>
           </TouchableOpacity>
+          {logoOrImageFileName && (
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                marginTop: 20,
+              }}>
+              {logoOrImageFileName.map((imageUri, index) => (
+                <Image
+                  key={index}
+                  source={{uri: imageUri}}
+                  style={{
+                    flex: 0.25,
+                    width: 100,
+                    height: 100,
+                    borderRadius: 10,
+                    marginRight: 10,
+                    marginBottom: 10,
+                  }}
+                />
+              ))}
+            </View>
+          )}
         </View>
 
         <Text
@@ -227,15 +291,19 @@ const AdditionalDetails = () => {
             marginTop: 20,
           }}
           onPress={handleAdditionalDetails}>
-          <Text
-            style={{
-              color: THEMECOLOR.textColor,
-              fontSize: 14,
-              textAlign: 'center',
-              fontFamily: 'Montserrat-Medium',
-            }}>
-            Add Address
-          </Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#ffffff" />
+          ) : (
+            <Text
+              style={{
+                color: THEMECOLOR.textColor,
+                fontSize: 14,
+                textAlign: 'center',
+                fontFamily: 'Montserrat-Medium',
+              }}>
+              Add Address
+            </Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           style={{

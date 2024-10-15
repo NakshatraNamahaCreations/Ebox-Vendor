@@ -26,6 +26,8 @@ import MyAddress from '../component/profile-component/MyAddress';
 import MyProducts from '../component/profile-component/MyProducts';
 import ServicePeople from '../Screens/ServicePeople';
 import AdditionalDetails from '../Screens/AdditionalDetails';
+import BusinessDetails from '../Screens/BusinessDetails';
+import AddService from '../component/service/AddService';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +57,11 @@ function MyStack() {
       <Stack.Screen
         name="Service People"
         component={ServicePeople}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="BusinessDetails"
+        component={BusinessDetails}
         options={{headerShown: false}}
       />
       <Stack.Screen
@@ -179,6 +186,13 @@ function MyStack() {
       <Stack.Screen
         name="Order Confirmation"
         component={OrderConfirmation}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="AddService"
+        component={AddService}
         options={{
           headerShown: false,
         }}

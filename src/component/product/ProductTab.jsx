@@ -261,8 +261,8 @@ export default function ProductTab({product}) {
               </View>
               <View style={{flex: 0.5}}>
                 <Text style={styles.productsDetailsAns}>
-                  {product.manufature_name
-                    ? product.manufature_name
+                  {product.manufacturer_name
+                    ? product.manufacturer_name
                     : 'Unknown'}
                 </Text>
               </View>

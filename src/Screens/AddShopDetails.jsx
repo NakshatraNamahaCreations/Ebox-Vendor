@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  BackHandler,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 // import {Checkbox} from 'react-native-paper';
@@ -39,7 +40,7 @@ export default function AddShopDetails() {
   const [logoOrImageUri, setLogoOrImageUri] = useState('');
   const [logoOrImageFileName, setLogoOrImageFileName] = useState('');
   const [vehicleUri, setVehicleUri] = useState('');
-  const [vehicleFileName, venhicleFileName] = useState('');
+  const [vehicleFileName, setVehicleFileName] = useState('');
   const [checked, setChecked] = useState('');
 
   const resizeImage = async imageUri => {
@@ -75,7 +76,7 @@ export default function AddShopDetails() {
         const galleryPic = response.assets[0].uri;
         const resizedImageUri = await resizeImage(galleryPic);
         setVehicleUri(resizedImageUri);
-        venhicleFileName(fileNAME);
+        setVehicleFileName(fileNAME);
       }
     });
   };
@@ -111,7 +112,7 @@ export default function AddShopDetails() {
 
       try {
         const response = await axios.put(
-          `${apiUrl.BASEURL}${apiUrl.UPDATE_VENDOR_PROFILE}${vendor._id}`,
+          `${apiUrl.BASEURL}${apiUrl.ADD_VENDOR_BUSINESS_DETAILS}${vendor._id}`,
           formData,
           {
             headers: {'Content-Type': 'multipart/form-data'},
@@ -150,6 +151,28 @@ export default function AddShopDetails() {
       setHasNavigated(false);
     }
   }, []);
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {text: 'Cancel', onPress: () => null, style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: false},
+        );
+        return true;
+      },
+    );
+
+    // Clean up the event listener
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <View
       style={{

@@ -1,15 +1,25 @@
 R_DEF: Internal format may change without notice
 local
 drawable assets_02lottietick01instant23
+drawable assets_alignment
+drawable assets_box
 drawable assets_codifyformatter
+drawable assets_inventory
 drawable assets_kiru3_3
 drawable assets_kiru3_4
 drawable assets_kiru3_5
+drawable assets_map_screenshot
 drawable assets_notification
 drawable assets_onetimepassword
+drawable assets_playbutton
+drawable assets_reliability
 drawable assets_search
 drawable assets_secureloginconceptillustration
+drawable assets_trend
 drawable assets_truck
+drawable assets_untitled201
+drawable assets_untitled202
+drawable assets_untitled203
 drawable assets_verified
 drawable node_modules_reactnativeelementdropdown_src_assets_close
 drawable node_modules_reactnativeelementdropdown_src_assets_down

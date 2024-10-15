@@ -15,6 +15,8 @@ import ProductType from '../component/product/ProductType';
 import {useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Schedules from '../component/service/Schedules';
+import AddService from '../component/service/AddService';
+import Service from '../component/service/Service';
 
 const Tab = createBottomTabNavigator();
 
@@ -74,34 +76,22 @@ export default function BottomTab() {
           ),
         }}
       />
-      <Tab.Screen
-        name="Order History"
-        // component={OrderHistory}
-        options={{
-          tabBarLabel: 'Orders',
-          headerShown: false,
-          tabBarIcon: ({color, size}) => (
-            <MaterialCommunityIcons
-              name="shopping-outline"
-              color={color}
-              size={size}
-            />
-          ),
-        }}>
-        {() => <OrderHistory vendorData={vendor} />}
-      </Tab.Screen>
       {vendor?.profession && vendor?.profession === 'Vendor & Seller' ? (
         <Tab.Screen
-          name="Add"
-          // component={ProductType}
+          name="Order History"
+          // component={OrderHistory}
           options={{
-            tabBarLabel: 'Add Product',
+            tabBarLabel: 'Orders',
             headerShown: false,
             tabBarIcon: ({color, size}) => (
-              <AntDesign name="pluscircle" color={color} size={size} />
+              <MaterialCommunityIcons
+                name="shopping-outline"
+                color={color}
+                size={size}
+              />
             ),
           }}>
-          {() => <ProductType vendorData={vendor} />}
+          {() => <OrderHistory vendorData={vendor} />}
         </Tab.Screen>
       ) : (
         <Tab.Screen
@@ -118,9 +108,33 @@ export default function BottomTab() {
           {() => <Schedules vendorData={vendor} />}
         </Tab.Screen>
       )}
+      {vendor?.profession && vendor?.profession === 'Vendor & Seller' ? (
+        <Tab.Screen
+          name="Add"
+          options={{
+            tabBarLabel: 'Add Product',
+            headerShown: false,
+            tabBarIcon: ({color, size}) => (
+              <AntDesign name="pluscircle" color={color} size={size} />
+            ),
+          }}>
+          {() => <ProductType vendorData={vendor} />}
+        </Tab.Screen>
+      ) : (
+        <Tab.Screen
+          name="Service"
+          options={{
+            tabBarLabel: 'Service',
+            headerShown: false,
+            tabBarIcon: ({color, size}) => (
+              <AntDesign name="pluscircle" color={color} size={size} />
+            ),
+          }}>
+          {() => <Service vendorData={vendor} />}
+        </Tab.Screen>
+      )}
       <Tab.Screen
         name="Cart"
-        // component={() => <MyCart vendorId={vendor?._id} />}
         options={{
           tabBarLabel: 'Cart',
           headerShown: false,
@@ -133,7 +147,6 @@ export default function BottomTab() {
       </Tab.Screen>
       <Tab.Screen
         name="Profile"
-        // component={Profile}
         options={{
           tabBarLabel: 'Profile',
           headerShown: false,
@@ -143,6 +156,17 @@ export default function BottomTab() {
         }}>
         {() => <Profile vendorData={vendor} />}
       </Tab.Screen>
+      {/* <Tab.Screen
+        name="Add"
+        options={{
+          tabBarLabel: 'Add Product',
+          headerShown: false,
+          tabBarIcon: ({color, size}) => (
+            <AntDesign name="pluscircle" color={color} size={size} />
+          ),
+        }}>
+        {() => <ProductType vendorData={vendor} />}
+      </Tab.Screen> */}
     </Tab.Navigator>
   );
 }

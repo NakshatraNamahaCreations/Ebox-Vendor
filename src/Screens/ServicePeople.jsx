@@ -7,6 +7,7 @@ import {
   TextInput,
   Alert,
   Button,
+  BackHandler,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -16,6 +17,8 @@ import axios from 'axios';
 import THEMECOLOR from '../utilities/color';
 import * as ImagePicker from 'react-native-image-picker';
 import DatePicker from 'react-native-date-picker';
+import Feather from 'react-native-vector-icons/Feather';
+import ImageResizer from 'react-native-image-resizer';
 
 const ServicePeople = () => {
   const navigation = useNavigation();
@@ -30,6 +33,10 @@ const ServicePeople = () => {
   const [open, setOpen] = useState(false);
   const [selectedField, setSelectedField] = useState(null);
   const [selectedValues, setSelectedValues] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [businessName, setBusinessName] = useState('');
+  const [businessFileName, setBusinessFileName] = useState('');
+  const [businessImage, setBusinessImage] = useState('');
 
   const handleDateChange = field => {
     setOpen(true);
@@ -108,31 +115,61 @@ const ServicePeople = () => {
 
   const extractTheRequirementFields = serviceRes.requirement_fields || [];
 
-  const handleSubmit = async () => {
-    try {
-      for (let field of extractTheRequirementFields) {
-        if (field.field_type === 'Text' && !inputValues[field.parameter]) {
-          Alert.alert('Error', `Please fill in the ${field.parameter} field`);
-          return;
-        }
+  const resizeImage = async imageUri => {
+    const resizedImage = await ImageResizer.createResizedImage(
+      imageUri,
+      800,
+      600,
+      'JPEG',
+      80,
+      0,
+    );
+    return resizedImage.uri;
+  };
+
+  const uploadBussinessImage = () => {
+    ImagePicker.launchImageLibrary({noData: true}, async response => {
+      if (response.assets) {
+        console.log('Gellery image:', response);
+        const fileNAME = response.assets[0].fileName;
+        const galleryPic = response.assets[0].uri;
+        const resizedImageUri = await resizeImage(galleryPic);
+        setBusinessImage(resizedImageUri);
+        setBusinessFileName(fileNAME);
       }
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (!businessImage || !businessImage) {
+      Alert.alert('Alert', 'Enter Business Name and Add Business Image/Logo');
+      return;
+    }
+    setLoading(true);
+    try {
       const vendorId = vendor._id;
       console.log('inputValues inside handleSumbit', inputValues);
-
+      const formData = new FormData();
+      formData.append('shop_name', businessName);
+      formData.append('shop_image_or_logo', {
+        uri: businessImage,
+        type: 'image/jpeg',
+        name: businessFileName || 'image.jpg',
+      });
+      formData.append('requirement_fields', JSON.stringify(inputValues));
       const config = {
         url: `${apiUrl.BASEURL}${apiUrl.SERVICE_USER_BUSINESS}/${vendorId}`,
         method: 'post',
-        headers: {'Content-Type': 'application/json'},
-        data: {
-          requirement_fields: inputValues,
-        },
+        headers: {'Content-Type': 'multipart/form-data'},
+        data: formData,
       };
-
       const response = await axios(config);
       if (response.status === 200) {
         Alert.alert('Success', 'Business details updated successfully!');
         console.log('response', response.data.data);
         const vendorData = response.data.data;
+        console.log('vendorData in service poeple requrement', vendorData);
+
         navigation.navigate('AdditionalDetails', {
           vendorData: vendorData,
         });
@@ -140,8 +177,49 @@ const ServicePeople = () => {
     } catch (error) {
       console.log('Error:', error);
       Alert.alert('Error', 'Failed to update vendor details');
+    } finally {
+      setLoading(false);
     }
   };
+
+  // old method
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   try {
+  //     // for (let field of extractTheRequirementFields) {
+  //     //   if (field.field_type === 'Text' && !inputValues[field.parameter]) {
+  //     //     Alert.alert('Error', `Please fill in the ${field.parameter} field`);
+  //     //     return;
+  //     //   }
+  //     // }
+  //     const vendorId = vendor._id;
+  //     console.log('inputValues inside handleSumbit', inputValues);
+
+  //     const config = {
+  //       url: `${apiUrl.BASEURL}${apiUrl.SERVICE_USER_BUSINESS}/${vendorId}`,
+  //       method: 'post',
+  //       headers: {'Content-Type': 'application/json'},
+  //       data: {
+  //         requirement_fields: inputValues,
+  //       },
+  //     };
+
+  //     const response = await axios(config);
+  //     if (response.status === 200) {
+  //       Alert.alert('Success', 'Business details updated successfully!');
+  //       console.log('response', response.data.data);
+  //       const vendorData = response.data.data;
+  //       navigation.navigate('AdditionalDetails', {
+  //         vendorData: vendorData,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log('Error:', error);
+  //     Alert.alert('Error', 'Failed to update vendor details');
+  //   } finally {
+  //     setLoading(false); // Re-enable the button after the API call completes
+  //   }
+  // };
 
   // const handleSubmit = async () => {
   //   // Optional: You can validate if all required fields are filled in
@@ -181,6 +259,27 @@ const ServicePeople = () => {
   //   }
   // };
 
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {text: 'Cancel', onPress: () => null, style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: false},
+        );
+        return true;
+      },
+    );
+
+    // Clean up the event listener
+    return () => backHandler.remove();
+  }, []);
+
   return (
     <View
       style={{
@@ -200,6 +299,76 @@ const ServicePeople = () => {
           }}>
           Add Bussiness Details
         </Text>
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center',
+            marginBottom: 10,
+          }}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              marginBottom: 5,
+              fontFamily: 'Montserrat-Medium',
+              flex: 0.5,
+            }}>
+            Business Name
+          </Text>
+          <TextInput
+            placeholderTextColor="#757575"
+            placeholder="Enter Business Name"
+            value={businessName}
+            onChangeText={val => setBusinessName(val)}
+            style={{
+              borderWidth: 1,
+              borderColor: '#d5d5d5',
+              color: 'black',
+              fontSize: 14,
+              flex: 0.5,
+              borderRadius: 10,
+              paddingLeft: 15,
+              backgroundColor: 'white',
+              marginBottom: 10,
+              fontFamily: 'Montserrat-Medium',
+            }}
+          />
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            flex: 1,
+            alignItems: 'center',
+            marginBottom: 10,
+          }}>
+          <Text
+            style={{
+              color: 'black',
+              fontSize: 14,
+              marginBottom: 5,
+              fontFamily: 'Montserrat-Medium',
+              flex: 0.5,
+            }}>
+            Business Logo/Image
+          </Text>
+          <TouchableOpacity style={{flex: 0.5}} onPress={uploadBussinessImage}>
+            <Text
+              style={{
+                color: 'black',
+                fontSize: 14,
+                fontFamily: 'Montserrat-Medium',
+              }}>
+              {businessFileName ? (
+                businessFileName
+              ) : (
+                <>
+                  <Feather name="upload" size={25} color="black" /> Upload
+                </>
+              )}
+            </Text>
+          </TouchableOpacity>
+        </View>
         {extractTheRequirementFields.map((fields, index) => (
           <View
             key={index}
@@ -249,7 +418,12 @@ const ServicePeople = () => {
                   padding: 13,
                 }}
                 onPress={() => handleDateChange(fields)}>
-                <Text style={{fontSize: 14, fontFamily: 'Montserrat-Medium'}}>
+                <Text
+                  style={{
+                    fontSize: 14,
+                    fontFamily: 'Montserrat-Medium',
+                    color: 'black',
+                  }}>
                   {selectedValues[fields.parameter]
                     ? fields.field_type === 'Date'
                       ? formatDate(selectedValues[fields.parameter])
@@ -282,15 +456,19 @@ const ServicePeople = () => {
             marginTop: 20,
           }}
           onPress={handleSubmit}>
-          <Text
-            style={{
-              color: THEMECOLOR.textColor,
-              fontSize: 14,
-              textAlign: 'center',
-              fontFamily: 'Montserrat-Medium',
-            }}>
-            Next
-          </Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#ffffff" />
+          ) : (
+            <Text
+              style={{
+                color: THEMECOLOR.textColor,
+                fontSize: 14,
+                textAlign: 'center',
+                fontFamily: 'Montserrat-Medium',
+              }}>
+              Next
+            </Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>

@@ -21,12 +21,22 @@ import com.wenkesj.voice.VoicePackage;
 import org.reactnative.maskedview.RNCMaskedViewPackage;
 // @react-native-picker/picker
 import com.reactnativecommunity.picker.RNCPickerPackage;
+// lottie-react-native
+import com.airbnb.android.react.lottie.LottiePackage;
+// react-native-date-picker
+import com.henninghall.date_picker.DatePickerPackage;
+// react-native-fs
+import com.rnfs.RNFSPackage;
 // react-native-gesture-handler
 import com.swmansion.gesturehandler.RNGestureHandlerPackage;
+// react-native-html-to-pdf
+import com.christopherdro.htmltopdf.RNHTMLtoPDFPackage;
 // react-native-image-picker
 import com.imagepicker.ImagePickerPackage;
 // react-native-image-resizer
 import fr.bamlab.rnimageresizer.ImageResizerPackage;
+// react-native-linear-gradient
+import com.BV.LinearGradient.LinearGradientPackage;
 // react-native-pager-view
 import com.reactnativepagerview.PagerViewPackage;
 // react-native-permissions
@@ -89,9 +99,14 @@ public class PackageList {
       new VoicePackage(),
       new RNCMaskedViewPackage(),
       new RNCPickerPackage(),
+      new LottiePackage(),
+      new DatePickerPackage(),
+      new RNFSPackage(),
       new RNGestureHandlerPackage(),
+      new RNHTMLtoPDFPackage(),
       new ImagePickerPackage(),
       new ImageResizerPackage(),
+      new LinearGradientPackage(),
       new PagerViewPackage(),
       new RNPermissionsPackage(),
       new SafeAreaContextPackage(),

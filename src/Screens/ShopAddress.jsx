@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  ActivityIndicator,
+  BackHandler,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -19,7 +21,7 @@ function ShopAddress() {
   const navigation = useNavigation();
   const route = useRoute();
   const vendor = route.params?.vendorData || {};
-
+  const [loading, setLoading] = useState(false);
   const [directions, setDirections] = useState('');
   const [houseFlatBlock, setHouseFlatBlock] = useState('');
   const [roadArea, setRoadArea] = useState('');
@@ -27,65 +29,6 @@ function ShopAddress() {
   const [distric, setDistric] = useState('');
   const [state, setState] = useState('');
   const [pincode, setPincode] = useState('');
-
-  // const handleSubmit = async () => {
-  //   if (!locality || !area || !city || !locationPin) {
-  //     Alert.alert('Error', 'Please fill all fields');
-  //     return;
-  //   }
-  //   // alert('Registration successful! Please login');
-  //   const formData = new FormData();
-  //   formData.append('shop_name', businessName);
-  //   formData.append('godown_name', godownName);
-  //   formData.append('godown_pin', godownLink);
-  //   formData.append('locality', locality);
-  //   formData.append('area', area);
-  //   formData.append('city', city);
-  //   formData.append('shop_location_pin', locationPin);
-  //   formData.append('gst_number', gstNumber);
-  //   formData.append('pan_number', panNumber);
-  //   formData.append('vehicle_name', vehicleType);
-  //   formData.append('number_plate', numberPlate);
-  //   formData.append('vehicle_by', checked);
-  //   formData.append('shop_image_or_logo', {
-  //     uri: logoOrImageUri,
-  //     type: 'image/jpeg',
-  //     name: 'image.jpg',
-  //   });
-  //   formData.append('vehicle_image', {
-  //     uri: vehicleUri,
-  //     type: 'image/jpeg',
-  //     name: 'image.jpg',
-  //   });
-  //   try {
-  //     const config = {
-  //       url: `${apiUrl.UPDATE_VENDOR_PROFILE}${vendorId}`,
-  //       method: 'put',
-  //       baseURL: apiUrl.BASEURL,
-  //       headers: {'Content-Type': 'multipart/form-data'},
-  //     };
-  //     const response = await axios(config);
-
-  //     if (response.status === 200) {
-  //       Alert.alert('Success', response.data.message);
-  //       console.log('AsyncStorage', response.data);
-  //       // AsyncStorage.setItem('token', response.data.newVendor);
-  //       // await AsyncStorage.setItem(
-  //       //   'vendor',
-  //       //   JSON.stringify(response.data.),
-  //       // );
-  //       // navigation.navigate('Waiting');
-  //     }
-  //   } catch (error) {
-  //     console.log('Unknown error:', error);
-  //     if (error.response && error.response.data) {
-  //       ` `;
-  //       Alert.alert('Error', error.response.data.message);
-  //     } else {
-  //       Alert.alert('Error', 'An unknown error occurred');
-  //     }
-  //   }
-  // };
 
   const handleAddAddress = async () => {
     if (
@@ -99,6 +42,7 @@ function ShopAddress() {
       Alert.alert('Error', 'Please fill in all the fields');
       return;
     }
+    setLoading(true);
     try {
       const config = {
         url: `${apiUrl.ADD_SHIPPING_ADDRESS}${vendor._id}`,
@@ -131,8 +75,31 @@ function ShopAddress() {
       } else {
         Alert.alert('Error', 'An unknown error occurred');
       }
+    } finally {
+      setLoading(false); // Re-enable the button after the API call completes
     }
   };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        Alert.alert(
+          'Exit App',
+          'Do you want to exit the app?',
+          [
+            {text: 'Cancel', onPress: () => null, style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+          ],
+          {cancelable: false},
+        );
+        return true;
+      },
+    );
+
+    // Clean up the event listener
+    return () => backHandler.remove();
+  }, []);
 
   return (
     <View style={{backgroundColor: 'white', height: '100%'}}>
@@ -413,15 +380,19 @@ function ShopAddress() {
             marginTop: 20,
           }}
           onPress={handleAddAddress}>
-          <Text
-            style={{
-              color: THEMECOLOR.textColor,
-              fontSize: 14,
-              textAlign: 'center',
-              fontFamily: 'Montserrat-Medium',
-            }}>
-            Submit
-          </Text>
+          {loading ? (
+            <ActivityIndicator size="small" color="#ffffff" />
+          ) : (
+            <Text
+              style={{
+                color: THEMECOLOR.textColor,
+                fontSize: 14,
+                textAlign: 'center',
+                fontFamily: 'Montserrat-Medium',
+              }}>
+              Submit
+            </Text>
+          )}
         </TouchableOpacity>
       </ScrollView>
     </View>

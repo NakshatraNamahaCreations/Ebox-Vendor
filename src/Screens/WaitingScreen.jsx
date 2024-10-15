@@ -1,12 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  BackHandler,
-  Alert,
-  Button,
-} from 'react-native';
+import {View, Text, Image, BackHandler, Alert, Button} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import THEMECOLOR from '../utilities/color';
 import {apiUrl} from '../api-services/api-constants';
@@ -85,7 +77,6 @@ export default function WaitingScreen({navigation}) {
   };
 
   useEffect(() => {
-    // Disable back button
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       () => {
@@ -98,7 +89,7 @@ export default function WaitingScreen({navigation}) {
           ],
           {cancelable: false},
         );
-        return true; // Prevent default behavior of back button
+        return true;
       },
     );
 
@@ -164,6 +155,7 @@ export default function WaitingScreen({navigation}) {
         <Button
           title="Continue"
           onPress={() => navigation.navigate('BottomTab')}
+          style={{marginBottom: 20}}
           disabled={!isApproved}
         />
         <Button title="Clear AsyncStorage" onPress={clearAsyncStorage} />

@@ -82,7 +82,7 @@ export default function SplashScreen({navigation}) {
       }
     }
   }, [navigationReady, vendorApiRes, navigation]);
-  console.log('vendor in splashscreen...', vendorApiRes);
+  // console.log('vendor in splashscreen...', vendorApiRes);
   console.log('vendor approval', vendorApiRes?.is_approved);
 
   // useEffect(() => {

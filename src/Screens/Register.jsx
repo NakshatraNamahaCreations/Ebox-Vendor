@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
+  ActivityIndicator,
+  useColorScheme,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 // import {Checkbox} from 'react-native-paper';
@@ -22,7 +24,7 @@ export default function Register() {
   const [mobileNumber, setMobileNumber] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-
+  const [loading, setLoading] = useState(false);
   const [profession, setProfession] = useState('');
   const [selectedServiceCategory, setSelectedServiceCategory] = useState('');
   const [findServiceCategory, setFindServiceCategory] = useState([]);
@@ -30,7 +32,7 @@ export default function Register() {
   const [serviceCategoryList, setServiceCategoryList] = useState([]);
   const [serviceName, setServiceName] = useState('');
   const [vendorData, setVendorData] = useState({});
-  const [hasNavigated, setHasNavigated] = useState(false);
+  const colorScheme = useColorScheme();
 
   const fetchData = async () => {
     try {
@@ -69,6 +71,7 @@ export default function Register() {
       Alert.alert('Error', 'Please fill all fields');
       return;
     }
+    setLoading(true);
     try {
       const config = {
         url: apiUrl.VENDOR_REGISTER,
@@ -87,7 +90,10 @@ export default function Register() {
       const response = await axios(config);
       if (response.status === 200) {
         console.log('New Vendor Data:', response.data.newVendor);
-        Alert.alert('Success', response.data.message);
+        Alert.alert(
+          'Success',
+          response.data.message || 'Registration Completed successfully',
+        );
         setVendorData(response.data.newVendor);
         const service = response.data.newVendor
           ? response.data.newVendor.profession
@@ -115,6 +121,8 @@ export default function Register() {
       } else {
         Alert.alert('Error', 'An unknown error occurred');
       }
+    } finally {
+      setLoading(false); // Re-enable the button after the API call completes
     }
   };
   // useEffect(() => {
@@ -126,27 +134,31 @@ export default function Register() {
 
   const fetchServerRes = async () => {
     try {
-      if (!serviceName) {
-        console.log('Error: serviceName is undefined');
-        return;
-      }
+      // if (!serviceName) {
+      //   console.log('Error: serviceName is undefined');
+      //   return;
+      // }
 
       const res = await axios.get(
         `${apiUrl.BASEURL}${apiUrl.GET_SERVICE_BY_SERVICENAME}/${serviceName}`,
       );
       if (res.status === 200) {
         const service = res.data.service;
-        if (service.requirement_fields?.length > 0) {
-          navigation.navigate('Service People', {
-            serverResponse: service,
-            vendorData: vendorData,
-          });
-          // setHasNavigated(true); // Prevent further navigation
-        } else {
-          await AsyncStorage.setItem('vendor', JSON.stringify(vendorData));
-          navigation.navigate('Waiting');
-          // setHasNavigated(true); // Prevent further navigation
-        }
+
+        navigation.navigate('BusinessDetails', {
+          serverResponse: service,
+          vendorData: vendorData,
+        });
+        // setHasNavigated(true); // Prevent further navigation
+
+        // else {
+        //   await AsyncStorage.setItem('vendor', JSON.stringify(vendorData));
+        //   navigation.navigate('AdditionalDetails', {
+        //     vendorData: vendorData,
+        //   });
+        //   // navigation.navigate('Waiting');
+        //   // setHasNavigated(true); // Prevent further navigation
+        // }
       }
     } catch (error) {
       console.log('Error:', error);
@@ -164,13 +176,10 @@ export default function Register() {
   //   navigation.navigate('AddShopDetails', {number: mobileNumber});
   // };
   return (
-    <>
+    <View style={{padding: 15, backgroundColor: 'white', height: '100%'}}>
       <ScrollView>
         <View
           style={{
-            padding: 15,
-            backgroundColor: 'white',
-            height: '100%',
             paddingTop: 20,
           }}>
           <Text
@@ -226,23 +235,20 @@ export default function Register() {
             style={{
               borderWidth: 1,
               borderColor: '#d5d5d5',
-              // height: 55,
               borderRadius: 10,
               marginBottom: 10,
               paddingHorizontal: 5,
             }}>
             <Picker
-              itemStyle={{backgroundColor: 'white'}}
+              style={{color: 'black'}}
               selectedValue={profession}
               onValueChange={value => {
                 setProfession(value);
               }}>
               <Picker.Item
-                label="Select profession"
+                label="Select Profession"
                 value=""
                 style={{
-                  backgroundColor: 'white',
-                  color: '#757575',
                   fontSize: 14,
                   fontFamily: 'Montserrat-Regular',
                 }}
@@ -253,10 +259,10 @@ export default function Register() {
                   label={item.service_name}
                   value={item.service_name}
                   style={{
-                    color: 'black',
                     fontSize: 14,
-                    backgroundColor: 'white',
                     fontFamily: 'Montserrat-Regular',
+                    // color: colorScheme === 'dark' ? 'white' : 'black',
+                    // fontFamily: 'Montserrat-Regular',
                   }}
                 />
               ))}
@@ -282,7 +288,8 @@ export default function Register() {
             }}>
             <Picker
               // Use board.category
-              itemStyle={{backgroundColor: 'white'}}
+              // itemStyle={{backgroundColor: 'white'}}
+              style={{color: 'black'}}
               selectedValue={selectedServiceCategory}
               onValueChange={
                 cteItem => setSelectedServiceCategory(cteItem) // Pass the index and new value
@@ -291,11 +298,9 @@ export default function Register() {
                 label="Select Category"
                 value=""
                 style={{
-                  backgroundColor: 'white',
-                  color: '#757575',
+                  // color: 'black',
                   fontSize: 14,
                   fontFamily: 'Montserrat-Regular',
-                  // letterSpacing: 1,
                 }}
               />
               {findServiceCategory.map((item, index) => (
@@ -304,9 +309,9 @@ export default function Register() {
                   label={item.sub_service_name}
                   value={item.sub_service_name}
                   style={{
-                    color: 'black',
+                    // color: 'black',
                     fontSize: 14,
-                    backgroundColor: 'white',
+                    // backgroundColor: 'white',
                     fontFamily: 'Montserrat-Regular',
                     // letterSpacing: 1,
                   }}
@@ -419,17 +424,22 @@ export default function Register() {
               elevation: 3,
               marginHorizontal: 50,
             }}
-            onPress={handleSubmit}>
-            <Text
-              style={{
-                color: THEMECOLOR.textColor,
-                fontSize: 14,
-                textAlign: 'center',
-                fontFamily: 'Montserrat-Medium',
-              }}>
-              Add Bussiness Details{' '}
-              <AntDesign name="arrowright" size={14} color="black" />
-            </Text>
+            onPress={handleSubmit}
+            disabled={loading}>
+            {loading ? (
+              <ActivityIndicator size="small" color="#ffffff" />
+            ) : (
+              <Text
+                style={{
+                  color: THEMECOLOR.textColor,
+                  fontSize: 14,
+                  textAlign: 'center',
+                  fontFamily: 'Montserrat-Medium',
+                }}>
+                Add Bussiness Details{' '}
+                <AntDesign name="arrowright" size={14} color="black" />
+              </Text>
+            )}
           </TouchableOpacity>
           {/* <View
         style={{
@@ -486,6 +496,6 @@ export default function Register() {
           </View>
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 }

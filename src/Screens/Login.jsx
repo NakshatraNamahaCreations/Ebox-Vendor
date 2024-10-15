@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import THEMECOLOR from '../utilities/color';
@@ -16,12 +17,14 @@ import {apiUrl} from '../api-services/api-constants';
 
 export default function Login({navigation}) {
   const [mobileNumber, setMobileNumber] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     if (!mobileNumber) {
       Alert.alert('Error', 'Please enter mobile number');
       return;
     }
+    setLoading(true);
     // alert('Registration successful! Please login');
     try {
       const config = {
@@ -53,6 +56,8 @@ export default function Login({navigation}) {
       } else {
         Alert.alert('Error', 'An unknown error occurred');
       }
+    } finally {
+      setLoading(false); // Re-enable the button after the API call completes
     }
   };
 
@@ -145,16 +150,20 @@ export default function Login({navigation}) {
           // marginTop: 40,
         }}
         onPress={handleLogin}>
-        <Text
-          style={{
-            color: THEMECOLOR.textColor,
-            fontSize: 15,
-            textAlign: 'center',
-            fontFamily: 'Montserrat-Medium',
-            // letterSpacing: 1,
-          }}>
-          Login
-        </Text>
+        {loading ? (
+          <ActivityIndicator size="small" color="#ffffff" />
+        ) : (
+          <Text
+            style={{
+              color: THEMECOLOR.textColor,
+              fontSize: 15,
+              textAlign: 'center',
+              fontFamily: 'Montserrat-Medium',
+              // letterSpacing: 1,
+            }}>
+            Login
+          </Text>
+        )}
       </TouchableOpacity>
       <View
         style={{

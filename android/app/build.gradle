@@ -108,6 +108,7 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
+        //  compile project(':react-native-html-to-pdf')
 
 // For animated GIF support
 implementation ("com.facebook.fresco:animated-gif:3.1.0")

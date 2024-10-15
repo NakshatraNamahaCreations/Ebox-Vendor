@@ -23,44 +23,50 @@ com.eboxvendor.app-lifecycle-runtime-2.6.1-21 C:\Users\DELL\.gradle\caches\trans
 com.eboxvendor.app-jetified-media3-exoplayer-1.3.1-22 C:\Users\DELL\.gradle\caches\transforms-3\6d364b2dfcf092a4ef22d470ed1ccf09\transformed\jetified-media3-exoplayer-1.3.1\res
 com.eboxvendor.app-jetified-savedstate-1.2.1-23 C:\Users\DELL\.gradle\caches\transforms-3\6d858f0e7ba8c6d32f7840bd3b36d1f2\transformed\jetified-savedstate-1.2.1\res
 com.eboxvendor.app-jetified-core-ktx-1.9.0-24 C:\Users\DELL\.gradle\caches\transforms-3\6fdd42089cdfdb89a5f7c93d6af7471d\transformed\jetified-core-ktx-1.9.0\res
-com.eboxvendor.app-jetified-annotation-experimental-1.3.1-25 C:\Users\DELL\.gradle\caches\transforms-3\8e0093946077fd5204aee8a0b01c08ed\transformed\jetified-annotation-experimental-1.3.1\res
-com.eboxvendor.app-jetified-viewpager2-1.0.0-26 C:\Users\DELL\.gradle\caches\transforms-3\933cca3d682df19ab6b85bbd4417e041\transformed\jetified-viewpager2-1.0.0\res
-com.eboxvendor.app-jetified-flipper-0.201.0-27 C:\Users\DELL\.gradle\caches\transforms-3\9b2c28bd5719adb7e465469e2ca76c12\transformed\jetified-flipper-0.201.0\res
-com.eboxvendor.app-drawerlayout-1.1.1-28 C:\Users\DELL\.gradle\caches\transforms-3\9b7c687cf2ef0cdf849c0c1404623f4f\transformed\drawerlayout-1.1.1\res
-com.eboxvendor.app-core-runtime-2.2.0-29 C:\Users\DELL\.gradle\caches\transforms-3\aa9b46ad7a81498fbe6a00d0c6850cec\transformed\core-runtime-2.2.0\res
-com.eboxvendor.app-appcompat-1.6.1-30 C:\Users\DELL\.gradle\caches\transforms-3\b3627ca143232ec2ceb6e319eb18971d\transformed\appcompat-1.6.1\res
-com.eboxvendor.app-fragment-1.3.6-31 C:\Users\DELL\.gradle\caches\transforms-3\b3aae516de8ada04cd390a9558584616\transformed\fragment-1.3.6\res
-com.eboxvendor.app-jetified-activity-ktx-1.7.0-32 C:\Users\DELL\.gradle\caches\transforms-3\c99d334237b482cc0df3bba4dd23e78d\transformed\jetified-activity-ktx-1.7.0\res
-com.eboxvendor.app-jetified-lifecycle-viewmodel-ktx-2.6.1-33 C:\Users\DELL\.gradle\caches\transforms-3\ca738b62056e03cf5f59c6246d492012\transformed\jetified-lifecycle-viewmodel-ktx-2.6.1\res
-com.eboxvendor.app-jetified-lifecycle-runtime-ktx-2.6.1-34 C:\Users\DELL\.gradle\caches\transforms-3\d27dcfce00a3e7e6893956117af23a83\transformed\jetified-lifecycle-runtime-ktx-2.6.1\res
-com.eboxvendor.app-constraintlayout-2.0.1-35 C:\Users\DELL\.gradle\caches\transforms-3\dd997c22ecb777a9e0898386a3d502a5\transformed\constraintlayout-2.0.1\res
-com.eboxvendor.app-jetified-react-android-0.73.6-debug-36 C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\res
-com.eboxvendor.app-lifecycle-viewmodel-2.6.1-37 C:\Users\DELL\.gradle\caches\transforms-3\e2e2daa163f31cd1c690bf38f248858f\transformed\lifecycle-viewmodel-2.6.1\res
-com.eboxvendor.app-jetified-media3-session-1.3.1-38 C:\Users\DELL\.gradle\caches\transforms-3\e36edb4be9503577c4b8650e20607956\transformed\jetified-media3-session-1.3.1\res
-com.eboxvendor.app-jetified-drawee-3.1.3-39 C:\Users\DELL\.gradle\caches\transforms-3\ec5ffae71883a2ffe61d9bb0ecd6125b\transformed\jetified-drawee-3.1.3\res
-com.eboxvendor.app-jetified-customview-poolingcontainer-1.0.0-40 C:\Users\DELL\.gradle\caches\transforms-3\ecc65e0403f4dfb04bd44a9f415394a2\transformed\jetified-customview-poolingcontainer-1.0.0\res
-com.eboxvendor.app-jetified-activity-1.7.0-41 C:\Users\DELL\.gradle\caches\transforms-3\ed86606cd95f38e10bd353e8ca99a255\transformed\jetified-activity-1.7.0\res
-com.eboxvendor.app-material-1.6.1-42 C:\Users\DELL\.gradle\caches\transforms-3\f150f74d51d5a6544b03fae36fafe644\transformed\material-1.6.1\res
-com.eboxvendor.app-coordinatorlayout-1.2.0-43 C:\Users\DELL\.gradle\caches\transforms-3\f1ad4007c9d50652fdaa15828c92907b\transformed\coordinatorlayout-1.2.0\res
-com.eboxvendor.app-jetified-emoji2-1.2.0-44 C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\res
-com.eboxvendor.app-pngs-45 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\generated\res\pngs\debug
-com.eboxvendor.app-resValues-46 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\generated\res\resValues\debug
-com.eboxvendor.app-packageDebugResources-47 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.eboxvendor.app-packageDebugResources-48 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.eboxvendor.app-merged_res-49 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\intermediates\merged_res\debug
-com.eboxvendor.app-debug-50 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\debug\res
-com.eboxvendor.app-main-51 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\res
-com.eboxvendor.app-packaged_res-52 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-53 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-community\blur\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-54 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-community\voice\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-55 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-masked-view\masked-view\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-56 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-picker\picker\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-57 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-58 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-59 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-resizer\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-60 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-pager-view\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-61 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-permissions\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-62 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-63 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-64 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-video\android\buildOutput_a15d4dee7fc4eda61b91308cbb6a2e72\intermediates\packaged_res\debug
-com.eboxvendor.app-packaged_res-65 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-jetified-lottie-6.4.0-25 C:\Users\DELL\.gradle\caches\transforms-3\73609b2398ffe20f2e30c79e6117505b\transformed\jetified-lottie-6.4.0\res
+com.eboxvendor.app-jetified-annotation-experimental-1.3.1-26 C:\Users\DELL\.gradle\caches\transforms-3\8e0093946077fd5204aee8a0b01c08ed\transformed\jetified-annotation-experimental-1.3.1\res
+com.eboxvendor.app-jetified-viewpager2-1.0.0-27 C:\Users\DELL\.gradle\caches\transforms-3\933cca3d682df19ab6b85bbd4417e041\transformed\jetified-viewpager2-1.0.0\res
+com.eboxvendor.app-jetified-flipper-0.201.0-28 C:\Users\DELL\.gradle\caches\transforms-3\9b2c28bd5719adb7e465469e2ca76c12\transformed\jetified-flipper-0.201.0\res
+com.eboxvendor.app-drawerlayout-1.1.1-29 C:\Users\DELL\.gradle\caches\transforms-3\9b7c687cf2ef0cdf849c0c1404623f4f\transformed\drawerlayout-1.1.1\res
+com.eboxvendor.app-core-runtime-2.2.0-30 C:\Users\DELL\.gradle\caches\transforms-3\aa9b46ad7a81498fbe6a00d0c6850cec\transformed\core-runtime-2.2.0\res
+com.eboxvendor.app-appcompat-1.6.1-31 C:\Users\DELL\.gradle\caches\transforms-3\b3627ca143232ec2ceb6e319eb18971d\transformed\appcompat-1.6.1\res
+com.eboxvendor.app-fragment-1.3.6-32 C:\Users\DELL\.gradle\caches\transforms-3\b3aae516de8ada04cd390a9558584616\transformed\fragment-1.3.6\res
+com.eboxvendor.app-jetified-activity-ktx-1.7.0-33 C:\Users\DELL\.gradle\caches\transforms-3\c99d334237b482cc0df3bba4dd23e78d\transformed\jetified-activity-ktx-1.7.0\res
+com.eboxvendor.app-jetified-lifecycle-viewmodel-ktx-2.6.1-34 C:\Users\DELL\.gradle\caches\transforms-3\ca738b62056e03cf5f59c6246d492012\transformed\jetified-lifecycle-viewmodel-ktx-2.6.1\res
+com.eboxvendor.app-jetified-lifecycle-runtime-ktx-2.6.1-35 C:\Users\DELL\.gradle\caches\transforms-3\d27dcfce00a3e7e6893956117af23a83\transformed\jetified-lifecycle-runtime-ktx-2.6.1\res
+com.eboxvendor.app-constraintlayout-2.0.1-36 C:\Users\DELL\.gradle\caches\transforms-3\dd997c22ecb777a9e0898386a3d502a5\transformed\constraintlayout-2.0.1\res
+com.eboxvendor.app-jetified-react-android-0.73.6-debug-37 C:\Users\DELL\.gradle\caches\transforms-3\e1231b5b187cb579b629117f9511a862\transformed\jetified-react-android-0.73.6-debug\res
+com.eboxvendor.app-lifecycle-viewmodel-2.6.1-38 C:\Users\DELL\.gradle\caches\transforms-3\e2e2daa163f31cd1c690bf38f248858f\transformed\lifecycle-viewmodel-2.6.1\res
+com.eboxvendor.app-jetified-media3-session-1.3.1-39 C:\Users\DELL\.gradle\caches\transforms-3\e36edb4be9503577c4b8650e20607956\transformed\jetified-media3-session-1.3.1\res
+com.eboxvendor.app-jetified-drawee-3.1.3-40 C:\Users\DELL\.gradle\caches\transforms-3\ec5ffae71883a2ffe61d9bb0ecd6125b\transformed\jetified-drawee-3.1.3\res
+com.eboxvendor.app-jetified-customview-poolingcontainer-1.0.0-41 C:\Users\DELL\.gradle\caches\transforms-3\ecc65e0403f4dfb04bd44a9f415394a2\transformed\jetified-customview-poolingcontainer-1.0.0\res
+com.eboxvendor.app-jetified-activity-1.7.0-42 C:\Users\DELL\.gradle\caches\transforms-3\ed86606cd95f38e10bd353e8ca99a255\transformed\jetified-activity-1.7.0\res
+com.eboxvendor.app-material-1.6.1-43 C:\Users\DELL\.gradle\caches\transforms-3\f150f74d51d5a6544b03fae36fafe644\transformed\material-1.6.1\res
+com.eboxvendor.app-coordinatorlayout-1.2.0-44 C:\Users\DELL\.gradle\caches\transforms-3\f1ad4007c9d50652fdaa15828c92907b\transformed\coordinatorlayout-1.2.0\res
+com.eboxvendor.app-jetified-emoji2-1.2.0-45 C:\Users\DELL\.gradle\caches\transforms-3\faa3592d2fc203d6c74b9a5f601058a1\transformed\jetified-emoji2-1.2.0\res
+com.eboxvendor.app-pngs-46 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\generated\res\pngs\debug
+com.eboxvendor.app-resValues-47 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\generated\res\resValues\debug
+com.eboxvendor.app-packageDebugResources-48 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.eboxvendor.app-packageDebugResources-49 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.eboxvendor.app-merged_res-50 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\build\intermediates\merged_res\debug
+com.eboxvendor.app-debug-51 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\debug\res
+com.eboxvendor.app-main-52 D:\Kiruthika\Event Host\Ebox-Vendor\android\app\src\main\res
+com.eboxvendor.app-packaged_res-53 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-54 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-community\blur\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-55 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-community\voice\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-56 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-masked-view\masked-view\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-57 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\@react-native-picker\picker\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-58 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\lottie-react-native\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-59 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-date-picker\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-60 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-fs\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-61 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-gesture-handler\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-62 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-html-to-pdf\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-63 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-picker\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-64 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-image-resizer\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-65 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-linear-gradient\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-66 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-pager-view\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-67 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-permissions\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-68 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-69 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-70 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-video\android\buildOutput_a15d4dee7fc4eda61b91308cbb6a2e72\intermediates\packaged_res\debug
+com.eboxvendor.app-packaged_res-71 D:\Kiruthika\Event Host\Ebox-Vendor\node_modules\react-native-webview\android\build\intermediates\packaged_res\debug

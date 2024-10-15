@@ -269,24 +269,6 @@ export default function AddProduct({ProductType, vendorData}) {
           Alert.alert(response.data.message);
           setIsResponse(true);
           console.log('Response:', response);
-          // setProductName('');
-          // setGalleryVideos([]);
-          // setGalleryImages([]);
-          // setProductPrice('');
-          // setMrpRate('');
-          // setProductDiscount('');
-          // setSelectedCategory('');
-          // setProductBrand('');
-          // setStockInHand('');
-          // setModelName('');
-          // setMaterialType('');
-          // setProductDimension('');
-          // setCoutryOfOrgin('');
-          // setManufactureName('');
-          // setColor('');
-          // setWarranty('');
-          // setAddItems([]);
-          // setProductWeight('');
           navigation.navigate('Home');
         } else {
           Alert.alert('Error', 'Error while adding product');
@@ -296,17 +278,17 @@ export default function AddProduct({ProductType, vendorData}) {
       if (axios.isAxiosError(error)) {
         console.error('Axios error:', error.message);
         if (error.response) {
-          console.error('Response data:', error.response.data);
+          console.error('Response data>>>:', error.response.data);
           Alert.alert(
             'Error',
             error.response.data.message || 'Error while adding product',
           );
         } else if (error.request) {
-          console.error('Request data:', error.request);
+          console.error('Request data<<<<:', error.request);
           Alert.alert('Error', 'No response received from server');
         }
       } else {
-        console.error('Unknown error:', error);
+        console.error('Unknown error...:', error);
         Alert.alert('Error', 'An unknown error occurred');
       }
     } finally {
@@ -490,7 +472,7 @@ export default function AddProduct({ProductType, vendorData}) {
             // letterSpacing: 1,
             fontFamily: 'Montserrat-Medium',
           }}>
-          (Max 3MB, 1080p, 30fps)
+          (Less than 1 MB)
         </Text>
       </View>
       <View style={{flexDirection: 'row', marginBottom: 4, marginTop: 10}}>
